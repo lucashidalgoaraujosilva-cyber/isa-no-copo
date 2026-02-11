@@ -6,7 +6,7 @@
     <title>PDV Ísa no Copo - Entregas e Montagem</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+        
         :root {
             --primaria: #10b981;
             --primaria-hover: #059669;
@@ -28,6 +28,7 @@
             --lista-bg: #ecfdf5;
             --lista-text: #047857;
             --sombra: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --altura-nav: 70px;
         }
 
         [data-theme="dark"] {
@@ -47,52 +48,62 @@
             --sombra: 0 4px 6px -1px rgba(0,0,0,0.3);
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--fundo-body); color: var(--texto-principal); margin: 0; padding: 0; transition: 0.3s; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--fundo-body); color: var(--texto-principal); margin: 0; padding: 0; padding-bottom: var(--altura-nav); transition: 0.3s; }
 
-        header { background: var(--fundo-card); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100; }
-        header h1 { margin: 0; font-size: 20px; color: var(--primaria); display: flex; align-items: center; gap: 10px; }
-        .controles-header { display: flex; gap: 10px; align-items: center;}
-
-        .status-nuvem { font-size: 12px; font-weight: bold; color: var(--primaria); display: flex; align-items: center; gap: 5px; background: var(--lista-bg); padding: 5px 10px; border-radius: 20px;}
+        /* Cabeçalho Fixo */
+        header { background: var(--fundo-card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100; }
+        header h1 { margin: 0; font-size: 18px; color: var(--primaria); display: flex; align-items: center; gap: 8px; }
+        .controles-header { display: flex; gap: 8px; align-items: center; }
+        
+        .status-nuvem { font-size: 11px; font-weight: bold; color: var(--primaria); display: flex; align-items: center; gap: 5px; background: var(--lista-bg); padding: 6px 10px; border-radius: 20px;}
         .status-nuvem span { display: inline-block; width: 8px; height: 8px; background: var(--primaria); border-radius: 50%; animation: piscar 2s infinite; }
         @keyframes piscar { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        .btn-acao { background: var(--fundo-card); color: var(--texto-principal); border: 1px solid var(--borda); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        .btn-acao { background: var(--fundo-card); color: var(--texto-principal); border: 1px solid var(--borda); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
         .btn-acao:hover { background: var(--fundo-body); }
         .btn-limpar { color: var(--vermelho); border-color: var(--vermelho); }
         .btn-limpar:hover { background: var(--vermelho-fundo); }
 
-        .container { padding: 25px; max-width: 1400px; margin: auto; }
+        /* Estrutura Principal (Grid para PC, Abas para Celular) */
+        .container-master { padding: 20px; max-width: 1600px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
+        
+        .view-section { display: none; animation: fadeIn 0.3s ease; }
+        .view-section.ativa { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .pdv-container { background: var(--fundo-card); padding: 25px; border-radius: 12px; box-shadow: var(--sombra); margin-bottom: 30px; border: 1px solid var(--borda); }
-        .pdv-titulo { font-size: 16px; color: var(--texto-principal); margin-top: 0; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-
-        .dados-cliente { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
-        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
+        /* Formulário PDV */
+        .pdv-container { background: var(--fundo-card); padding: 20px; border-radius: 12px; box-shadow: var(--sombra); border: 1px solid var(--borda); }
+        .pdv-titulo { font-size: 15px; color: var(--texto-principal); margin-top: 0; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
+        
+        .dados-cliente { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; }
+        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 160px; }
         .input-group label { font-size: 13px; font-weight: 600; color: var(--texto-secundario); margin-bottom: 6px; }
-        .dados-cliente input, .dados-cliente select { padding: 12px 15px; border: 1px solid var(--borda); border-radius: 8px; font-size: 14px; background-color: var(--fundo-input); color: var(--texto-principal); transition: 0.2s; }
+        .dados-cliente input, .dados-cliente select { padding: 14px 15px; border: 1px solid var(--borda); border-radius: 8px; font-size: 15px; background-color: var(--fundo-input); color: var(--texto-principal); transition: 0.2s; }
         .dados-cliente input:focus, .dados-cliente select:focus { outline: none; border-color: var(--primaria); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
-        .cardapio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .cardapio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .categoria-menu { background: var(--fundo-body); border: 1px solid var(--borda); border-radius: 10px; padding: 15px; }
         .categoria-menu h4 { margin: 0 0 12px 0; font-size: 13px; color: var(--texto-secundario); font-weight: 700; text-transform: uppercase; }
-
-        .chips-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        
+        .chips-container { display: flex; flex-wrap: wrap; gap: 10px; }
         .chip-label { position: relative; display: inline-block; cursor: pointer; user-select: none; }
-        .chip-label input { display: none; }
-        .chip-label span { display: inline-block; padding: 8px 12px; border-radius: 20px; border: 1px solid var(--borda); font-size: 13px; background: var(--fundo-card); color: var(--texto-secundario); font-weight: 500; transition: 0.2s; }
+        .chip-label input { display: none; } 
+        .chip-label span { display: inline-block; padding: 12px 14px; border-radius: 20px; border: 1px solid var(--borda); font-size: 14px; background: var(--fundo-card); color: var(--texto-secundario); font-weight: 500; transition: 0.2s; }
         .chip-label input:checked + span { background: var(--primaria); color: white; border-color: var(--primaria); box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); }
 
         .rodape-pdv { display: flex; justify-content: flex-end; border-top: 1px solid var(--borda); padding-top: 20px; }
-        .btn-add { background: var(--primaria); color: white; border: none; padding: 15px 35px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 16px; transition: 0.2s; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); }
+        .btn-add { background: var(--primaria); color: white; border: none; padding: 16px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 16px; width: 100%; transition: 0.2s; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); }
         .btn-add:hover { background: var(--primaria-hover); transform: translateY(-2px); }
 
-        .kanban-board { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; min-height: 50vh; }
-        .kanban-col { background: var(--fundo-coluna); border-radius: 12px; width: 340px; min-width: 340px; padding: 15px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--borda); }
-        .kanban-col h3 { margin: 0 0 10px 0; font-size: 14px; font-weight: 700; padding-bottom: 10px; border-bottom: 2px solid var(--borda); text-transform: uppercase; color: var(--texto-principal); }
+        /* Kanban Board */
+        .kanban-board { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; min-height: 60vh; scroll-snap-type: x mandatory; }
+        .kanban-col { background: var(--fundo-coluna); border-radius: 12px; width: 85vw; max-width: 340px; min-width: 300px; padding: 15px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--borda); scroll-snap-align: center; }
+        .kanban-col h3 { margin: 0 0 10px 0; font-size: 14px; font-weight: 700; padding-bottom: 10px; border-bottom: 2px solid var(--borda); text-transform: uppercase; color: var(--texto-principal); display: flex; justify-content: space-between; align-items: center; }
+        .badge-qtd { background: var(--borda); color: var(--texto-secundario); padding: 2px 8px; border-radius: 12px; font-size: 12px; }
 
+        /* Cartões */
         .pedido-card { background: var(--fundo-card); padding: 15px; border-radius: 10px; box-shadow: var(--sombra); border: 1px solid var(--borda); border-left: 5px solid var(--laranja); transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
-
+        
         .card-topo { cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 5px; }
         .id-pedido { font-size: 18px; font-weight: 900; color: var(--texto-secundario); margin-right: 8px; }
         .bairro-tag { display: inline-block; background: var(--tag-bairro-bg); color: var(--tag-bairro-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
@@ -105,146 +116,176 @@
 
         .card-detalhes p { margin: 4px 0; font-size: 13px; color: var(--texto-secundario); line-height: 1.4; }
         .card-detalhes p strong { color: var(--texto-principal); }
-
+        
         .lista-montagem { background: var(--lista-bg); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 13px; line-height: 1.6; color: var(--lista-text); border: 1px solid var(--borda-foco); }
         .lista-montagem span { display: block; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 4px; margin-bottom: 4px; }
         .lista-montagem span:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
         .grid-botoes-contato { display: flex; gap: 8px; margin-top: 10px; }
-        .btn-link { flex: 1; display: flex; justify-content: center; align-items: center; gap: 5px; text-decoration: none; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600; transition: 0.2s; border: 1px solid transparent; }
+        .btn-link { flex: 1; display: flex; justify-content: center; align-items: center; gap: 5px; text-decoration: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; transition: 0.2s; border: 1px solid transparent; }
         .btn-mapa { background: rgba(59, 130, 246, 0.1); color: var(--azul); border-color: rgba(59, 130, 246, 0.2); }
-        .btn-mapa:hover { background: var(--azul); color: white; }
         .btn-whats { background: rgba(37, 211, 102, 0.1); color: var(--verde-whats); border-color: rgba(37, 211, 102, 0.2); }
-        .btn-whats:hover { background: var(--verde-whats); color: white; }
 
         .acoes-card { display: flex; gap: 8px; padding-top: 5px; margin-top: 5px; border-top: 1px solid var(--borda); }
-        .btn-mover { background: transparent; border: 1px solid var(--primaria); color: var(--primaria); padding: 10px; border-radius: 6px; cursor: pointer; flex: 1; font-size: 13px; font-weight: 600; transition: 0.2s; }
+        .btn-mover { background: transparent; border: 1px solid var(--primaria); color: var(--primaria); padding: 12px; border-radius: 8px; cursor: pointer; flex: 1; font-size: 14px; font-weight: 600; transition: 0.2s; }
         .btn-mover:hover { background: var(--primaria); color: white; }
-        .btn-remover { background: transparent; border: 1px solid var(--borda); color: var(--texto-secundario); padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        .btn-remover:hover { background: var(--vermelho-fundo); color: var(--vermelho); border-color: var(--vermelho); }
+        .btn-remover { background: transparent; border: 1px solid var(--borda); color: var(--texto-secundario); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
 
-        @media (max-width: 768px) {
-            .dados-cliente { flex-direction: column; }
-            header { flex-direction: column; gap: 15px; }
-            .btn-add { width: 100%; }
+        /* Menu Inferior (Bottom Navigation) Mobile */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--fundo-card); border-top: 1px solid var(--borda); display: flex; justify-content: space-around; padding: 8px 10px; z-index: 1000; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); transition: 0.3s;}
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; padding: 8px; border-radius: 10px; color: var(--texto-secundario); cursor: pointer; transition: 0.2s; }
+        .nav-item span:first-child { font-size: 20px; }
+        .nav-item span:last-child { font-size: 12px; font-weight: 600; }
+        .nav-item.ativo { color: var(--primaria); background: var(--lista-bg); }
+
+        /* Ajustes Inteligentes para PC/Desktop */
+        @media (min-width: 1024px) {
+            body { padding-bottom: 0; }
+            .bottom-nav { display: none; } /* Esconde o menu inferior no PC */
+            .container-master { flex-direction: row; align-items: flex-start; }
+            .view-section { display: block !important; } /* Força as duas telas a aparecerem juntas */
+            #view-lancamento { flex: 0 0 400px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
+            #view-entregas { flex: 1; overflow-hidden; }
+            .btn-add { width: auto; }
+            .kanban-col { min-width: 320px; }
         }
+        
+        /* Oculta scrollbar da área de lançamento no PC pra ficar elegante */
+        #view-lancamento::-webkit-scrollbar { width: 6px; }
+        #view-lancamento::-webkit-scrollbar-thumb { background: var(--borda); border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🥗 Ísa no Copo <span style="font-size: 14px; font-weight: 400; color: var(--texto-secundario);">| Operação Diária</span></h1>
+        <h1>🥗 Ísa no Copo</h1>
         <div class="controles-header">
-            <div class="status-nuvem"><span></span> Online (Nuvem)</div>
-            <button class="btn-acao" onclick="toggleTema()" id="btn-tema">🌙 Escuro</button>
+            <div class="status-nuvem"><span></span> Online</div>
+            <button class="btn-acao" onclick="toggleTema()" id="btn-tema">🌙</button>
             <button class="btn-acao btn-limpar" onclick="zerarPainel()">🗑️ Finalizar Dia</button>
         </div>
     </header>
 
-    <div class="container">
-        <div class="pdv-container">
-            <h3 class="pdv-titulo">📋 1. Ficha do Cliente</h3>
-            <div class="dados-cliente">
-                <div class="input-group">
-                    <label>Nome do Cliente</label>
-                    <input type="text" id="nome" placeholder="Ex: João" autocomplete="off">
+    <div class="container-master">
+        
+        <div id="view-lancamento" class="view-section ativa">
+            <div class="pdv-container">
+                <h3 class="pdv-titulo">📋 Ficha do Cliente</h3>
+                <div class="dados-cliente">
+                    <div class="input-group">
+                        <label>Nome do Cliente</label>
+                        <input type="text" id="nome" placeholder="Ex: João" autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>WhatsApp</label>
+                        <input type="tel" id="telefone" placeholder="(00) 00000-0000" maxlength="15">
+                    </div>
+                    <div class="input-group">
+                        <label>Bairro</label>
+                        <input type="text" id="bairro" placeholder="Ex: Centro" autocomplete="off">
+                    </div>
+                    <div class="input-group" style="flex: 2;">
+                        <label>Endereço e Número</label>
+                        <input type="text" id="endereco" placeholder="Rua das Flores, 123" autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>Tamanho</label>
+                        <select id="tamanho">
+                            <option value="Copo 550ml">Copo 550ml</option>
+                            <option value="Copo 750ml">Copo 750ml</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>WhatsApp (Opcional)</label>
-                    <input type="tel" id="telefone" placeholder="(00) 00000-0000" maxlength="15">
-                </div>
-                <div class="input-group">
-                    <label>Bairro</label>
-                    <input type="text" id="bairro" placeholder="Ex: Centro" autocomplete="off">
-                </div>
-                <div class="input-group" style="flex: 2;">
-                    <label>Endereço e Número</label>
-                    <input type="text" id="endereco" placeholder="Rua das Flores, 123" autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <label>Tamanho</label>
-                    <select id="tamanho">
-                        <option value="Copo 550ml">Copo 550ml</option>
-                        <option value="Copo 750ml">Copo 750ml</option>
-                    </select>
-                </div>
-            </div>
 
-            <h3 class="pdv-titulo">🥗 2. Montagem da Salada</h3>
-            <div class="cardapio-grid">
-                <div class="categoria-menu">
-                    <h4>1. Base (Máx 2)</h4>
-                    <div class="chips-container">
-                        <label class="chip-label"><input type="checkbox" class="chk-base" value="Macarrão Gelado"><span>Macarrão (Fusilli)</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-base" value="Quinoa Real"><span>Quinoa Real</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-base" value="Milho Doce"><span>Milho Doce</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-base" value="Ervilhas Frescas"><span>Ervilhas</span></label>
+                <h3 class="pdv-titulo">🥗 Montagem</h3>
+                <div class="cardapio-grid">
+                    <div class="categoria-menu">
+                        <h4>1. Base (Máx 2)</h4>
+                        <div class="chips-container">
+                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Macarrão Gelado"><span>Macarrão (Fusilli)</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Quinoa Real"><span>Quinoa Real</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Milho Doce"><span>Milho Doce</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Ervilhas"><span>Ervilhas</span></label>
+                        </div>
+                    </div>
+                    <div class="categoria-menu">
+                        <h4>2. Proteína</h4>
+                        <div class="chips-container">
+                            <label class="chip-label"><input type="checkbox" class="chk-prot" value="Frango Desfiado"><span>Frango Desfiado</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-prot" value="Atum"><span>Atum</span></label>
+                        </div>
+                    </div>
+                    <div class="categoria-menu">
+                        <h4>3. Crocância & Cor</h4>
+                        <div class="chips-container">
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Tomate Cereja"><span>Tomate Cereja</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cenoura Ralada"><span>Cenoura Ralada</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Pepino"><span>Pepino</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Beterraba"><span>Beterraba</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Palmito"><span>Palmito</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cogumelos"><span>Cogumelos</span></label>
+                        </div>
+                    </div>
+                    <div class="categoria-menu">
+                        <h4>4. Folhas Frescas</h4>
+                        <div class="chips-container">
+                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Mix de Alface"><span>Mix de Alface</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Rúcula"><span>Rúcula</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Repolho"><span>Repolho Colorido</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Acelga"><span>Acelga</span></label>
+                        </div>
+                    </div>
+                    <div class="categoria-menu">
+                        <h4>5. Toque Final</h4>
+                        <div class="chips-container">
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Linhaça"><span>Linhaça</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Gergelim"><span>Gergelim</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Chia"><span>Chia</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Nozes"><span>Nozes</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Castanha"><span>Castanha</span></label>
+                        </div>
+                    </div>
+                    <div class="categoria-menu">
+                        <h4>6. Molhos Artesanais</h4>
+                        <div class="chips-container">
+                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Mostarda e Mel"><span>Mostarda e Mel</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Rosé"><span>Rosé Clássico</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Iogurte c/ Ervas"><span>Iogurte c/ Ervas</span></label>
+                        </div>
                     </div>
                 </div>
-                <div class="categoria-menu">
-                    <h4>2. Proteína</h4>
-                    <div class="chips-container">
-                        <label class="chip-label"><input type="checkbox" class="chk-prot" value="Frango Desfiado"><span>Frango Desfiado</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-prot" value="Atum"><span>Atum</span></label>
-                    </div>
-                </div>
-                <div class="categoria-menu">
-                    <h4>3. Crocância & Cor</h4>
-                    <div class="chips-container">
-                        <label class="chip-label"><input type="checkbox" class="chk-croc" value="Tomate Cereja"><span>Tomate Cereja</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cenoura Ralada"><span>Cenoura Ralada</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-croc" value="Pepino Japonês"><span>Pepino</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-croc" value="Beterraba Ralada"><span>Beterraba</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-croc" value="Palmito"><span>Palmito</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cogumelos"><span>Cogumelos</span></label>
-                    </div>
-                </div>
-                <div class="categoria-menu">
-                    <h4>4. Folhas Frescas</h4>
-                    <div class="chips-container">
-                        <label class="chip-label"><input type="checkbox" class="chk-folha" value="Mix de Alface"><span>Mix de Alface</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-folha" value="Rúcula"><span>Rúcula</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-folha" value="Repolho Verde/Roxo"><span>Repolho Colorido</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-folha" value="Acelga Crocante"><span>Acelga</span></label>
-                    </div>
-                </div>
-                <div class="categoria-menu">
-                    <h4>5. Toque Final</h4>
-                    <div class="chips-container">
-                        <label class="chip-label"><input type="checkbox" class="chk-toque" value="Linhaça Dourada"><span>Linhaça</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-toque" value="Mix de Gergelim"><span>Gergelim</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-toque" value="Sementes de Chia"><span>Chia</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-toque" value="Nozes Chilenas"><span>Nozes</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-toque" value="Castanha de Caju"><span>Castanha</span></label>
-                    </div>
-                </div>
-                <div class="categoria-menu">
-                    <h4>6. Molhos Artesanais</h4>
-                    <div class="chips-container">
-                        <label class="chip-label"><input type="checkbox" class="chk-molho" value="Mostarda e Mel"><span>Mostarda e Mel</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-molho" value="Rosé Clássico"><span>Rosé Clássico</span></label>
-                        <label class="chip-label"><input type="checkbox" class="chk-molho" value="Iogurte com Ervas"><span>Iogurte c/ Ervas</span></label>
-                    </div>
-                </div>
-            </div>
 
-            <div class="rodape-pdv">
-                <button class="btn-add" onclick="adicionarPedido()">➕ Lançar Pedido na Nuvem</button>
+                <div class="rodape-pdv">
+                    <button class="btn-add" onclick="adicionarPedido()">➕ Enviar Pedido</button>
+                </div>
             </div>
         </div>
 
-        <div class="kanban-board">
-            <div class="kanban-col" id="col-novos"><h3>🔴 Lançados (Fila)</h3></div>
-            <div class="kanban-col" id="col-preparo"><h3>🟡 Montando Copo</h3></div>
-            <div class="kanban-col" id="col-rota"><h3>🔵 Em Rota</h3></div>
-            <div class="kanban-col" id="col-entregue"><h3>🟢 Entregues</h3></div>
+        <div id="view-entregas" class="view-section">
+            <div class="kanban-board">
+                <div class="kanban-col" id="col-novos"><h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3></div>
+                <div class="kanban-col" id="col-preparo"><h3>🟡 Montando <span class="badge-qtd" id="qtd-preparo">0</span></h3></div>
+                <div class="kanban-col" id="col-rota"><h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3></div>
+                <div class="kanban-col" id="col-entregue"><h3>🟢 Entregues <span class="badge-qtd" id="qtd-entregue">0</span></h3></div>
+            </div>
         </div>
+
     </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-item ativa" id="tab-lancamento" onclick="mudarAba('view-lancamento', 'tab-lancamento')">
+            <span>📝</span>
+            <span>Novo Pedido</span>
+        </button>
+        <button class="nav-item" id="tab-entregas" onclick="mudarAba('view-entregas', 'tab-entregas')">
+            <span>🛵</span>
+            <span>Entregas</span>
+        </button>
+    </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, onValue, push, set, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCL5banCYijxDHRGxQcDZOmnUnHaS_8Omg",
@@ -253,38 +294,32 @@
             projectId: "isa-no-copo-pdv",
             storageBucket: "isa-no-copo-pdv.firebasestorage.app",
             messagingSenderId: "386835506265",
-            appId: "1:386835506265:web:154cafa56da36ca14afd48",
-            measurementId: "G-YLNN7Q81DV"
+            appId: "1:386835506265:web:154cafa56da36ca14afd48"
         };
 
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getDatabase(app);
 
-        // Estado local para lembrar quais cartões você abriu/fechou manualmente
-        let estadoCartoes = {};
+        let estadoCartoes = {}; 
         let contadorComanda = 1;
 
-        // Monitora o contador em tempo real
-        onValue(ref(db, 'contador'), (snapshot) => {
-            contadorComanda = snapshot.val() || 1;
-        });
+        onValue(ref(db, 'contador'), (snapshot) => { contadorComanda = snapshot.val() || 1; });
 
-        // =======================================================
-        // DESENHAR CARTÕES EM TEMPO REAL (MÁGICA DO SINCRONISMO)
-        // =======================================================
         onValue(ref(db, 'pedidos'), (snapshot) => {
-            // 1. Limpa as colunas atuais
-            document.getElementById('col-novos').innerHTML = '<h3>🔴 Lançados (Fila)</h3>';
-            document.getElementById('col-preparo').innerHTML = '<h3>🟡 Montando Copo</h3>';
-            document.getElementById('col-rota').innerHTML = '<h3>🔵 Em Rota</h3>';
-            document.getElementById('col-entregue').innerHTML = '<h3>🟢 Entregues</h3>';
+            // Zera as colunas e as contagens
+            let qtd = { 'col-novos': 0, 'col-preparo': 0, 'col-rota': 0, 'col-entregue': 0 };
+            
+            document.getElementById('col-novos').innerHTML = `<h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3>`;
+            document.getElementById('col-preparo').innerHTML = `<h3>🟡 Montando <span class="badge-qtd" id="qtd-preparo">0</span></h3>`;
+            document.getElementById('col-rota').innerHTML = `<h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3>`;
+            document.getElementById('col-entregue').innerHTML = `<h3>🟢 Entregues <span class="badge-qtd" id="qtd-entregue">0</span></h3>`;
 
             const pedidos = snapshot.val();
             if (!pedidos) return;
 
-            // 2. Reconstrói os cartões conforme estão na nuvem
             Object.entries(pedidos).forEach(([chaveBanco, ped]) => {
+                qtd[ped.status]++; // Aumenta a contagem daquela coluna
+
                 const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
                 const linkMapa = `https://www.google.com/maps/search/?api=1&query=${enderecoBusca}`;
 
@@ -297,7 +332,6 @@
                     btnWhatsHTML = `<a href="${linkWhats}" target="_blank" class="btn-link btn-whats" style="display: ${displayWhats};">💬 Avisar Saída</a>`;
                 }
 
-                // Define regras baseadas na coluna
                 let btnMoverHTML = '';
                 let corBorda = '';
                 let minimizarPadrao = false;
@@ -305,7 +339,6 @@
                 if(ped.status === 'col-novos') {
                     btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-preparo')">Avançar Etapa ➔</button>`;
                     corBorda = 'var(--laranja)';
-                    minimizarPadrao = false;
                 } else if (ped.status === 'col-preparo') {
                     btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-rota')">Saiu p/ Entrega ➔</button>`;
                     corBorda = 'var(--laranja)';
@@ -313,13 +346,12 @@
                 } else if (ped.status === 'col-rota') {
                     btnMoverHTML = `<button class="btn-mover" style="background: var(--primaria); color: white;" onclick="moverPedido('${chaveBanco}', 'col-entregue')">Finalizar ✔️</button>`;
                     corBorda = 'var(--azul)';
-                    minimizarPadrao = false; // Abre automático na rota para mostrar o botão do whats
+                    minimizarPadrao = false; 
                 } else if (ped.status === 'col-entregue') {
                     corBorda = 'var(--primaria)';
                     minimizarPadrao = true;
                 }
 
-                // Verifica se o usuário abriu/fechou manualmente neste celular
                 let classeMinimizado = minimizarPadrao ? 'minimizado' : '';
                 if (estadoCartoes[chaveBanco] === 'aberto') classeMinimizado = '';
                 if (estadoCartoes[chaveBanco] === 'fechado') classeMinimizado = 'minimizado';
@@ -327,7 +359,7 @@
 
                 const cardHTML = `
                     <div class="pedido-card ${classeMinimizado}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
-                        <div class="card-topo" onclick="toggleMinimizar('${chaveBanco}')" title="Clique para ocultar/mostrar detalhes">
+                        <div class="card-topo" onclick="toggleMinimizar('${chaveBanco}')">
                             <div style="display: flex; align-items: center;">
                                 <span class="id-pedido">#${ped.numero}</span>
                                 <div>
@@ -337,11 +369,11 @@
                             </div>
                             <span class="icone-toggle">▼</span>
                         </div>
-
+                        
                         <div class="card-detalhes">
                             <p><strong>Tamanho:</strong> ${ped.tamanho}</p>
                             ${ped.telefone ? `<p><strong>WhatsApp:</strong> ${ped.telefone}</p>` : ''}
-
+                            
                             <div class="lista-montagem">
                                 <span><strong>1. Base:</strong> ${ped.base}</span>
                                 <span><strong>2. Proteína:</strong> ${ped.prot}</span>
@@ -352,28 +384,30 @@
                             </div>
 
                             <p><strong>End:</strong> ${ped.endereco}</p>
-
+                            
                             <div class="grid-botoes-contato">
-                                <a href="${linkMapa}" target="_blank" class="btn-link btn-mapa">🗺️ Abrir Maps</a>
+                                <a href="${linkMapa}" target="_blank" class="btn-link btn-mapa">🗺️ Maps</a>
                                 ${btnWhatsHTML}
                             </div>
                         </div>
 
                         <div class="acoes-card" style="display: ${ped.status === 'col-entregue' ? 'none' : 'flex'}">
                             ${btnMoverHTML}
-                            <button class="btn-remover" onclick="removerPedido('${chaveBanco}')" title="Excluir">🗑️</button>
+                            <button class="btn-remover" onclick="removerPedido('${chaveBanco}')">🗑️</button>
                         </div>
-                        ${ped.status === 'col-entregue' ? `<button class="btn-remover" style="margin-top:10px" onclick="removerPedido('${chaveBanco}')">🗑️ Limpar Pedido Entregue</button>` : ''}
+                        ${ped.status === 'col-entregue' ? `<button class="btn-remover" style="margin-top:10px; width: 100%;" onclick="removerPedido('${chaveBanco}')">🗑️ Limpar Entregue</button>` : ''}
                     </div>
                 `;
 
                 document.getElementById(ped.status).innerHTML += cardHTML;
             });
-        });
 
-        // =======================================================
-        // FUNÇÕES GLOBAIS (INTERAÇÃO COM O BANCO)
-        // =======================================================
+            // Atualiza os emblemas (badges) com as quantidades
+            document.getElementById('qtd-novos').innerText = qtd['col-novos'];
+            document.getElementById('qtd-preparo').innerText = qtd['col-preparo'];
+            document.getElementById('qtd-rota').innerText = qtd['col-rota'];
+            document.getElementById('qtd-entregue').innerText = qtd['col-entregue'];
+        });
 
         window.adicionarPedido = function() {
             const nome = document.getElementById('nome').value;
@@ -382,10 +416,7 @@
             const endereco = document.getElementById('endereco').value;
             const tamanho = document.getElementById('tamanho').value;
 
-            if(!nome || !bairro || !endereco) {
-                alert("⚠️ Nome, Bairro e Endereço são obrigatórios!");
-                return;
-            }
+            if(!nome || !bairro || !endereco) { alert("⚠️ Nome, Bairro e Endereço são obrigatórios!"); return; }
 
             const pegarSelecionados = (classe) => {
                 const marcados = Array.from(document.querySelectorAll('.' + classe + ':checked'));
@@ -393,66 +424,60 @@
             };
 
             const novoPedido = {
-                numero: contadorComanda,
-                nome: nome,
-                telefone: telefone,
-                bairro: bairro,
-                endereco: endereco,
-                tamanho: tamanho,
-                base: pegarSelecionados('chk-base'),
-                prot: pegarSelecionados('chk-prot'),
-                croc: pegarSelecionados('chk-croc'),
-                folha: pegarSelecionados('chk-folha'),
-                toque: pegarSelecionados('chk-toque'),
-                molho: pegarSelecionados('chk-molho'),
-                status: 'col-novos',
-                timestamp: Date.now()
+                numero: contadorComanda, nome: nome, telefone: telefone, bairro: bairro, endereco: endereco, tamanho: tamanho,
+                base: pegarSelecionados('chk-base'), prot: pegarSelecionados('chk-prot'), croc: pegarSelecionados('chk-croc'),
+                folha: pegarSelecionados('chk-folha'), toque: pegarSelecionados('chk-toque'), molho: pegarSelecionados('chk-molho'),
+                status: 'col-novos', timestamp: Date.now()
             };
 
-            // Envia pra nuvem e atualiza o contador
             push(ref(db, 'pedidos'), novoPedido);
             set(ref(db, 'contador'), contadorComanda + 1);
 
-            // Limpa o formulário
-            document.getElementById('nome').value = '';
-            document.getElementById('telefone').value = '';
-            document.getElementById('bairro').value = '';
-            document.getElementById('endereco').value = '';
+            document.getElementById('nome').value = ''; document.getElementById('telefone').value = '';
+            document.getElementById('bairro').value = ''; document.getElementById('endereco').value = '';
             document.getElementById('tamanho').value = 'Copo 550ml';
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-            document.getElementById('nome').focus();
+            document.getElementById('nome').focus(); 
+
+            // Feedback Visual ao Enviar
+            const btn = document.querySelector('.btn-add');
+            const txtOriginal = btn.innerHTML;
+            btn.innerHTML = "✔️ Enviado!";
+            btn.style.background = "var(--verde-whats)";
+            setTimeout(() => { btn.innerHTML = txtOriginal; btn.style.background = "var(--primaria)"; }, 1500);
         };
 
         window.moverPedido = function(idBanco, novoStatus) {
             update(ref(db, 'pedidos/' + idBanco), { status: novoStatus });
-            // Se movermos para uma coluna que abre automático, resetamos o estado local
-            if(novoStatus === 'col-rota') delete estadoCartoes[idBanco];
+            if(novoStatus === 'col-rota') delete estadoCartoes[idBanco]; 
         };
 
         window.removerPedido = function(idBanco) {
-            if(confirm("Deseja cancelar/excluir este pedido?")) {
-                remove(ref(db, 'pedidos/' + idBanco));
-            }
+            if(confirm("Deseja excluir este pedido?")) remove(ref(db, 'pedidos/' + idBanco));
         };
 
         window.zerarPainel = function() {
-            if(confirm("⚠️ Atenção: Isso apaga todos os pedidos de TODOS OS APARELHOS e reseta as comandas para o #1. Finalizar o dia?")) {
-                set(ref(db, 'pedidos'), null);
-                set(ref(db, 'contador'), 1);
+            if(confirm("⚠️ Atenção: Isso apaga todos os pedidos de TODOS OS APARELHOS. Finalizar o dia?")) {
+                set(ref(db, 'pedidos'), null); set(ref(db, 'contador'), 1);
             }
         };
 
         window.toggleMinimizar = function(idBanco) {
             const card = document.getElementById(idBanco);
             card.classList.toggle('minimizado');
-            // Lembra a preferência no navegador atual para não fechar quando a nuvem atualizar
             estadoCartoes[idBanco] = card.classList.contains('minimizado') ? 'fechado' : 'aberto';
         };
 
-        // =======================================================
-        // CÓDIGOS LOCAIS (MÁSCARAS E TEMAS)
-        // =======================================================
+        // LÓGICA DAS ABAS (MOBILE)
+        window.mudarAba = function(idView, idTab) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('ativa'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('ativa'));
+            
+            document.getElementById(idView).classList.add('ativa');
+            document.getElementById(idTab).classList.add('ativa');
+        };
 
+        // MÁSCARAS E TEMA
         document.getElementById('telefone').addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -460,35 +485,20 @@
 
         document.querySelectorAll('.chk-base').forEach(checkbox => {
             checkbox.addEventListener('change', function() {
-                const selecionados = document.querySelectorAll('.chk-base:checked').length;
-                if(selecionados > 2) {
-                    this.checked = false;
-                    alert("Atenção: Máximo de 2 opções na Base.");
+                if(document.querySelectorAll('.chk-base:checked').length > 2) {
+                    this.checked = false; alert("Atenção: Máximo de 2 opções na Base.");
                 }
             });
         });
 
         window.toggleTema = function() {
             const body = document.body;
-            const btn = document.getElementById('btn-tema');
-            if(body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                btn.innerHTML = '🌙 Escuro';
-                localStorage.setItem('isaTema', 'light');
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                btn.innerHTML = '☀️ Claro';
-                localStorage.setItem('isaTema', 'dark');
-            }
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            if(isDark) { body.removeAttribute('data-theme'); localStorage.setItem('isaTema', 'light'); } 
+            else { body.setAttribute('data-theme', 'dark'); localStorage.setItem('isaTema', 'dark'); }
         };
 
-        // Carrega tema salvo no celular
-        const temaSalvo = localStorage.getItem('isaTema');
-        if(temaSalvo === 'dark') {
-            document.body.setAttribute('data-theme', 'dark');
-            document.getElementById('btn-tema').innerHTML = '☀️ Claro';
-        }
-
+        if(localStorage.getItem('isaTema') === 'dark') document.body.setAttribute('data-theme', 'dark');
     </script>
 </body>
 </html>
