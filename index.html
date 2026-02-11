@@ -50,7 +50,6 @@
 
         body { font-family: 'Inter', sans-serif; background-color: var(--fundo-body); color: var(--texto-principal); margin: 0; padding: 0; padding-bottom: var(--altura-nav); transition: 0.3s; }
 
-        /* Cabeçalho Fixo */
         header { background: var(--fundo-card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100; }
         header h1 { margin: 0; font-size: 18px; color: var(--primaria); display: flex; align-items: center; gap: 8px; }
         .controles-header { display: flex; gap: 8px; align-items: center; }
@@ -64,15 +63,13 @@
         .btn-limpar { color: var(--vermelho); border-color: var(--vermelho); }
         .btn-limpar:hover { background: var(--vermelho-fundo); }
 
-        /* Estrutura Principal (Grid para PC, Abas para Celular) */
         .container-master { padding: 20px; max-width: 1600px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
         
         .view-section { display: none; animation: fadeIn 0.3s ease; }
         .view-section.ativa { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Formulário PDV */
-        .pdv-container { background: var(--fundo-card); padding: 20px; border-radius: 12px; box-shadow: var(--sombra); border: 1px solid var(--borda); }
+        .pdv-container { background: var(--fundo-card); padding: 20px; border-radius: 12px; box-shadow: var(--sombra); border: 1px solid var(--borda); margin-bottom: 20px;}
         .pdv-titulo { font-size: 15px; color: var(--texto-principal); margin-top: 0; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
         
         .dados-cliente { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; }
@@ -95,15 +92,12 @@
         .btn-add { background: var(--primaria); color: white; border: none; padding: 16px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 16px; width: 100%; transition: 0.2s; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); }
         .btn-add:hover { background: var(--primaria-hover); transform: translateY(-2px); }
 
-        /* Kanban Board */
         .kanban-board { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; min-height: 60vh; scroll-snap-type: x mandatory; }
         .kanban-col { background: var(--fundo-coluna); border-radius: 12px; width: 85vw; max-width: 340px; min-width: 300px; padding: 15px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--borda); scroll-snap-align: center; }
         .kanban-col h3 { margin: 0 0 10px 0; font-size: 14px; font-weight: 700; padding-bottom: 10px; border-bottom: 2px solid var(--borda); text-transform: uppercase; color: var(--texto-principal); display: flex; justify-content: space-between; align-items: center; }
         .badge-qtd { background: var(--borda); color: var(--texto-secundario); padding: 2px 8px; border-radius: 12px; font-size: 12px; }
 
-        /* Cartões */
         .pedido-card { background: var(--fundo-card); padding: 15px; border-radius: 10px; box-shadow: var(--sombra); border: 1px solid var(--borda); border-left: 5px solid var(--laranja); transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
-        
         .card-topo { cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 5px; }
         .id-pedido { font-size: 18px; font-weight: 900; color: var(--texto-secundario); margin-right: 8px; }
         .bairro-tag { display: inline-block; background: var(--tag-bairro-bg); color: var(--tag-bairro-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
@@ -117,6 +111,15 @@
         .card-detalhes p { margin: 4px 0; font-size: 13px; color: var(--texto-secundario); line-height: 1.4; }
         .card-detalhes p strong { color: var(--texto-principal); }
         
+        /* Novas Etiquetas de Pagamento e Observações */
+        .badges-pagamento { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;}
+        .badge-pago { background: rgba(34, 197, 94, 0.15); color: #166534; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge-pendente { background: rgba(239, 68, 68, 0.15); color: #991b1b; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .obs-destaque { background: #fef3c7; color: #b45309; padding: 10px; border-radius: 8px; font-size: 13px; margin: 10px 0; border-left: 4px solid var(--laranja); font-weight: 500; }
+        [data-theme="dark"] .obs-destaque { background: #451a03; color: #fde68a; border-left-color: #f59e0b; }
+        [data-theme="dark"] .badge-pago { background: rgba(34, 197, 94, 0.1); color: #86efac; border-color: rgba(34, 197, 94, 0.2); }
+        [data-theme="dark"] .badge-pendente { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border-color: rgba(239, 68, 68, 0.2); }
+
         .lista-montagem { background: var(--lista-bg); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 13px; line-height: 1.6; color: var(--lista-text); border: 1px solid var(--borda-foco); }
         .lista-montagem span { display: block; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 4px; margin-bottom: 4px; }
         .lista-montagem span:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -131,26 +134,23 @@
         .btn-mover:hover { background: var(--primaria); color: white; }
         .btn-remover { background: transparent; border: 1px solid var(--borda); color: var(--texto-secundario); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
 
-        /* Menu Inferior (Bottom Navigation) Mobile */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--fundo-card); border-top: 1px solid var(--borda); display: flex; justify-content: space-around; padding: 8px 10px; z-index: 1000; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); transition: 0.3s;}
         .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; padding: 8px; border-radius: 10px; color: var(--texto-secundario); cursor: pointer; transition: 0.2s; }
         .nav-item span:first-child { font-size: 20px; }
         .nav-item span:last-child { font-size: 12px; font-weight: 600; }
         .nav-item.ativo { color: var(--primaria); background: var(--lista-bg); }
 
-        /* Ajustes Inteligentes para PC/Desktop */
         @media (min-width: 1024px) {
             body { padding-bottom: 0; }
-            .bottom-nav { display: none; } /* Esconde o menu inferior no PC */
+            .bottom-nav { display: none; }
             .container-master { flex-direction: row; align-items: flex-start; }
-            .view-section { display: block !important; } /* Força as duas telas a aparecerem juntas */
+            .view-section { display: block !important; } 
             #view-lancamento { flex: 0 0 400px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
             #view-entregas { flex: 1; overflow-hidden; }
             .btn-add { width: auto; }
             .kanban-col { min-width: 320px; }
         }
         
-        /* Oculta scrollbar da área de lançamento no PC pra ficar elegante */
         #view-lancamento::-webkit-scrollbar { width: 6px; }
         #view-lancamento::-webkit-scrollbar-thumb { background: var(--borda); border-radius: 10px; }
     </style>
@@ -169,6 +169,7 @@
     <div class="container-master">
         
         <div id="view-lancamento" class="view-section ativa">
+            
             <div class="pdv-container">
                 <h3 class="pdv-titulo">📋 Ficha do Cliente</h3>
                 <div class="dados-cliente">
@@ -254,6 +255,23 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="pdv-container">
+                <h3 class="pdv-titulo">💰 Pagamento e Avisos</h3>
+                <div class="dados-cliente">
+                    <div class="input-group">
+                        <label>Status do Pagamento</label>
+                        <select id="pagamento">
+                            <option value="Pendente">⚠️ Cobrar na Entrega (Dinheiro/Cartão)</option>
+                            <option value="Pago">✅ Já Pago (PIX/Link)</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="flex: 2;">
+                        <label>Observações Adicionais</label>
+                        <input type="text" id="observacao" placeholder="Ex: Levar troco para R$ 50,00, sem cebola..." autocomplete="off">
+                    </div>
+                </div>
 
                 <div class="rodape-pdv">
                     <button class="btn-add" onclick="adicionarPedido()">➕ Enviar Pedido</button>
@@ -306,7 +324,6 @@
         onValue(ref(db, 'contador'), (snapshot) => { contadorComanda = snapshot.val() || 1; });
 
         onValue(ref(db, 'pedidos'), (snapshot) => {
-            // Zera as colunas e as contagens
             let qtd = { 'col-novos': 0, 'col-preparo': 0, 'col-rota': 0, 'col-entregue': 0 };
             
             document.getElementById('col-novos').innerHTML = `<h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3>`;
@@ -318,7 +335,7 @@
             if (!pedidos) return;
 
             Object.entries(pedidos).forEach(([chaveBanco, ped]) => {
-                qtd[ped.status]++; // Aumenta a contagem daquela coluna
+                qtd[ped.status]++; 
 
                 const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
                 const linkMapa = `https://www.google.com/maps/search/?api=1&query=${enderecoBusca}`;
@@ -326,7 +343,7 @@
                 let btnWhatsHTML = '';
                 if(ped.telefone && ped.telefone.length >= 14) {
                     const numLimpo = ped.telefone.replace(/\D/g, '');
-                    const msgWhats = encodeURIComponent(`Olá ${ped.nome}! Seu pedido da Ísa no Copo acabou de sair para entrega e está a caminho! 🥗🛵`);
+                    const msgWhats = encodeURIComponent(`Olá ${ped.nome}! A sua encomenda da Ísa no Copo acabou de sair para entrega e está a caminho! 🥗🛵`);
                     const linkWhats = `https://wa.me/55${numLimpo}?text=${msgWhats}`;
                     const displayWhats = (ped.status === 'col-rota') ? 'flex' : 'none';
                     btnWhatsHTML = `<a href="${linkWhats}" target="_blank" class="btn-link btn-whats" style="display: ${displayWhats};">💬 Avisar Saída</a>`;
@@ -357,6 +374,15 @@
                 if (estadoCartoes[chaveBanco] === 'fechado') classeMinimizado = 'minimizado';
                 let opacidade = (ped.status === 'col-entregue') ? '0.5' : '1';
 
+                // Tratamento das novas Etiquetas: Pagamento e Observação
+                const badgePagamentoHTML = ped.pagamento === 'Pago' 
+                    ? `<span class="badge-pago">✅ Já Pago (PIX)</span>` 
+                    : `<span class="badge-pendente">⚠️ Cobrar na Entrega</span>`;
+                
+                const obsHTML = ped.observacao 
+                    ? `<div class="obs-destaque">📌 <strong>Aviso:</strong> ${ped.observacao}</div>` 
+                    : '';
+
                 const cardHTML = `
                     <div class="pedido-card ${classeMinimizado}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
                         <div class="card-topo" onclick="toggleMinimizar('${chaveBanco}')">
@@ -371,9 +397,15 @@
                         </div>
                         
                         <div class="card-detalhes">
+                            <div class="badges-pagamento">
+                                ${badgePagamentoHTML}
+                            </div>
+                            
                             <p><strong>Tamanho:</strong> ${ped.tamanho}</p>
                             ${ped.telefone ? `<p><strong>WhatsApp:</strong> ${ped.telefone}</p>` : ''}
                             
+                            ${obsHTML}
+
                             <div class="lista-montagem">
                                 <span><strong>1. Base:</strong> ${ped.base}</span>
                                 <span><strong>2. Proteína:</strong> ${ped.prot}</span>
@@ -402,7 +434,6 @@
                 document.getElementById(ped.status).innerHTML += cardHTML;
             });
 
-            // Atualiza os emblemas (badges) com as quantidades
             document.getElementById('qtd-novos').innerText = qtd['col-novos'];
             document.getElementById('qtd-preparo').innerText = qtd['col-preparo'];
             document.getElementById('qtd-rota').innerText = qtd['col-rota'];
@@ -415,6 +446,8 @@
             const bairro = document.getElementById('bairro').value;
             const endereco = document.getElementById('endereco').value;
             const tamanho = document.getElementById('tamanho').value;
+            const pagamento = document.getElementById('pagamento').value;
+            const observacao = document.getElementById('observacao').value;
 
             if(!nome || !bairro || !endereco) { alert("⚠️ Nome, Bairro e Endereço são obrigatórios!"); return; }
 
@@ -424,7 +457,8 @@
             };
 
             const novoPedido = {
-                numero: contadorComanda, nome: nome, telefone: telefone, bairro: bairro, endereco: endereco, tamanho: tamanho,
+                numero: contadorComanda, nome: nome, telefone: telefone, bairro: bairro, 
+                endereco: endereco, tamanho: tamanho, pagamento: pagamento, observacao: observacao,
                 base: pegarSelecionados('chk-base'), prot: pegarSelecionados('chk-prot'), croc: pegarSelecionados('chk-croc'),
                 folha: pegarSelecionados('chk-folha'), toque: pegarSelecionados('chk-toque'), molho: pegarSelecionados('chk-molho'),
                 status: 'col-novos', timestamp: Date.now()
@@ -436,10 +470,11 @@
             document.getElementById('nome').value = ''; document.getElementById('telefone').value = '';
             document.getElementById('bairro').value = ''; document.getElementById('endereco').value = '';
             document.getElementById('tamanho').value = 'Copo 550ml';
+            document.getElementById('pagamento').value = 'Pendente';
+            document.getElementById('observacao').value = '';
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             document.getElementById('nome').focus(); 
 
-            // Feedback Visual ao Enviar
             const btn = document.querySelector('.btn-add');
             const txtOriginal = btn.innerHTML;
             btn.innerHTML = "✔️ Enviado!";
@@ -468,7 +503,6 @@
             estadoCartoes[idBanco] = card.classList.contains('minimizado') ? 'fechado' : 'aberto';
         };
 
-        // LÓGICA DAS ABAS (MOBILE)
         window.mudarAba = function(idView, idTab) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('ativa'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('ativa'));
@@ -477,7 +511,6 @@
             document.getElementById(idTab).classList.add('ativa');
         };
 
-        // MÁSCARAS E TEMA
         document.getElementById('telefone').addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
