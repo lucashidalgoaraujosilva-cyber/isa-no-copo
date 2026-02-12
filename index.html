@@ -10,31 +10,22 @@
     
     <style>
         :root {
-            /* --- CONFIGURAÇÕES VISUAIS --- */
-            --hue: 150; /* Verde (Padrão) */
+            /* VISUAL SYSTEM */
+            --hue: 150; 
             --primaria: hsl(var(--hue), 100%, 35%); 
             --primaria-light: hsl(var(--hue), 100%, 92%);
-            --primaria-dark: hsl(var(--hue), 100%, 25%);
             --gradiente: linear-gradient(135deg, hsl(var(--hue), 90%, 40%), hsl(var(--hue), 100%, 30%));
             
-            /* Cores Neutras */
-            --bg-body: #f8fafc;
-            --bg-card: #ffffff;
-            --bg-input: #f1f5f9;
-            --texto-titulo: #0f172a;
-            --texto-corpo: #475569;
-            --texto-suave: #94a3b8;
+            --bg-body: #f8fafc; --bg-card: #ffffff; --bg-input: #f1f5f9;
+            --texto-titulo: #0f172a; --texto-corpo: #475569; --texto-suave: #94a3b8;
             --borda: #e2e8f0;
             
-            /* Cores de Estado */
             --vermelho: #ef4444; --vermelho-bg: #fee2e2;
             --laranja: #f97316; --laranja-bg: #ffedd5;
             --azul: #3b82f6; --azul-bg: #dbeafe;
             
-            /* Interface */
-            --sombra-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --radius: 16px;
-            --nav-height: 80px;
+            --sombra-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --radius: 16px; --nav-height: 80px;
         }
 
         [data-theme="dark"] {
@@ -49,32 +40,37 @@
         /* HEADER */
         header {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--borda);
-            padding: 15px 20px;
+            padding: 10px 20px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        [data-theme="dark"] header { background: rgba(30, 41, 59, 0.9); }
+        [data-theme="dark"] header { background: rgba(30, 41, 59, 0.95); }
 
-        .logo-area h1 { margin: 0; font-size: 18px; font-weight: 800; color: var(--primaria); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
-        .status-badge { font-size: 10px; padding: 4px 10px; background: var(--primaria-light); color: var(--primaria-dark); border-radius: 20px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .logo-area h1 { margin: 0; font-size: 18px; font-weight: 800; color: var(--primaria); display: flex; align-items: center; gap: 8px;}
+        .status-badge { font-size: 10px; padding: 4px 10px; background: var(--primaria-light); color: var(--primaria); border-radius: 20px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
         .status-dot { width: 6px; height: 6px; background: var(--primaria); border-radius: 50%; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(var(--hue), 0.7); } 70% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,0,0,0); } 100% { opacity: 1; } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* LAYOUT GERAL */
+        /* MENU DESKTOP */
+        .desktop-menu { display: none; gap: 10px; }
+        .menu-link { background: transparent; border: none; font-weight: 600; color: var(--texto-suave); cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: 0.2s; font-size: 14px; }
+        .menu-link:hover { background: var(--bg-input); color: var(--texto-titulo); }
+        .menu-link.active { background: var(--primaria-light); color: var(--primaria); }
+
+        /* LAYOUT */
         .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
         .view-section { display: none; animation: fadeIn 0.3s ease; }
         .view-section.ativa { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* COMPONENTES DE UI */
         .card-box { background: var(--bg-card); border-radius: var(--radius); padding: 20px; box-shadow: var(--sombra-card); border: 1px solid var(--borda); margin-bottom: 20px; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--texto-titulo); margin: 0; }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--texto-suave); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--texto-suave); margin-bottom: 6px; text-transform: uppercase; }
         .form-control { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid transparent; background: var(--bg-input); font-family: inherit; font-size: 15px; color: var(--texto-titulo); transition: 0.2s; }
         .form-control:focus { outline: none; background: var(--bg-card); border-color: var(--primaria); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
@@ -85,13 +81,11 @@
         .btn-danger { background: var(--vermelho-bg); color: var(--vermelho); }
         .btn-whatsapp { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
 
-        /* INGREDIENTES (CHIPS) */
-        .grid-ingredientes { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        .grid-ingredientes { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
         .check-btn input { display: none; }
         .check-btn span { display: flex; align-items: center; justify-content: center; padding: 12px 10px; background: var(--bg-input); border-radius: 12px; font-size: 13px; font-weight: 600; color: var(--texto-corpo); border: 2px solid transparent; transition: 0.2s; text-align: center; height: 100%; cursor: pointer; }
-        .check-btn input:checked + span { background: var(--primaria-light); color: var(--primaria-dark); border-color: var(--primaria); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .check-btn input:checked + span { background: var(--primaria-light); color: var(--primaria); border-color: var(--primaria); }
 
-        /* SWITCHER */
         .toggle-switch { display: flex; background: var(--bg-input); padding: 4px; border-radius: 14px; margin-bottom: 20px; }
         .toggle-btn { flex: 1; padding: 10px; text-align: center; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; color: var(--texto-suave); transition: 0.3s; }
         .toggle-btn.active { background: var(--bg-card); color: var(--primaria); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
@@ -100,9 +94,8 @@
         .kanban-wrapper { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; min-height: 60vh; scroll-snap-type: x mandatory; }
         .kanban-col { min-width: 85vw; scroll-snap-align: center; display: flex; flex-direction: column; gap: 15px; }
         .col-header { background: var(--bg-input); padding: 12px 15px; border-radius: 12px; font-weight: 800; color: var(--texto-titulo); display: flex; justify-content: space-between; align-items: center; font-size: 14px; text-transform: uppercase; }
-        .badge-count { background: var(--bg-card); padding: 2px 8px; border-radius: 8px; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .badge-count { background: var(--bg-card); padding: 2px 8px; border-radius: 8px; font-size: 12px; }
 
-        /* ORDER CARD */
         .order-card { background: var(--bg-card); border-radius: 16px; padding: 16px; box-shadow: var(--sombra-card); border: 1px solid var(--borda); position: relative; overflow: hidden; transition: 0.3s; }
         .order-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--borda); }
         .order-card.status-novos::before { background: var(--laranja); }
@@ -112,50 +105,39 @@
         @keyframes pulseBorder { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
         .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; cursor: pointer; }
-        .order-id { font-size: 12px; font-weight: 800; color: var(--texto-suave); margin-bottom: 4px; }
-        .order-name { font-size: 16px; font-weight: 700; color: var(--texto-titulo); margin: 0; }
-        
         .tags-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
         .tag { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
         .tag-local { background: var(--laranja-bg); color: var(--laranja); }
         .tag-retirada { background: var(--azul-bg); color: var(--azul); }
-        .tag-pago { background: var(--primaria-light); color: var(--primaria-dark); }
+        .tag-pago { background: var(--primaria-light); color: var(--primaria); }
         .tag-pendente { background: var(--vermelho-bg); color: var(--vermelho); }
 
         .order-details { margin-top: 10px; border-top: 1px dashed var(--borda); padding-top: 10px; display: none; }
         .order-card.open .order-details { display: block; animation: slideDown 0.3s; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: 0; } }
 
-        /* MENU INFERIOR */
         .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); border-radius: 24px; padding: 10px 20px; display: flex; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.5); z-index: 1000; }
         [data-theme="dark"] .bottom-nav { background: rgba(30,41,59,0.9); border-color: rgba(255,255,255,0.1); }
-        
         .nav-btn { background: none; border: none; color: var(--texto-suave); font-size: 24px; padding: 10px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .nav-btn span { font-size: 10px; font-weight: 700; }
         .nav-btn.active { color: var(--primaria); background: var(--primaria-light); transform: translateY(-5px); }
 
-        /* CONFIGURAÇÕES E CORES */
         .color-picker { display: flex; gap: 10px; margin-top: 10px; }
         .color-option { width: 40px; height: 40px; border-radius: 50%; border: 3px solid white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s; }
         .color-option:hover { transform: scale(1.1); }
 
-        /* RESPONSIVIDADE PC */
+        /* LISTA INGREDIENTES */
+        .ingrediente-topico { display: flex; gap: 5px; font-size: 13px; margin-bottom: 3px; color: var(--texto-corpo); }
+        .ingrediente-topico strong { color: var(--texto-titulo); min-width: 50px; }
+
         @media (min-width: 1024px) {
             .bottom-nav { display: none; }
+            .desktop-menu { display: flex; }
             .container { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: start; }
-            #view-lancamento { position: sticky; top: 100px; max-height: 85vh; overflow-y: auto; }
-            
-            /* No PC, Config, Financeiro e Compras aparecem na coluna da direita quando ativados */
-            #view-config, #view-financeiro, #view-compras { grid-column: 2; }
-            
-            /* Se estiver na aba Entregas (padrão), ela ocupa a direita */
-            #view-entregas { grid-column: 2; }
-            
-            /* Quando ativar Financeiro ou Config, esconde Entregas no PC */
-            #view-entregas:not(.ativa) { display: none; }
-            
-            /* Colunas Kanban menores no PC */
-            .kanban-col { min-width: 300px; }
+            #view-lancamento { position: sticky; top: 100px; max-height: 85vh; overflow-y: auto; grid-column: 1; display: block !important;}
+            .view-section { grid-column: 2; }
+            #view-lancamento.ativa { display: block; }
+            .kanban-col { min-width: 320px; }
         }
         
         #view-lancamento::-webkit-scrollbar { width: 6px; }
@@ -169,7 +151,15 @@
         <h1 id="nome-loja-header">🥗 Ísa no Copo</h1>
         <div class="status-badge"><div class="status-dot"></div> ONLINE</div>
     </div>
-    <div style="display: flex; gap: 10px;">
+    
+    <div class="desktop-menu">
+        <button class="menu-link active" id="desk-entregas" onclick="mudarAba('view-entregas', 'desk-entregas')">Entregas</button>
+        <button class="menu-link" id="desk-financeiro" onclick="mudarAba('view-financeiro', 'desk-financeiro')">Caixa</button>
+        <button class="menu-link" id="desk-compras" onclick="mudarAba('view-compras', 'desk-compras')">Lista</button>
+        <button class="menu-link" id="desk-config" onclick="mudarAba('view-config', 'desk-config')">Ajustes</button>
+    </div>
+
+    <div style="display: flex; gap: 10px;" class="mobile-only">
         <button class="btn btn-outline" style="padding: 8px 12px;" onclick="mudarAba('view-config', null)">⚙️</button>
     </div>
 </header>
@@ -187,7 +177,7 @@
                 <div class="toggle-btn" id="btn-retirada" onclick="setTipo('retirada')">🏃 Retirada</div>
             </div>
 
-            <div class="input-group"><label>Cliente</label><input type="text" class="form-control" id="nome" placeholder="Nome do cliente"></div>
+            <div class="input-group"><label>Cliente</label><input type="text" class="form-control" id="nome" placeholder="Nome"></div>
             <div class="input-group"><label>WhatsApp</label><input type="tel" class="form-control" id="telefone" placeholder="(00) 00000-0000"></div>
 
             <div id="area-endereco">
@@ -206,7 +196,7 @@
             </div>
 
             <details open style="margin-bottom: 15px;">
-                <summary style="font-weight: 700; cursor: pointer; margin-bottom: 10px; color: var(--primaria);">🥗 Ingredientes (Toque para abrir/fechar)</summary>
+                <summary style="font-weight: 700; cursor: pointer; margin-bottom: 10px; color: var(--primaria);">🥗 Ingredientes (Toque para abrir)</summary>
                 
                 <label style="font-size: 11px; font-weight: 800; color: var(--texto-suave); display: block; margin: 10px 0;">1. BASE (MÁX 2)</label>
                 <div class="grid-ingredientes">
@@ -284,7 +274,7 @@
         </div>
     </div>
 
-    <div id="view-entregas" class="view-section">
+    <div id="view-entregas" class="view-section ativa-pc">
         <div class="kanban-wrapper">
             <div class="kanban-col" id="col-novos">
                 <div class="col-header">🔴 Fila <span class="badge-count" id="count-novos">0</span></div>
@@ -307,17 +297,18 @@
 
     <div id="view-financeiro" class="view-section">
         <div class="card-box" style="background: var(--gradiente); color: white; text-align: center;">
-            <h2 style="font-size: 14px; opacity: 0.9; margin: 0;">CAIXA HOJE</h2>
+            <h2 style="font-size: 14px; opacity: 0.9; margin: 0;">CAIXA HOJE (Estimado)</h2>
             <div style="font-size: 42px; font-weight: 800; margin: 10px 0;" id="valor-hoje">R$ 0,00</div>
             <div style="display: flex; justify-content: center; gap: 15px; font-size: 13px;">
                 <span id="qtd-hoje">0 Pedidos</span> • <span id="itens-hoje">0 Itens</span>
             </div>
         </div>
         <div class="card-box">
-            <h3 class="card-title">Histórico Recente</h3>
+            <h3 class="card-title">Histórico de Fechamentos</h3>
+            <p style="font-size:12px; color:var(--texto-suave); margin-bottom:10px;">Clique na linha para editar ou na lixeira para excluir.</p>
             <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
                 <thead style="text-align: left; font-size: 12px; color: var(--texto-suave);">
-                    <tr><th style="padding-bottom:10px;">DATA</th><th>PED</th><th>TOTAL</th></tr>
+                    <tr><th style="padding-bottom:10px;">DATA</th><th>VALOR FECHADO</th><th></th></tr>
                 </thead>
                 <tbody id="lista-historico" style="font-size: 14px;"></tbody>
             </table>
@@ -338,12 +329,7 @@
     <div id="view-config" class="view-section">
         <div class="card-box">
             <div class="card-header"><h3 class="card-title">⚙️ Ajustes</h3></div>
-            
-            <div class="input-group">
-                <label>Nome da Loja</label>
-                <input type="text" class="form-control" id="cfg-nome-loja" value="Ísa no Copo" oninput="salvarConfig()">
-            </div>
-
+            <div class="input-group"><label>Nome da Loja</label><input type="text" class="form-control" id="cfg-nome-loja" value="Ísa no Copo" oninput="salvarConfig()"></div>
             <div class="input-group">
                 <label>Cor do Tema</label>
                 <div class="color-picker">
@@ -354,16 +340,12 @@
                     <div class="color-option" style="background: #f97316;" onclick="setTheme(25)"></div>
                 </div>
             </div>
-
             <div class="input-group">
                 <label>Modo Escuro</label>
-                <button class="btn btn-outline" style="width: 100%; justify-content: space-between;" onclick="toggleDark()">
-                    <span>Alternar Claro/Escuro</span> <span>🌓</span>
-                </button>
+                <button class="btn btn-outline" style="width: 100%; justify-content: space-between;" onclick="toggleDark()"><span>Alternar Claro/Escuro</span> <span>🌓</span></button>
             </div>
-
             <hr style="border:0; border-top:1px solid var(--borda); margin: 20px 0;">
-            <button class="btn btn-danger" style="width: 100%;" onclick="zerarPainel()">🗑️ LIMPAR DADOS (Senha: 140520)</button>
+            <button class="btn btn-danger" style="width: 100%;" onclick="zerarPainel()">🗑️ FECHAR DIA & LIMPAR (Senha: 140520)</button>
         </div>
     </div>
 
@@ -393,44 +375,46 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // VARS GLOBAIS
     let carrinho = [];
     let editandoId = null;
     let dadosCache = {};
+    let historicoFechado = {};
     let contador = 1;
     let tipoEntrega = 'entrega';
 
-    // --- SETUP VISUAL ---
-    window.setTheme = (hue) => {
-        document.documentElement.style.setProperty('--hue', hue);
-        localStorage.setItem('isaHue', hue);
-    };
-    const savedHue = localStorage.getItem('isaHue');
-    if(savedHue) window.setTheme(savedHue);
+    // --- SETUP ---
+    window.setTheme = (hue) => { document.documentElement.style.setProperty('--hue', hue); localStorage.setItem('isaHue', hue); };
+    const savedHue = localStorage.getItem('isaHue'); if(savedHue) window.setTheme(savedHue);
 
     window.toggleDark = () => {
         const body = document.body;
-        if(body.getAttribute('data-theme') === 'dark') {
-            body.removeAttribute('data-theme'); localStorage.setItem('isaDark', 'light');
-        } else {
-            body.setAttribute('data-theme', 'dark'); localStorage.setItem('isaDark', 'dark');
-        }
+        if(body.getAttribute('data-theme') === 'dark') { body.removeAttribute('data-theme'); localStorage.setItem('isaDark', 'light'); } 
+        else { body.setAttribute('data-theme', 'dark'); localStorage.setItem('isaDark', 'dark'); }
     };
     if(localStorage.getItem('isaDark') === 'dark') document.body.setAttribute('data-theme', 'dark');
 
     window.mudarAba = (viewId, tabId) => {
-        // Reset Mobile
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('ativa'));
         document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-        
-        // Ativa a view correta (funciona PC e Mobile agora)
-        const view = document.getElementById(viewId);
-        if(view) view.classList.add('ativa');
-        
-        // Ativa a tab se existir (engrenagem não tem tab)
+        document.querySelectorAll('.menu-link').forEach(el => el.classList.remove('active'));
+
+        const isDesktop = window.innerWidth >= 1024;
+        if (isDesktop) {
+            if (viewId === 'view-lancamento') document.getElementById('nome').focus();
+            else {
+                const view = document.getElementById(viewId);
+                if(view) { view.classList.add('ativa'); if(viewId === 'view-entregas') view.classList.add('ativa-pc'); }
+            }
+        } else {
+            const view = document.getElementById(viewId);
+            if(view) view.classList.add('ativa');
+        }
+
         if(tabId) {
-            const tab = document.getElementById(tabId);
-            if(tab) tab.classList.add('active');
+            const btnMobile = document.getElementById(tabId);
+            const btnDesktop = document.getElementById(tabId.replace('tab', 'desk'));
+            if(btnMobile) btnMobile.classList.add('active');
+            if(btnDesktop) btnDesktop.classList.add('active');
         }
     };
 
@@ -448,26 +432,18 @@
         document.getElementById('nome-loja-header').innerText = "🥗 " + nome;
         localStorage.setItem('isaNomeLoja', nome);
     };
-    const savedName = localStorage.getItem('isaNomeLoja');
-    if(savedName) { document.getElementById('cfg-nome-loja').value = savedName; salvarConfig(); }
+    const savedName = localStorage.getItem('isaNomeLoja'); if(savedName) { document.getElementById('cfg-nome-loja').value = savedName; salvarConfig(); }
 
     // --- FIREBASE ---
     onValue(ref(db, 'contador'), (snap) => contador = snap.val() || 1);
-
-    onValue(ref(db, 'pedidos'), (snapshot) => {
-        dadosCache = snapshot.val() || {};
-        renderizarKanban();
-        renderizarFinanceiro();
-    });
-
+    onValue(ref(db, 'pedidos'), (snapshot) => { dadosCache = snapshot.val() || {}; renderizarKanban(); renderizarFinanceiro(); });
+    onValue(ref(db, 'fechamentos'), (snap) => { historicoFechado = snap.val() || {}; renderizarFinanceiro(); });
     onValue(ref(db, 'compras'), (snap) => {
-        const lista = document.getElementById('lista-compras');
-        lista.innerHTML = '';
+        const lista = document.getElementById('lista-compras'); lista.innerHTML = '';
         const itens = snap.val();
         if(itens) {
             Object.entries(itens).forEach(([k, v]) => {
-                lista.innerHTML += `
-                    <div class="card-box" style="padding:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; opacity: ${v.comprado?0.5:1}">
+                lista.innerHTML += `<div class="card-box" style="padding:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; opacity: ${v.comprado?0.5:1}">
                         <div onclick="toggleCompra('${k}', ${v.comprado})" style="cursor:pointer; display:flex; gap:10px; align-items:center;">
                             <div style="width:20px; height:20px; border:2px solid var(--borda); border-radius:50%; background:${v.comprado?'var(--primaria)':'transparent'}"></div>
                             <span style="text-decoration:${v.comprado?'line-through':'none'}">${v.nome}</span>
@@ -481,7 +457,6 @@
     // --- RENDER ---
     function renderizarKanban() {
         const cols = { 'novos': [], 'preparo': [], 'rota': [], 'entregue': [] };
-        
         Object.entries(dadosCache).forEach(([key, ped]) => {
             const statusKey = ped.status.replace('col-', '');
             if(cols[statusKey]) cols[statusKey].push({ key, ...ped });
@@ -510,34 +485,31 @@
 
                 let itensHtml = '';
                 ped.itens.forEach((it, i) => {
-                    itensHtml += `<div style="font-size:12px; margin-top:5px; border-bottom:1px dashed var(--borda); padding-bottom:5px;">
-                        <strong>${i+1}. ${it.tamanho}</strong><br>
-                        <span style="color:var(--texto-suave)">${it.base} | ${it.prot} | ${it.molho}</span>
+                    itensHtml += `
+                    <div style="font-size:12px; margin-top:8px; border-bottom:1px dashed var(--borda); padding-bottom:8px;">
+                        <strong style="color:var(--primaria); font-size:13px;">${i+1}. ${it.tamanho}</strong>
+                        <div style="padding-left: 5px; margin-top: 4px;">
+                            ${it.base ? `<div class="ingrediente-topico"><strong>Base:</strong> <span>${it.base}</span></div>` : ''}
+                            ${it.prot ? `<div class="ingrediente-topico"><strong>Prot:</strong> <span>${it.prot}</span></div>` : ''}
+                            ${it.croc ? `<div class="ingrediente-topico"><strong>Croc:</strong> <span>${it.croc}</span></div>` : ''}
+                            ${it.folha ? `<div class="ingrediente-topico"><strong>Folha:</strong> <span>${it.folha}</span></div>` : ''}
+                            ${it.molho ? `<div class="ingrediente-topico"><strong>Molho:</strong> <span>${it.molho}</span></div>` : ''}
+                            ${it.toque ? `<div class="ingrediente-topico"><strong>Toque:</strong> <span>${it.toque}</span></div>` : ''}
+                        </div>
                     </div>`;
                 });
 
-                const html = `
-                <div class="order-card status-${status} ${ped.prioridade?'priority':''}" id="card-${ped.key}">
+                const html = `<div class="order-card status-${status} ${ped.prioridade?'priority':''}" id="card-${ped.key}">
                     <div class="order-header" onclick="toggleDetails('${ped.key}')">
-                        <div>
-                            <div class="order-id">#${ped.numero}</div>
-                            <h4 class="order-name">${ped.nome}</h4>
-                        </div>
-                        <div style="text-align:right">
-                            <div class="tags-row">${tagPrioridade}${tagLocal}</div>
-                            <div class="tags-row">${tagPag}</div>
-                        </div>
+                        <div><div class="order-id">#${ped.numero}</div><h4 class="order-name">${ped.nome}</h4></div>
+                        <div style="text-align:right"><div class="tags-row">${tagPrioridade}${tagLocal}</div><div class="tags-row">${tagPag}</div></div>
                     </div>
                     <div class="order-details">
                         ${ped.obs ? `<div style="background:var(--laranja-bg); color:var(--laranja); padding:8px; border-radius:8px; font-size:12px; margin-bottom:10px;">📌 ${ped.obs}</div>` : ''}
                         ${ped.horario ? `<div style="background:var(--azul-bg); color:var(--azul); padding:8px; border-radius:8px; font-size:12px; margin-bottom:10px;">⏰ Agendado: ${ped.horario}</div>` : ''}
                         ${itensHtml}
                         <div style="font-size:12px; margin:10px 0;"><strong>End:</strong> ${ped.endereco}</div>
-                        <div style="display:flex; gap:10px; margin-top:15px;">
-                            ${btns}
-                            ${whatsBtn}
-                            <button class="btn btn-outline" style="padding:8px;" onclick="editar('${ped.key}')">✏️</button>
-                        </div>
+                        <div style="display:flex; gap:10px; margin-top:15px;">${btns}${whatsBtn}<button class="btn btn-outline" style="padding:8px;" onclick="editar('${ped.key}')">✏️</button></div>
                     </div>
                 </div>`;
                 container.innerHTML += html;
@@ -546,58 +518,60 @@
     }
 
     function renderizarFinanceiro() {
-        const historico = {};
-        const hoje = new Date().toLocaleDateString('pt-BR');
-        
+        let totalHojeCalc = 0; let qtdHoje = 0; let itensHoje = 0;
         Object.values(dadosCache).forEach(ped => {
-            const data = ped.data || hoje;
-            if(!historico[data]) historico[data] = { total: 0, qtd: 0, itens: 0 };
-            historico[data].total += calcTotal(ped);
-            historico[data].qtd++;
-            historico[data].itens += ped.itens.length;
+            totalHojeCalc += calcTotal(ped); qtdHoje++; itensHoje += ped.itens.length;
         });
 
-        const dadosHoje = historico[hoje] || { total: 0, qtd: 0, itens: 0 };
-        document.getElementById('valor-hoje').innerText = `R$ ${dadosHoje.total},00`;
-        document.getElementById('qtd-hoje').innerText = `${dadosHoje.qtd} Pedidos`;
-        document.getElementById('itens-hoje').innerText = `${dadosHoje.itens} Itens`;
+        document.getElementById('valor-hoje').innerText = `R$ ${totalHojeCalc},00`;
+        document.getElementById('qtd-hoje').innerText = `${qtdHoje} Pedidos`;
+        document.getElementById('itens-hoje').innerText = `${itensHoje} Itens`;
 
         const lista = document.getElementById('lista-historico');
         lista.innerHTML = '';
-        Object.keys(historico).sort((a,b) => b.localeCompare(a)).forEach(dt => {
-            if(dt !== hoje) {
-                lista.innerHTML += `<tr><td style="padding:10px 0;">${dt}</td><td>${historico[dt].qtd}</td><td style="font-weight:700">R$ ${historico[dt].total}</td></tr>`;
-            }
+        const sortedKeys = Object.keys(historicoFechado).sort((a,b) => b.localeCompare(a));
+        
+        sortedKeys.forEach(key => {
+            const dado = historicoFechado[key];
+            const dataFmt = new Date(parseInt(key)).toLocaleDateString('pt-BR');
+            lista.innerHTML += `
+            <tr class="historico-row">
+                <td onclick="editarHistorico('${key}', ${dado.total})" style="padding:10px 0;">${dataFmt}</td>
+                <td onclick="editarHistorico('${key}', ${dado.total})" style="font-weight:700; color:var(--primaria)">R$ ${dado.total},00</td>
+                <td style="width: 30px; text-align: center;"><button onclick="delHistorico('${key}')" style="background:none; border:none; color:var(--vermelho); cursor:pointer; font-size:16px;">🗑️</button></td>
+            </tr>`;
         });
     }
 
-    // --- CÁLCULO ---
     function calcTotal(ped) {
         let total = ped.tipo === 'entrega' ? 4 : 0;
         ped.itens.forEach(it => {
             total += it.tamanho.includes('750') ? 22 : 17;
-            if(it.extras) {
-                if(it.extras.includes('Nozes')) total += 4;
-                if(it.extras.includes('Castanha')) total += 4;
-                if(it.extras.includes('Cogumelos')) total += 4;
-            }
+            // Verifica nos campos separados se existem os itens pagos
+            const allExtras = [it.toque, it.croc].join(' '); // Junta para verificar string
+            if(allExtras.includes('Nozes')) total += 4;
+            if(allExtras.includes('Castanha')) total += 4;
+            if(allExtras.includes('Cogumelos')) total += 4;
         });
         return total;
     }
 
-    // --- AÇÕES ---
     window.addCarrinho = () => {
         const tam = document.getElementById('tamanho').value;
         const get = (cls) => Array.from(document.querySelectorAll('.'+cls+':checked')).map(x=>x.value).join(', ');
-        const getRaw = (cls) => Array.from(document.querySelectorAll('.'+cls+':checked')).map(x=>x.value).join(' ');
         
-        const todosIngredientes = getRaw('chk-croc') + ' ' + getRaw('chk-toque');
-        
-        carrinho.push({
-            tamanho: tam, base: get('chk-base'), prot: get('chk-prot'), molho: get('chk-molho'), extras: todosIngredientes
+        carrinho.push({ 
+            tamanho: tam, 
+            base: get('chk-base'), 
+            prot: get('chk-prot'), 
+            croc: get('chk-croc'),
+            folha: get('chk-folha'),
+            toque: get('chk-toque'),
+            molho: get('chk-molho')
         });
 
         document.querySelectorAll('input[type="checkbox"]').forEach(c => { if(c.id !== 'prioridade') c.checked = false; });
+        document.getElementById('tamanho').selectedIndex = 0; 
         document.getElementById('carrinho-display').style.display = 'block';
         document.getElementById('cart-count').innerText = carrinho.length;
         document.getElementById('cart-list').innerHTML = carrinho.map((c,i) => `<div style="font-size:12px; margin-top:5px;">${i+1}. ${c.tamanho} (${c.prot})</div>`).join('');
@@ -630,7 +604,7 @@
         } else {
             push(ref(db, 'pedidos'), payload);
             set(ref(db, 'contador'), contador + 1);
-            limparForm();
+            limparForm(true); 
         }
         alert('✅ Sucesso!');
     };
@@ -646,10 +620,7 @@
         document.getElementById('prioridade').checked = ped.prioridade;
         document.getElementById('horario').value = ped.horario;
         window.setTipo(ped.tipo);
-        if(ped.tipo === 'entrega') {
-            document.getElementById('bairro').value = ped.bairro;
-            document.getElementById('endereco').value = ped.endereco;
-        }
+        if(ped.tipo === 'entrega') { document.getElementById('bairro').value = ped.bairro; document.getElementById('endereco').value = ped.endereco; }
         
         carrinho = ped.itens;
         document.getElementById('carrinho-display').style.display = 'block';
@@ -659,27 +630,30 @@
         document.getElementById('aviso-edicao').style.display = 'block';
         document.getElementById('btn-cancelar').style.display = 'block';
         document.getElementById('btn-finalizar').innerText = '💾 Salvar Alterações';
-        window.mudarAba('view-lancamento', 'tab-lancamento');
-        window.scrollTo(0,0);
+        if(window.innerWidth < 1024) window.mudarAba('view-lancamento', 'tab-lancamento');
+        else document.getElementById('nome').focus();
     };
 
     window.cancelarEdicao = () => {
         editandoId = null;
-        limparForm();
+        limparForm(true);
         document.getElementById('aviso-edicao').style.display = 'none';
         document.getElementById('btn-cancelar').style.display = 'none';
         document.getElementById('btn-finalizar').innerText = '✅ Lançar Pedido';
     };
 
-    function limparForm() {
-        document.getElementById('nome').value = '';
-        document.getElementById('telefone').value = '';
-        document.getElementById('obs').value = '';
-        document.getElementById('horario').value = '';
-        document.getElementById('prioridade').checked = false;
+    function limparForm(limparCliente = false) {
+        if(limparCliente) {
+            document.getElementById('nome').value = '';
+            document.getElementById('telefone').value = '';
+            document.getElementById('obs').value = '';
+            document.getElementById('horario').value = '';
+            document.getElementById('prioridade').checked = false;
+            if(tipoEntrega==='entrega') { document.getElementById('bairro').value=''; document.getElementById('endereco').value=''; }
+        }
+        document.querySelectorAll('input[type="checkbox"]').forEach(c => { if(c.id !== 'prioridade') c.checked = false; });
         carrinho = [];
         document.getElementById('carrinho-display').style.display = 'none';
-        if(tipoEntrega==='entrega') { document.getElementById('bairro').value=''; document.getElementById('endereco').value=''; }
     }
 
     window.mover = (k,s) => update(ref(db, 'pedidos/'+k), {status:s});
@@ -697,16 +671,16 @@
         if(!tel) return alert('Telefone obrigatório!');
 
         let msg = `*🧾 CONFERÊNCIA - ÍSA NO COPO*\n\n*Cliente:* ${nome}\n`;
-        carrinho.forEach((it, i) => {
-            msg += `\n*Item ${i+1}:* ${it.tamanho}\nBase: ${it.base}\nProt: ${it.prot}\nMolho: ${it.molho}\n`;
-        });
+        carrinho.forEach((it, i) => { msg += `\n*Item ${i+1}:* ${it.tamanho}\nBase: ${it.base}\nProt: ${it.prot}\nMolho: ${it.molho}\n`; });
         
-        let total = 0;
-        const end = document.getElementById('endereco').value;
+        let total = 0; const end = document.getElementById('endereco').value;
         if(tipoEntrega==='entrega') total += 4;
         carrinho.forEach(it => {
             total += it.tamanho.includes('750') ? 22 : 17;
-            if(it.extras.includes('Nozes') || it.extras.includes('Castanha') || it.extras.includes('Cogumelos')) total += 4;
+            const allExtras = [it.toque, it.croc].join(' ');
+            if(allExtras.includes('Nozes')) total += 4;
+            if(allExtras.includes('Castanha')) total += 4;
+            if(allExtras.includes('Cogumelos')) total += 4;
         });
 
         msg += `\n*Tipo:* ${tipoEntrega==='entrega'?'Entrega':'Retirada'}\n*End:* ${end}\n*Total:* R$ ${total},00\n\nConfere se está tudo certo?`;
@@ -716,29 +690,35 @@
     window.zerarPainel = () => {
         const senha = prompt("🔒 Senha de Segurança:");
         if(senha === '140520') {
+            let totalDia = 0;
+            Object.values(dadosCache).forEach(ped => totalDia += calcTotal(ped));
+            const hojeKey = Date.now();
+            update(ref(db, 'fechamentos/' + hojeKey), { total: totalDia });
             set(ref(db, 'pedidos'), null);
             set(ref(db, 'contador'), 1);
-            alert('Dia finalizado com sucesso!');
-        } else if(senha !== null) {
-            alert('⛔ Senha incorreta');
+            alert(`Dia fechado com sucesso! Total Salvo: R$ ${totalDia},00`);
+        } else if(senha !== null) { alert('⛔ Senha incorreta'); }
+    };
+
+    window.editarHistorico = (key, valorAtual) => {
+        const novoValor = prompt("Editar valor deste fechamento:", valorAtual);
+        if(novoValor !== null && !isNaN(novoValor)) {
+            update(ref(db, 'fechamentos/' + key), { total: Number(novoValor) });
+        }
+    };
+    
+    window.delHistorico = (key) => {
+        if(confirm("Deseja EXCLUIR permanentemente este registro de caixa?")) {
+            remove(ref(db, 'fechamentos/' + key));
         }
     };
 
-    window.addCompra = () => {
-        const val = document.getElementById('novo-compra').value;
-        if(val) { push(ref(db, 'compras'), { nome: val, comprado: false }); document.getElementById('novo-compra').value=''; }
-    };
+    window.addCompra = () => { const val = document.getElementById('novo-compra').value; if(val) { push(ref(db, 'compras'), { nome: val, comprado: false }); document.getElementById('novo-compra').value=''; } };
     window.toggleCompra = (k, v) => update(ref(db, 'compras/'+k), { comprado: !v });
     window.delCompra = (k) => remove(ref(db, 'compras/'+k));
 
-    document.getElementById('telefone').addEventListener('input', function (e) {
-        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-    });
-    
-    document.querySelectorAll('.chk-base').forEach(c => c.addEventListener('change', function() {
-        if(document.querySelectorAll('.chk-base:checked').length > 2) { this.checked = false; alert('Máximo 2 bases!'); }
-    }));
+    document.getElementById('telefone').addEventListener('input', function (e) { let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/); e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : ''); });
+    document.querySelectorAll('.chk-base').forEach(c => c.addEventListener('change', function() { if(document.querySelectorAll('.chk-base:checked').length > 2) { this.checked = false; alert('Máximo 2 bases!'); } }));
 
 </script>
 </body>
