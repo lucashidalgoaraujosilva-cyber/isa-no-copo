@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDV Ísa no Copo - Edição Habilitada</title>
+    <title>PDV Ísa no Copo - Prioridade & Agendamento</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -27,6 +27,10 @@
             --tag-bairro-text: #b45309;
             --tag-retirada-bg: #dbeafe;
             --tag-retirada-text: #1e40af;
+            --tag-prioridade-bg: #fee2e2;
+            --tag-prioridade-text: #991b1b;
+            --tag-horario-bg: #e0e7ff;
+            --tag-horario-text: #3730a3;
             --lista-bg: #ecfdf5;
             --lista-text: #047857;
             --sombra: 0 4px 6px -1px rgba(0,0,0,0.05);
@@ -47,6 +51,10 @@
             --tag-bairro-text: #fde68a;
             --tag-retirada-bg: #1e3a8a;
             --tag-retirada-text: #bfdbfe;
+            --tag-prioridade-bg: #7f1d1d;
+            --tag-prioridade-text: #fecaca;
+            --tag-horario-bg: #312e81;
+            --tag-horario-text: #c7d2fe;
             --lista-bg: #064e3b;
             --lista-text: #6ee7b7;
             --sombra: 0 4px 6px -1px rgba(0,0,0,0.3);
@@ -90,6 +98,18 @@
         .dados-cliente input, .dados-cliente select { padding: 14px 15px; border: 1px solid var(--borda); border-radius: 8px; font-size: 15px; background-color: var(--fundo-input); color: var(--texto-principal); transition: 0.2s; }
         .dados-cliente input:focus, .dados-cliente select:focus { outline: none; border-color: var(--primaria); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
+        /* Botão de Checkbox Personalizado (Prioridade) */
+        .checkbox-btn-wrapper input { display: none; }
+        .checkbox-btn-wrapper label {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 14px; border: 1px solid var(--vermelho); color: var(--vermelho);
+            border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; transition: 0.2s;
+            background: var(--vermelho-fundo); height: 100%; box-sizing: border-box;
+        }
+        .checkbox-btn-wrapper input:checked + label {
+            background: var(--vermelho); color: white; box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
+        }
+
         .cardapio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .categoria-menu { background: var(--fundo-body); border: 1px solid var(--borda); border-radius: 10px; padding: 15px; }
         .categoria-menu h4 { margin: 0 0 12px 0; font-size: 13px; color: var(--texto-secundario); font-weight: 700; text-transform: uppercase; }
@@ -114,10 +134,8 @@
         .btn-finalizar.ativo { opacity: 1; pointer-events: all; }
         .btn-finalizar:hover { background: var(--primaria-hover); transform: translateY(-2px); }
         
-        /* Botão Salvar Edição (Azul) */
         .btn-salvar-edicao { background: var(--azul); }
         .btn-salvar-edicao:hover { background: #2563eb; }
-
         .btn-cancelar { background: var(--vermelho-fundo); color: var(--vermelho); border: 1px solid var(--vermelho); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: none; width: 100%; }
 
         /* Lista de Compras */
@@ -138,12 +156,18 @@
 
         /* Cartões */
         .pedido-card { background: var(--fundo-card); padding: 15px; border-radius: 10px; box-shadow: var(--sombra); border: 1px solid var(--borda); border-left: 5px solid var(--laranja); transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
+        .pedido-card.prioridade { border: 2px solid var(--vermelho); animation: pulseBorder 2s infinite; }
+        @keyframes pulseBorder { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+
         .card-topo { cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 5px; }
         .id-pedido { font-size: 18px; font-weight: 900; color: var(--texto-secundario); margin-right: 8px; }
+        
         .bairro-tag { display: inline-block; background: var(--tag-bairro-bg); color: var(--tag-bairro-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
         .retirada-tag { display: inline-block; background: var(--tag-retirada-bg); color: var(--tag-retirada-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+        .prioridade-tag { display: inline-block; background: var(--tag-prioridade-bg); color: var(--tag-prioridade-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+        .horario-tag { display: inline-block; background: var(--tag-horario-bg); color: var(--tag-horario-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+
         .card-topo h4 { margin: 0; font-size: 16px; font-weight: 700; color: var(--texto-principal); }
-        
         .card-detalhes { overflow: hidden; transition: max-height 0.3s ease; }
         .pedido-card.minimizado .card-detalhes { display: none; }
         .icone-toggle { color: var(--texto-secundario); font-size: 12px; transition: 0.3s; padding-top: 5px; }
@@ -320,9 +344,22 @@
                                 <option value="Pago">✅ Já Pago</option>
                             </select>
                         </div>
+                        <div class="input-group">
+                            <label>Agendar Horário (Opcional)</label>
+                            <input type="time" id="horarioEntrega">
+                        </div>
+                    </div>
+                    
+                    <div class="dados-cliente">
                         <div class="input-group" style="flex: 2;">
                             <label>Obs. do Pedido</label>
                             <input type="text" id="observacao" placeholder="Ex: Troco p/ 50..." autocomplete="off">
+                        </div>
+                        <div class="input-group" style="flex: 0 0 auto; display: flex; align-items: flex-end;">
+                            <div class="checkbox-btn-wrapper">
+                                <input type="checkbox" id="prioridade">
+                                <label for="prioridade">🔥 URGENTE</label>
+                            </div>
                         </div>
                     </div>
 
@@ -392,10 +429,8 @@
         let contadorComanda = 1;
         let tipoEntregaAtual = 'entrega';
         let cestaDePedidos = [];
-        
-        // --- VARIÁVEIS DE EDIÇÃO ---
         let pedidoEmEdicaoId = null;
-        let pedidosCache = {}; // Guarda os pedidos para facilitar a busca na edição
+        let pedidosCache = {}; 
 
         // FIREBASE: Compras
         onValue(ref(db, 'compras'), (snapshot) => {
@@ -423,7 +458,7 @@
         onValue(ref(db, 'contador'), (snapshot) => { contadorComanda = snapshot.val() || 1; });
 
         onValue(ref(db, 'pedidos'), (snapshot) => {
-            pedidosCache = snapshot.val() || {}; // Atualiza o cache local
+            pedidosCache = snapshot.val() || {}; 
             
             let qtd = { 'col-novos': 0, 'col-preparo': 0, 'col-rota': 0, 'col-entregue': 0 };
             document.getElementById('col-novos').innerHTML = `<h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3>`;
@@ -445,6 +480,17 @@
                     linhaEndereco = `<p><strong>End:</strong> ${ped.endereco}</p>`;
                     const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
                     linkMapaHTML = `<a href="https://www.google.com/maps/search/?api=1&query=${enderecoBusca}" target="_blank" class="btn-link btn-mapa">🗺️ Maps</a>`;
+                }
+
+                // Tag de Prioridade e Horário
+                let tagsExtras = '';
+                let classePrioridade = '';
+                if(ped.prioridade) {
+                    tagsExtras += `<span class="prioridade-tag">🔥 URGENTE</span> `;
+                    classePrioridade = 'prioridade';
+                }
+                if(ped.horarioEntrega) {
+                    tagsExtras += `<span class="horario-tag">⏰ ${ped.horarioEntrega}</span> `;
                 }
 
                 let btnWhatsHTML = '';
@@ -503,12 +549,12 @@
                 }
 
                 const cardHTML = `
-                    <div class="pedido-card ${classeMinimizado}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
+                    <div class="pedido-card ${classeMinimizado} ${classePrioridade}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
                         <div class="card-topo" onclick="toggleMinimizar('${chaveBanco}')">
                             <div style="display: flex; align-items: center;">
                                 <span class="id-pedido">#${ped.numero}</span>
                                 <div>
-                                    ${tagLocal}
+                                    ${tagLocal} ${tagsExtras}
                                     <h4>${ped.nome} (${ped.itens ? ped.itens.length : 1} Itens)</h4>
                                 </div>
                             </div>
@@ -550,7 +596,7 @@
 
             cestaDePedidos.push(item);
             atualizarVisualCarrinho();
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => { if(!cb.id.includes('prioridade')) cb.checked = false; });
             document.getElementById('tamanho').value = 'Copo 550ml';
             
             const btn = document.querySelector('.btn-add-item');
@@ -572,7 +618,6 @@
                 area.style.display = 'block';
                 btn.classList.add('ativo');
                 
-                // Muda texto do botão dependendo se é edição ou novo
                 if(pedidoEmEdicaoId) {
                      btn.innerHTML = `💾 Salvar Alterações (${cestaDePedidos.length} Itens)`;
                      btn.classList.add('btn-salvar-edicao');
@@ -608,13 +653,15 @@
             const endereco = document.getElementById('endereco').value;
             const pagamento = document.getElementById('pagamento').value;
             const observacao = document.getElementById('observacao').value;
+            const prioridade = document.getElementById('prioridade').checked;
+            const horarioEntrega = document.getElementById('horarioEntrega').value;
 
             if(!nome) { alert("Nome obrigatório!"); return; }
             if(tipoEntregaAtual === 'entrega' && (!bairro || !endereco)) { alert("Endereço obrigatório!"); return; }
             if(cestaDePedidos.length === 0) { alert("Adicione pelo menos um copo!"); return; }
 
             const dadosPedido = {
-                nome, telefone, bairro, endereco, pagamento, observacao,
+                nome, telefone, bairro, endereco, pagamento, observacao, prioridade, horarioEntrega,
                 tipoEntrega: tipoEntregaAtual,
                 itens: cestaDePedidos,
                 status: 'col-novos', 
@@ -622,14 +669,12 @@
             };
 
             if (pedidoEmEdicaoId) {
-                // MODO EDIÇÃO: Atualiza o existente
-                dadosPedido.numero = pedidosCache[pedidoEmEdicaoId].numero; // Mantém o número original
-                dadosPedido.status = pedidosCache[pedidoEmEdicaoId].status; // Mantém a coluna original
+                dadosPedido.numero = pedidosCache[pedidoEmEdicaoId].numero;
+                dadosPedido.status = pedidosCache[pedidoEmEdicaoId].status; 
                 update(ref(db, 'pedidos/' + pedidoEmEdicaoId), dadosPedido);
                 alert("Pedido atualizado com sucesso!");
-                cancelarEdicao(); // Sai do modo edição
+                cancelarEdicao(); 
             } else {
-                // MODO NOVO: Cria um novo
                 dadosPedido.numero = contadorComanda;
                 push(ref(db, 'pedidos'), dadosPedido);
                 set(ref(db, 'contador'), contadorComanda + 1);
@@ -642,26 +687,24 @@
             const ped = pedidosCache[id];
             if(!ped) return;
 
-            pedidoEmEdicaoId = id; // Ativa modo edição
+            pedidoEmEdicaoId = id; 
 
-            // 1. Preenche dados do cliente
             document.getElementById('nome').value = ped.nome;
             document.getElementById('telefone').value = ped.telefone || '';
             document.getElementById('observacao').value = ped.observacao || '';
             document.getElementById('pagamento').value = ped.pagamento || 'Pendente';
+            document.getElementById('prioridade').checked = ped.prioridade || false;
+            document.getElementById('horarioEntrega').value = ped.horarioEntrega || '';
             
-            // 2. Define tipo de entrega e endereço
             setTipoEntrega(ped.tipoEntrega || 'entrega');
             if(ped.tipoEntrega !== 'retirada') {
                 document.getElementById('bairro').value = ped.bairro;
                 document.getElementById('endereco').value = ped.endereco;
             }
 
-            // 3. Preenche o carrinho com os itens existentes
             if(ped.itens && Array.isArray(ped.itens)) {
-                cestaDePedidos = [...ped.itens]; // Copia o array
+                cestaDePedidos = [...ped.itens]; 
             } else {
-                // Converte legado para array
                 cestaDePedidos = [{
                     tamanho: ped.tamanho, base: ped.base, prot: ped.prot, croc: ped.croc,
                     folha: ped.folha, toque: ped.toque, molho: ped.molho
@@ -669,10 +712,9 @@
             }
             atualizarVisualCarrinho();
 
-            // 4. Ajusta Interface
             document.getElementById('aviso-edicao').classList.add('ativo');
             document.getElementById('btn-cancelar-edicao').style.display = 'block';
-            window.mudarAba('view-lancamento', 'tab-lancamento'); // Leva pra tela de form
+            window.mudarAba('view-lancamento', 'tab-lancamento'); 
             window.scrollTo(0,0);
         };
 
@@ -681,13 +723,16 @@
             document.getElementById('aviso-edicao').classList.remove('ativo');
             document.getElementById('btn-cancelar-edicao').style.display = 'none';
             limparFormularioCompleto();
-            atualizarVisualCarrinho(); // Reseta botão para verde
+            atualizarVisualCarrinho(); 
         };
 
         function limparFormularioCompleto() {
             document.getElementById('nome').value = ''; 
             document.getElementById('telefone').value = '';
             document.getElementById('observacao').value = '';
+            document.getElementById('prioridade').checked = false;
+            document.getElementById('horarioEntrega').value = '';
+
             if(tipoEntregaAtual === 'entrega') { document.getElementById('bairro').value = ''; document.getElementById('endereco').value = ''; }
             cestaDePedidos = [];
             atualizarVisualCarrinho();
@@ -715,7 +760,7 @@
                 document.getElementById('btn-entrega').classList.add('ativo');
                 document.getElementById('btn-retirada').classList.remove('ativo');
                 camposEnd.forEach(el => el.style.display = 'flex');
-                if(!pedidoEmEdicaoId) { // Só limpa se não estiver editando
+                if(!pedidoEmEdicaoId) { 
                     document.getElementById('bairro').value = ''; document.getElementById('endereco').value = '';
                 }
             }
