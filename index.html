@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDV Ísa no Copo - Entregas e Montagem</title>
+    <title>PDV Ísa no Copo - Sistema Completo</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -25,6 +25,8 @@
             --verde-whats: #25D366;
             --tag-bairro-bg: #fef3c7;
             --tag-bairro-text: #b45309;
+            --tag-retirada-bg: #dbeafe;
+            --tag-retirada-text: #1e40af;
             --lista-bg: #ecfdf5;
             --lista-text: #047857;
             --sombra: 0 4px 6px -1px rgba(0,0,0,0.05);
@@ -43,6 +45,8 @@
             --vermelho-fundo: #450a0a;
             --tag-bairro-bg: #78350f;
             --tag-bairro-text: #fde68a;
+            --tag-retirada-bg: #1e3a8a;
+            --tag-retirada-text: #bfdbfe;
             --lista-bg: #064e3b;
             --lista-text: #6ee7b7;
             --sombra: 0 4px 6px -1px rgba(0,0,0,0.3);
@@ -69,9 +73,14 @@
         .view-section.ativa { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Estilos do Formulário */
         .pdv-container { background: var(--fundo-card); padding: 20px; border-radius: 12px; box-shadow: var(--sombra); border: 1px solid var(--borda); margin-bottom: 20px;}
         .pdv-titulo { font-size: 15px; color: var(--texto-principal); margin-top: 0; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; }
         
+        .tipo-entrega-switch { display: flex; gap: 10px; margin-bottom: 20px; background: var(--fundo-body); padding: 5px; border-radius: 10px; }
+        .btn-switch { flex: 1; border: none; padding: 10px; border-radius: 8px; background: transparent; color: var(--texto-secundario); font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-switch.ativo { background: var(--fundo-card); color: var(--primaria); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
         .dados-cliente { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; }
         .input-group { display: flex; flex-direction: column; flex: 1; min-width: 160px; }
         .input-group label { font-size: 13px; font-weight: 600; color: var(--texto-secundario); margin-bottom: 6px; }
@@ -92,15 +101,30 @@
         .btn-add { background: var(--primaria); color: white; border: none; padding: 16px 30px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 16px; width: 100%; transition: 0.2s; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); }
         .btn-add:hover { background: var(--primaria-hover); transform: translateY(-2px); }
 
+        /* Lista de Compras */
+        .lista-compras-container { max-width: 600px; margin: auto; }
+        .add-item-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .add-item-row input { flex: 1; padding: 12px; border: 1px solid var(--borda); border-radius: 8px; background: var(--fundo-input); color: var(--texto-principal); }
+        .btn-add-item { background: var(--azul); color: white; border: none; padding: 0 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        .item-compra { background: var(--fundo-card); padding: 15px; border-radius: 8px; border: 1px solid var(--borda); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .item-compra.comprado { opacity: 0.5; text-decoration: line-through; }
+        .btn-check-compra { background: transparent; border: 2px solid var(--borda); width: 24px; height: 24px; border-radius: 50%; cursor: pointer; margin-right: 10px; display: flex; align-items: center; justify-content: center; color: transparent;}
+        .item-compra.comprado .btn-check-compra { background: var(--primaria); border-color: var(--primaria); color: white; }
+        .btn-del-compra { background: transparent; border: none; color: var(--vermelho); cursor: pointer; padding: 5px; }
+
+        /* Kanban Board */
         .kanban-board { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; min-height: 60vh; scroll-snap-type: x mandatory; }
         .kanban-col { background: var(--fundo-coluna); border-radius: 12px; width: 85vw; max-width: 340px; min-width: 300px; padding: 15px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--borda); scroll-snap-align: center; }
         .kanban-col h3 { margin: 0 0 10px 0; font-size: 14px; font-weight: 700; padding-bottom: 10px; border-bottom: 2px solid var(--borda); text-transform: uppercase; color: var(--texto-principal); display: flex; justify-content: space-between; align-items: center; }
         .badge-qtd { background: var(--borda); color: var(--texto-secundario); padding: 2px 8px; border-radius: 12px; font-size: 12px; }
 
+        /* Cartões */
         .pedido-card { background: var(--fundo-card); padding: 15px; border-radius: 10px; box-shadow: var(--sombra); border: 1px solid var(--borda); border-left: 5px solid var(--laranja); transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
         .card-topo { cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 5px; }
         .id-pedido { font-size: 18px; font-weight: 900; color: var(--texto-secundario); margin-right: 8px; }
         .bairro-tag { display: inline-block; background: var(--tag-bairro-bg); color: var(--tag-bairro-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+        .retirada-tag { display: inline-block; background: var(--tag-retirada-bg); color: var(--tag-retirada-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
         .card-topo h4 { margin: 0; font-size: 16px; font-weight: 700; color: var(--texto-principal); }
         .icone-toggle { color: var(--texto-secundario); font-size: 12px; transition: 0.3s; padding-top: 5px; }
 
@@ -111,14 +135,11 @@
         .card-detalhes p { margin: 4px 0; font-size: 13px; color: var(--texto-secundario); line-height: 1.4; }
         .card-detalhes p strong { color: var(--texto-principal); }
         
-        /* Novas Etiquetas de Pagamento e Observações */
         .badges-pagamento { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;}
         .badge-pago { background: rgba(34, 197, 94, 0.15); color: #166534; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid rgba(34, 197, 94, 0.3); }
         .badge-pendente { background: rgba(239, 68, 68, 0.15); color: #991b1b; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.3); }
         .obs-destaque { background: #fef3c7; color: #b45309; padding: 10px; border-radius: 8px; font-size: 13px; margin: 10px 0; border-left: 4px solid var(--laranja); font-weight: 500; }
         [data-theme="dark"] .obs-destaque { background: #451a03; color: #fde68a; border-left-color: #f59e0b; }
-        [data-theme="dark"] .badge-pago { background: rgba(34, 197, 94, 0.1); color: #86efac; border-color: rgba(34, 197, 94, 0.2); }
-        [data-theme="dark"] .badge-pendente { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border-color: rgba(239, 68, 68, 0.2); }
 
         .lista-montagem { background: var(--lista-bg); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 13px; line-height: 1.6; color: var(--lista-text); border: 1px solid var(--borda-foco); }
         .lista-montagem span { display: block; border-bottom: 1px dashed rgba(16, 185, 129, 0.3); padding-bottom: 4px; margin-bottom: 4px; }
@@ -134,6 +155,7 @@
         .btn-mover:hover { background: var(--primaria); color: white; }
         .btn-remover { background: transparent; border: 1px solid var(--borda); color: var(--texto-secundario); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;}
 
+        /* Menu Inferior */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--fundo-card); border-top: 1px solid var(--borda); display: flex; justify-content: space-around; padding: 8px 10px; z-index: 1000; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); transition: 0.3s;}
         .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; padding: 8px; border-radius: 10px; color: var(--texto-secundario); cursor: pointer; transition: 0.2s; }
         .nav-item span:first-child { font-size: 20px; }
@@ -145,10 +167,21 @@
             .bottom-nav { display: none; }
             .container-master { flex-direction: row; align-items: flex-start; }
             .view-section { display: block !important; } 
-            #view-lancamento { flex: 0 0 400px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
+            /* No PC, a aba compras vai ficar escondida por padrão e pode ser acessada por um botão extra se quiser, 
+               mas para simplificar, vamos deixar ela como uma coluna extra ou modal. 
+               Nesta versão simplificada, vamos manter a lógica de abas visível se clicar, ou adaptar layout.
+               Para não quebrar o layout de 2 colunas, vamos deixar a aba compras acessível via clique no menu superior se precisar,
+               ou apenas focar no mobile que é o principal.
+               Abaixo: Ajuste para mostrar compras como uma seção abaixo se estiver no PC */
+            #view-compras { display: block; flex: 0 0 300px; border-left: 1px solid var(--borda); padding-left: 20px;}
+            #view-lancamento { flex: 0 0 380px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
             #view-entregas { flex: 1; overflow-hidden; }
             .btn-add { width: auto; }
-            .kanban-col { min-width: 320px; }
+        }
+        
+        /* Oculta view compras no PC se não tiver espaço, ou ajusta */
+        @media (min-width: 1024px) {
+             .view-section { display: block !important; }
         }
         
         #view-lancamento::-webkit-scrollbar { width: 6px; }
@@ -171,7 +204,13 @@
         <div id="view-lancamento" class="view-section ativa">
             
             <div class="pdv-container">
-                <h3 class="pdv-titulo">📋 Ficha do Cliente</h3>
+                <h3 class="pdv-titulo">📋 Cliente e Entrega</h3>
+                
+                <div class="tipo-entrega-switch">
+                    <button class="btn-switch ativo" id="btn-entrega" onclick="setTipoEntrega('entrega')">🛵 Entrega</button>
+                    <button class="btn-switch" id="btn-retirada" onclick="setTipoEntrega('retirada')">🏃 Retirada</button>
+                </div>
+
                 <div class="dados-cliente">
                     <div class="input-group">
                         <label>Nome do Cliente</label>
@@ -181,14 +220,16 @@
                         <label>WhatsApp</label>
                         <input type="tel" id="telefone" placeholder="(00) 00000-0000" maxlength="15">
                     </div>
-                    <div class="input-group">
+                    
+                    <div class="input-group grupo-endereco">
                         <label>Bairro</label>
                         <input type="text" id="bairro" placeholder="Ex: Centro" autocomplete="off">
                     </div>
-                    <div class="input-group" style="flex: 2;">
+                    <div class="input-group grupo-endereco" style="flex: 2;">
                         <label>Endereço e Número</label>
                         <input type="text" id="endereco" placeholder="Rua das Flores, 123" autocomplete="off">
                     </div>
+
                     <div class="input-group">
                         <label>Tamanho</label>
                         <select id="tamanho">
@@ -263,16 +304,15 @@
                     <div class="input-group">
                         <label>Status do Pagamento</label>
                         <select id="pagamento">
-                            <option value="Pendente">⚠️ Cobrar na Entrega (Dinheiro/Cartão)</option>
+                            <option value="Pendente">⚠️ Cobrar na Entrega/Retirada</option>
                             <option value="Pago">✅ Já Pago (PIX/Link)</option>
                         </select>
                     </div>
                     <div class="input-group" style="flex: 2;">
                         <label>Observações Adicionais</label>
-                        <input type="text" id="observacao" placeholder="Ex: Levar troco para R$ 50,00, sem cebola..." autocomplete="off">
+                        <input type="text" id="observacao" placeholder="Ex: Sem cebola, troco para 50..." autocomplete="off">
                     </div>
                 </div>
-
                 <div class="rodape-pdv">
                     <button class="btn-add" onclick="adicionarPedido()">➕ Enviar Pedido</button>
                 </div>
@@ -288,16 +328,35 @@
             </div>
         </div>
 
+        <div id="view-compras" class="view-section">
+            <div class="pdv-container lista-compras-container">
+                <h3 class="pdv-titulo">🛒 Lista de Compras</h3>
+                <p style="font-size: 13px; color: var(--texto-secundario); margin-bottom: 15px;">Anote aqui o que está faltando no estoque.</p>
+                
+                <div class="add-item-row">
+                    <input type="text" id="novo-item-compra" placeholder="Ex: Comprar Morangos...">
+                    <button class="btn-add-item" onclick="adicionarItemCompra()">Adicionar</button>
+                </div>
+
+                <div id="lista-itens-compras">
+                    </div>
+            </div>
+        </div>
+
     </div>
 
     <nav class="bottom-nav">
         <button class="nav-item ativa" id="tab-lancamento" onclick="mudarAba('view-lancamento', 'tab-lancamento')">
             <span>📝</span>
-            <span>Novo Pedido</span>
+            <span>Novo</span>
         </button>
         <button class="nav-item" id="tab-entregas" onclick="mudarAba('view-entregas', 'tab-entregas')">
             <span>🛵</span>
             <span>Entregas</span>
+        </button>
+        <button class="nav-item" id="tab-compras" onclick="mudarAba('view-compras', 'tab-compras')">
+            <span>🛒</span>
+            <span>Compras</span>
         </button>
     </nav>
 
@@ -320,12 +379,57 @@
 
         let estadoCartoes = {}; 
         let contadorComanda = 1;
+        let tipoEntregaAtual = 'entrega'; // Padrão
 
+        // CONTROLE DA LISTA DE COMPRAS (FIREBASE)
+        onValue(ref(db, 'compras'), (snapshot) => {
+            const listaDiv = document.getElementById('lista-itens-compras');
+            listaDiv.innerHTML = '';
+            const itens = snapshot.val();
+            
+            if(itens) {
+                Object.entries(itens).forEach(([key, item]) => {
+                    const classeComprado = item.comprado ? 'comprado' : '';
+                    const checkIcon = item.comprado ? '✔️' : '';
+                    
+                    const html = `
+                        <div class="item-compra ${classeComprado}">
+                            <div style="display:flex; align-items:center; flex:1;">
+                                <button class="btn-check-compra" onclick="toggleCompra('${key}', ${item.comprado})">${checkIcon}</button>
+                                <span>${item.nome}</span>
+                            </div>
+                            <button class="btn-del-compra" onclick="deletarCompra('${key}')">✕</button>
+                        </div>
+                    `;
+                    listaDiv.innerHTML += html;
+                });
+            } else {
+                listaDiv.innerHTML = '<p style="text-align:center; color:#999;">Lista vazia!</p>';
+            }
+        });
+
+        window.adicionarItemCompra = function() {
+            const input = document.getElementById('novo-item-compra');
+            if(!input.value) return;
+            push(ref(db, 'compras'), { nome: input.value, comprado: false });
+            input.value = '';
+            input.focus();
+        };
+
+        window.toggleCompra = function(key, estadoAtual) {
+            update(ref(db, 'compras/' + key), { comprado: !estadoAtual });
+        };
+
+        window.deletarCompra = function(key) {
+            remove(ref(db, 'compras/' + key));
+        };
+
+
+        // CONTROLE DE PEDIDOS
         onValue(ref(db, 'contador'), (snapshot) => { contadorComanda = snapshot.val() || 1; });
 
         onValue(ref(db, 'pedidos'), (snapshot) => {
             let qtd = { 'col-novos': 0, 'col-preparo': 0, 'col-rota': 0, 'col-entregue': 0 };
-            
             document.getElementById('col-novos').innerHTML = `<h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3>`;
             document.getElementById('col-preparo').innerHTML = `<h3>🟡 Montando <span class="badge-qtd" id="qtd-preparo">0</span></h3>`;
             document.getElementById('col-rota').innerHTML = `<h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3>`;
@@ -337,16 +441,28 @@
             Object.entries(pedidos).forEach(([chaveBanco, ped]) => {
                 qtd[ped.status]++; 
 
-                const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
-                const linkMapa = `https://www.google.com/maps/search/?api=1&query=${enderecoBusca}`;
+                let linhaEndereco = '';
+                let linkMapaHTML = '';
+                let tagLocal = '';
+
+                if (ped.tipoEntrega === 'retirada') {
+                    tagLocal = `<span class="retirada-tag">🏃 RETIRADA</span>`;
+                    linhaEndereco = `<p style="color:var(--azul); font-weight:bold;">Cliente retira no balcão</p>`;
+                } else {
+                    tagLocal = `<span class="bairro-tag">📍 ${ped.bairro}</span>`;
+                    linhaEndereco = `<p><strong>End:</strong> ${ped.endereco}</p>`;
+                    const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
+                    linkMapaHTML = `<a href="https://www.google.com/maps/search/?api=1&query=${enderecoBusca}" target="_blank" class="btn-link btn-mapa">🗺️ Maps</a>`;
+                }
 
                 let btnWhatsHTML = '';
                 if(ped.telefone && ped.telefone.length >= 14) {
                     const numLimpo = ped.telefone.replace(/\D/g, '');
-                    const msgWhats = encodeURIComponent(`Olá ${ped.nome}! A sua encomenda da Ísa no Copo acabou de sair para entrega e está a caminho! 🥗🛵`);
-                    const linkWhats = `https://wa.me/55${numLimpo}?text=${msgWhats}`;
+                    let textoMsg = `Olá ${ped.nome}! Seu pedido da Ísa no Copo está pronto e saiu para entrega! 🥗🛵`;
+                    if(ped.tipoEntrega === 'retirada') textoMsg = `Olá ${ped.nome}! Seu pedido da Ísa no Copo já está pronto para retirada! 🥗🏃`;
+                    
                     const displayWhats = (ped.status === 'col-rota') ? 'flex' : 'none';
-                    btnWhatsHTML = `<a href="${linkWhats}" target="_blank" class="btn-link btn-whats" style="display: ${displayWhats};">💬 Avisar Saída</a>`;
+                    btnWhatsHTML = `<a href="https://wa.me/55${numLimpo}?text=${encodeURIComponent(textoMsg)}" target="_blank" class="btn-link btn-whats" style="display: ${displayWhats};">💬 Avisar</a>`;
                 }
 
                 let btnMoverHTML = '';
@@ -357,7 +473,8 @@
                     btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-preparo')">Avançar Etapa ➔</button>`;
                     corBorda = 'var(--laranja)';
                 } else if (ped.status === 'col-preparo') {
-                    btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-rota')">Saiu p/ Entrega ➔</button>`;
+                    const textoBotao = ped.tipoEntrega === 'retirada' ? 'Pronto p/ Retirada ➔' : 'Saiu p/ Entrega ➔';
+                    btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-rota')">${textoBotao}</button>`;
                     corBorda = 'var(--laranja)';
                     minimizarPadrao = true;
                 } else if (ped.status === 'col-rota') {
@@ -374,14 +491,12 @@
                 if (estadoCartoes[chaveBanco] === 'fechado') classeMinimizado = 'minimizado';
                 let opacidade = (ped.status === 'col-entregue') ? '0.5' : '1';
 
-                // Tratamento das novas Etiquetas: Pagamento e Observação
                 const badgePagamentoHTML = ped.pagamento === 'Pago' 
-                    ? `<span class="badge-pago">✅ Já Pago (PIX)</span>` 
-                    : `<span class="badge-pendente">⚠️ Cobrar na Entrega</span>`;
+                    ? `<span class="badge-pago">✅ Pago</span>` 
+                    : `<span class="badge-pendente">⚠️ A Cobrar</span>`;
                 
                 const obsHTML = ped.observacao 
-                    ? `<div class="obs-destaque">📌 <strong>Aviso:</strong> ${ped.observacao}</div>` 
-                    : '';
+                    ? `<div class="obs-destaque">📌 ${ped.observacao}</div>` : '';
 
                 const cardHTML = `
                     <div class="pedido-card ${classeMinimizado}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
@@ -389,7 +504,7 @@
                             <div style="display: flex; align-items: center;">
                                 <span class="id-pedido">#${ped.numero}</span>
                                 <div>
-                                    <span class="bairro-tag">📍 ${ped.bairro}</span>
+                                    ${tagLocal}
                                     <h4>${ped.nome}</h4>
                                 </div>
                             </div>
@@ -403,7 +518,6 @@
                             
                             <p><strong>Tamanho:</strong> ${ped.tamanho}</p>
                             ${ped.telefone ? `<p><strong>WhatsApp:</strong> ${ped.telefone}</p>` : ''}
-                            
                             ${obsHTML}
 
                             <div class="lista-montagem">
@@ -415,10 +529,10 @@
                                 <span><strong>Molhos:</strong> ${ped.molho}</span>
                             </div>
 
-                            <p><strong>End:</strong> ${ped.endereco}</p>
+                            ${linhaEndereco}
                             
                             <div class="grid-botoes-contato">
-                                <a href="${linkMapa}" target="_blank" class="btn-link btn-mapa">🗺️ Maps</a>
+                                ${linkMapaHTML}
                                 ${btnWhatsHTML}
                             </div>
                         </div>
@@ -430,7 +544,6 @@
                         ${ped.status === 'col-entregue' ? `<button class="btn-remover" style="margin-top:10px; width: 100%;" onclick="removerPedido('${chaveBanco}')">🗑️ Limpar Entregue</button>` : ''}
                     </div>
                 `;
-
                 document.getElementById(ped.status).innerHTML += cardHTML;
             });
 
@@ -439,6 +552,26 @@
             document.getElementById('qtd-rota').innerText = qtd['col-rota'];
             document.getElementById('qtd-entregue').innerText = qtd['col-entregue'];
         });
+
+        // LÓGICA DE ENTREGA vs RETIRADA
+        window.setTipoEntrega = function(tipo) {
+            tipoEntregaAtual = tipo;
+            const camposEnd = document.querySelectorAll('.grupo-endereco');
+            
+            if(tipo === 'retirada') {
+                document.getElementById('btn-retirada').classList.add('ativo');
+                document.getElementById('btn-entrega').classList.remove('ativo');
+                camposEnd.forEach(el => el.style.display = 'none');
+                document.getElementById('bairro').value = 'Balcão'; // Valor padrão
+                document.getElementById('endereco').value = 'Retirada'; 
+            } else {
+                document.getElementById('btn-entrega').classList.add('ativo');
+                document.getElementById('btn-retirada').classList.remove('ativo');
+                camposEnd.forEach(el => el.style.display = 'flex');
+                document.getElementById('bairro').value = '';
+                document.getElementById('endereco').value = '';
+            }
+        };
 
         window.adicionarPedido = function() {
             const nome = document.getElementById('nome').value;
@@ -449,7 +582,8 @@
             const pagamento = document.getElementById('pagamento').value;
             const observacao = document.getElementById('observacao').value;
 
-            if(!nome || !bairro || !endereco) { alert("⚠️ Nome, Bairro e Endereço são obrigatórios!"); return; }
+            if(!nome) { alert("⚠️ Nome do cliente é obrigatório!"); return; }
+            if(tipoEntregaAtual === 'entrega' && (!bairro || !endereco)) { alert("⚠️ Para entrega, preencha Endereço e Bairro!"); return; }
 
             const pegarSelecionados = (classe) => {
                 const marcados = Array.from(document.querySelectorAll('.' + classe + ':checked'));
@@ -459,6 +593,7 @@
             const novoPedido = {
                 numero: contadorComanda, nome: nome, telefone: telefone, bairro: bairro, 
                 endereco: endereco, tamanho: tamanho, pagamento: pagamento, observacao: observacao,
+                tipoEntrega: tipoEntregaAtual, // Salva se é entrega ou retirada
                 base: pegarSelecionados('chk-base'), prot: pegarSelecionados('chk-prot'), croc: pegarSelecionados('chk-croc'),
                 folha: pegarSelecionados('chk-folha'), toque: pegarSelecionados('chk-toque'), molho: pegarSelecionados('chk-molho'),
                 status: 'col-novos', timestamp: Date.now()
@@ -467,14 +602,17 @@
             push(ref(db, 'pedidos'), novoPedido);
             set(ref(db, 'contador'), contadorComanda + 1);
 
+            // Limpa form
             document.getElementById('nome').value = ''; document.getElementById('telefone').value = '';
-            document.getElementById('bairro').value = ''; document.getElementById('endereco').value = '';
-            document.getElementById('tamanho').value = 'Copo 550ml';
-            document.getElementById('pagamento').value = 'Pendente';
             document.getElementById('observacao').value = '';
+            
+            if(tipoEntregaAtual === 'entrega') {
+                document.getElementById('bairro').value = ''; document.getElementById('endereco').value = '';
+            }
+            
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             document.getElementById('nome').focus(); 
-
+            
             const btn = document.querySelector('.btn-add');
             const txtOriginal = btn.innerHTML;
             btn.innerHTML = "✔️ Enviado!";
@@ -492,7 +630,7 @@
         };
 
         window.zerarPainel = function() {
-            if(confirm("⚠️ Atenção: Isso apaga todos os pedidos de TODOS OS APARELHOS. Finalizar o dia?")) {
+            if(confirm("⚠️ Atenção: Isso apaga todos os pedidos e a lista de compras será mantida. Finalizar o dia?")) {
                 set(ref(db, 'pedidos'), null); set(ref(db, 'contador'), 1);
             }
         };
@@ -506,7 +644,6 @@
         window.mudarAba = function(idView, idTab) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('ativa'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('ativa'));
-            
             document.getElementById(idView).classList.add('ativa');
             document.getElementById(idTab).classList.add('ativa');
         };
