@@ -2,952 +2,761 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDV Ísa no Copo - Seguro e Conectado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ísa no Copo | App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
         :root {
-            --primaria: #10b981;
-            --primaria-hover: #059669;
-            --fundo-body: #f3f4f6;
-            --fundo-card: #ffffff;
-            --fundo-coluna: #f8fafc;
-            --texto-principal: #1f2937;
-            --texto-secundario: #4b5563;
-            --borda: #e5e7eb;
-            --borda-foco: #a7f3d0;
-            --fundo-input: #f9fafb;
-            --laranja: #f59e0b;
+            /* Cores Dinâmicas (Alteráveis via Config) */
+            --hue: 150; /* Verde padrão (150) */
+            --primaria: hsl(var(--hue), 100%, 35%); 
+            --primaria-light: hsl(var(--hue), 100%, 92%);
+            --primaria-dark: hsl(var(--hue), 100%, 25%);
+            --gradiente: linear-gradient(135deg, hsl(var(--hue), 90%, 40%), hsl(var(--hue), 100%, 30%));
+            
+            /* Cores de Interface */
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            --texto-titulo: #0f172a;
+            --texto-corpo: #475569;
+            --texto-suave: #94a3b8;
+            --borda: #e2e8f0;
+            
+            /* Status */
             --vermelho: #ef4444;
-            --vermelho-fundo: #fef2f2;
+            --vermelho-bg: #fee2e2;
+            --laranja: #f97316;
+            --laranja-bg: #ffedd5;
             --azul: #3b82f6;
-            --verde-whats: #25D366;
-            --tag-bairro-bg: #fef3c7;
-            --tag-bairro-text: #b45309;
-            --tag-retirada-bg: #dbeafe;
-            --tag-retirada-text: #1e40af;
-            --tag-prioridade-bg: #fee2e2;
-            --tag-prioridade-text: #991b1b;
-            --tag-horario-bg: #e0e7ff;
-            --tag-horario-text: #3730a3;
-            --lista-bg: #ecfdf5;
-            --lista-text: #047857;
-            --sombra: 0 4px 6px -1px rgba(0,0,0,0.05);
-            --altura-nav: 70px;
+            --azul-bg: #dbeafe;
+            
+            /* Layout */
+            --sombra-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --sombra-elevada: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            --radius: 16px;
+            --nav-height: 80px;
         }
 
         [data-theme="dark"] {
-            --fundo-body: #0f172a;
-            --fundo-card: #1e293b;
-            --fundo-coluna: #0f172a;
-            --texto-principal: #f8fafc;
-            --texto-secundario: #94a3b8;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --texto-titulo: #f8fafc;
+            --texto-corpo: #cbd5e1;
             --borda: #334155;
-            --borda-foco: #059669;
-            --fundo-input: #0f172a;
-            --vermelho-fundo: #450a0a;
-            --tag-bairro-bg: #78350f;
-            --tag-bairro-text: #fde68a;
-            --tag-retirada-bg: #1e3a8a;
-            --tag-retirada-text: #bfdbfe;
-            --tag-prioridade-bg: #7f1d1d;
-            --tag-prioridade-text: #fecaca;
-            --tag-horario-bg: #312e81;
-            --tag-horario-text: #c7d2fe;
-            --lista-bg: #064e3b;
-            --lista-text: #6ee7b7;
-            --sombra: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --sombra-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--fundo-body); color: var(--texto-principal); margin: 0; padding: 0; padding-bottom: var(--altura-nav); transition: 0.3s; }
-
-        header { background: var(--fundo-card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100; }
-        header h1 { margin: 0; font-size: 18px; color: var(--primaria); display: flex; align-items: center; gap: 8px; }
-        .controles-header { display: flex; gap: 8px; align-items: center; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-body); color: var(--texto-corpo); padding-bottom: calc(var(--nav-height) + 20px); transition: background 0.3s ease; }
         
-        .status-nuvem { font-size: 11px; font-weight: bold; color: var(--primaria); display: flex; align-items: center; gap: 5px; background: var(--lista-bg); padding: 6px 10px; border-radius: 20px;}
-        .status-nuvem span { display: inline-block; width: 8px; height: 8px; background: var(--primaria); border-radius: 50%; animation: piscar 2s infinite; }
-        @keyframes piscar { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        .btn-acao { background: var(--fundo-card); color: var(--texto-principal); border: 1px solid var(--borda); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; }
-        .btn-acao:hover { background: var(--fundo-body); }
-        .btn-limpar { color: var(--vermelho); border-color: var(--vermelho); }
-        .btn-limpar:hover { background: var(--vermelho-fundo); }
-
-        .container-master { padding: 20px; max-width: 1600px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
-        .view-section { display: none; animation: fadeIn 0.3s ease; }
-        .view-section.ativa { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Estilos Financeiro */
-        .card-resumo-dia { background: linear-gradient(135deg, var(--primaria), #059669); color: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); margin-bottom: 20px; text-align: center; }
-        .card-resumo-dia h2 { margin: 0; font-size: 14px; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .valor-total { font-size: 36px; font-weight: 800; margin: 10px 0; }
-        .detalhes-dia { display: flex; justify-content: center; gap: 20px; font-size: 13px; opacity: 0.9; }
-        
-        .tabela-historico { width: 100%; border-collapse: collapse; background: var(--fundo-card); border-radius: 12px; overflow: hidden; box-shadow: var(--sombra); border: 1px solid var(--borda); }
-        .tabela-historico th, .tabela-historico td { padding: 15px; text-align: left; border-bottom: 1px solid var(--borda); font-size: 14px; }
-        .tabela-historico th { background: var(--fundo-coluna); color: var(--texto-secundario); font-weight: 600; text-transform: uppercase; font-size: 12px; }
-        .tabela-historico tr:last-child td { border-bottom: none; }
-        .valor-linha { font-weight: 700; color: var(--primaria); }
-
-        /* Formulário */
-        .pdv-container { background: var(--fundo-card); padding: 20px; border-radius: 12px; box-shadow: var(--sombra); border: 1px solid var(--borda); margin-bottom: 20px;}
-        .pdv-titulo { font-size: 15px; color: var(--texto-principal); margin-top: 0; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; display: flex; justify-content: space-between;}
-        
-        .aviso-edicao { display: none; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; font-weight: 600; text-align: center; }
-        .aviso-edicao.ativo { display: block; }
-
-        .tipo-entrega-switch { display: flex; gap: 10px; margin-bottom: 20px; background: var(--fundo-body); padding: 5px; border-radius: 10px; }
-        .btn-switch { flex: 1; border: none; padding: 10px; border-radius: 8px; background: transparent; color: var(--texto-secundario); font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-switch.ativo { background: var(--fundo-card); color: var(--primaria); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-
-        .dados-cliente { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; }
-        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 160px; }
-        .input-group label { font-size: 13px; font-weight: 600; color: var(--texto-secundario); margin-bottom: 6px; }
-        .dados-cliente input, .dados-cliente select { padding: 14px 15px; border: 1px solid var(--borda); border-radius: 8px; font-size: 15px; background-color: var(--fundo-input); color: var(--texto-principal); transition: 0.2s; }
-        .dados-cliente input:focus, .dados-cliente select:focus { outline: none; border-color: var(--primaria); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
-
-        .checkbox-btn-wrapper input { display: none; }
-        .checkbox-btn-wrapper label {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 14px; border: 1px solid var(--vermelho); color: var(--vermelho);
-            border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; transition: 0.2s;
-            background: var(--vermelho-fundo); height: 100%; box-sizing: border-box;
+        /* HEADER COM EFEITO GLASS */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--borda);
+            padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .checkbox-btn-wrapper input:checked + label { background: var(--vermelho); color: white; box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4); }
+        [data-theme="dark"] header { background: rgba(30, 41, 59, 0.85); }
 
-        .cardapio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .categoria-menu { background: var(--fundo-body); border: 1px solid var(--borda); border-radius: 10px; padding: 15px; }
-        .categoria-menu h4 { margin: 0 0 12px 0; font-size: 13px; color: var(--texto-secundario); font-weight: 700; text-transform: uppercase; }
+        .logo-area h1 { margin: 0; font-size: 18px; font-weight: 800; color: var(--primaria); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
+        .status-badge { font-size: 10px; padding: 4px 10px; background: var(--primaria-light); color: var(--primaria-dark); border-radius: 20px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .status-dot { width: 6px; height: 6px; background: var(--primaria); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(var(--hue), 0.7); } 70% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(0,0,0,0); } 100% { opacity: 1; } }
+
+        /* CONTAINERS E ANIMAÇÕES */
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .view-section { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+        .view-section.ativa { display: block; opacity: 1; transform: translateY(0); }
+
+        /* CARDS E FORMULÁRIOS */
+        .card-box { background: var(--bg-card); border-radius: var(--radius); padding: 20px; box-shadow: var(--sombra-card); border: 1px solid var(--borda); margin-bottom: 20px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; }
+        .card-title { font-size: 16px; font-weight: 700; color: var(--texto-titulo); margin: 0; display: flex; align-items: center; gap: 8px; }
+
+        /* INPUTS MODERNOS */
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--texto-suave); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-control { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid transparent; background: var(--bg-input); font-family: inherit; font-size: 15px; color: var(--texto-titulo); transition: 0.2s; }
+        .form-control:focus { outline: none; background: var(--bg-card); border-color: var(--primaria); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+        /* BOTÕES */
+        .btn { border: none; padding: 14px 20px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: var(--gradiente); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); width: 100%; }
+        .btn-outline { background: transparent; border: 2px solid var(--borda); color: var(--texto-corpo); }
+        .btn-danger { background: var(--vermelho-bg); color: var(--vermelho); }
+        .btn-whatsapp { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+
+        /* SELEÇÃO DE INGREDIENTES (CHIPS) */
+        .grid-ingredientes { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        .check-btn { position: relative; }
+        .check-btn input { display: none; }
+        .check-btn span { display: flex; align-items: center; justify-content: center; padding: 12px 10px; background: var(--bg-input); border-radius: 12px; font-size: 13px; font-weight: 600; color: var(--texto-corpo); border: 2px solid transparent; transition: 0.2s; text-align: center; height: 100%; cursor: pointer; }
+        .check-btn input:checked + span { background: var(--primaria-light); color: var(--primaria-dark); border-color: var(--primaria); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+        /* SWITCHER ENTREGA/RETIRADA */
+        .toggle-switch { display: flex; background: var(--bg-input); padding: 4px; border-radius: 14px; margin-bottom: 20px; }
+        .toggle-btn { flex: 1; padding: 10px; text-align: center; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; color: var(--texto-suave); transition: 0.3s; }
+        .toggle-btn.active { background: var(--bg-card); color: var(--primaria); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+        /* KANBAN (QUADRO) */
+        .kanban-wrapper { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; min-height: 60vh; scroll-snap-type: x mandatory; }
+        .kanban-col { min-width: 85vw; scroll-snap-align: center; display: flex; flex-direction: column; gap: 15px; }
+        .col-header { background: var(--bg-input); padding: 12px 15px; border-radius: 12px; font-weight: 800; color: var(--texto-titulo); display: flex; justify-content: space-between; align-items: center; font-size: 14px; text-transform: uppercase; }
+        .badge-count { background: var(--bg-card); padding: 2px 8px; border-radius: 8px; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        /* CARTÃO DE PEDIDO */
+        .order-card { background: var(--bg-card); border-radius: 16px; padding: 16px; box-shadow: var(--sombra-card); border: 1px solid var(--borda); position: relative; overflow: hidden; transition: 0.3s; }
+        .order-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--borda); }
+        .order-card.status-novos::before { background: var(--laranja); }
+        .order-card.status-preparo::before { background: var(--azul); }
+        .order-card.status-rota::before { background: var(--primaria); }
+        .order-card.priority { border: 2px solid var(--vermelho); animation: pulseBorder 2s infinite; }
+
+        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; cursor: pointer; }
+        .order-id { font-size: 12px; font-weight: 800; color: var(--texto-suave); margin-bottom: 4px; }
+        .order-name { font-size: 16px; font-weight: 700; color: var(--texto-titulo); margin: 0; }
         
-        .chips-container { display: flex; flex-wrap: wrap; gap: 10px; }
-        .chip-label { position: relative; display: inline-block; cursor: pointer; user-select: none; }
-        .chip-label input { display: none; } 
-        .chip-label span { display: inline-block; padding: 12px 14px; border-radius: 20px; border: 1px solid var(--borda); font-size: 14px; background: var(--fundo-card); color: var(--texto-secundario); font-weight: 500; transition: 0.2s; }
-        .chip-label input:checked + span { background: var(--primaria); color: white; border-color: var(--primaria); box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); }
+        .tags-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
+        .tag-local { background: var(--laranja-bg); color: var(--laranja); }
+        .tag-retirada { background: var(--azul-bg); color: var(--azul); }
+        .tag-pago { background: var(--primaria-light); color: var(--primaria-dark); }
+        .tag-pendente { background: var(--vermelho-bg); color: var(--vermelho); }
 
-        .carrinho-area { background: var(--lista-bg); border: 1px solid var(--primaria); border-radius: 10px; padding: 15px; margin-top: 20px; }
-        .carrinho-titulo { font-size: 14px; font-weight: 700; color: var(--lista-text); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
-        .item-carrinho { background: white; padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--borda); }
-        .btn-rm-item { color: var(--vermelho); background: none; border: none; font-weight: bold; cursor: pointer; padding: 5px; }
+        .order-details { margin-top: 10px; border-top: 1px dashed var(--borda); padding-top: 10px; display: none; }
+        .order-card.open .order-details { display: block; animation: slideDown 0.3s; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: 0; } }
 
-        .rodape-pdv { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        .btn-add-item { background: white; color: var(--primaria); border: 2px solid var(--primaria); padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 15px; width: 100%; transition: 0.2s; }
-        .btn-add-item:hover { background: var(--lista-bg); }
+        /* MENU INFERIOR FLUTUANTE */
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); border-radius: 24px; padding: 10px 20px; display: flex; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.5); z-index: 1000; }
+        [data-theme="dark"] .bottom-nav { background: rgba(30,41,59,0.9); border-color: rgba(255,255,255,0.1); }
         
-        .btn-finalizar { background: var(--primaria); color: white; border: none; padding: 16px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 16px; width: 100%; transition: 0.2s; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2); opacity: 0.5; pointer-events: none; }
-        .btn-finalizar.ativo { opacity: 1; pointer-events: all; }
-        .btn-finalizar:hover { background: var(--primaria-hover); transform: translateY(-2px); }
-        
-        /* Botão WhatsApp Resumo */
-        .btn-resumo-zap { background: rgba(37, 211, 102, 0.1); color: var(--verde-whats); border: 1px solid rgba(37, 211, 102, 0.3); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-resumo-zap:hover { background: var(--verde-whats); color: white; }
+        .nav-btn { background: none; border: none; color: var(--texto-suave); font-size: 24px; padding: 10px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-btn span { font-size: 10px; font-weight: 700; }
+        .nav-btn.active { color: var(--primaria); background: var(--primaria-light); transform: translateY(-5px); }
 
-        .btn-salvar-edicao { background: var(--azul); }
-        .btn-salvar-edicao:hover { background: #2563eb; }
-        .btn-cancelar { background: var(--vermelho-fundo); color: var(--vermelho); border: 1px solid var(--vermelho); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: none; width: 100%; }
-
-        .lista-compras-container { max-width: 600px; margin: auto; }
-        .add-item-row { display: flex; gap: 10px; margin-bottom: 20px; }
-        .add-item-row input { flex: 1; padding: 12px; border: 1px solid var(--borda); border-radius: 8px; background: var(--fundo-input); color: var(--texto-principal); }
-        .btn-add-shop { background: var(--azul); color: white; border: none; padding: 0 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-        .item-compra { background: var(--fundo-card); padding: 15px; border-radius: 8px; border: 1px solid var(--borda); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .item-compra.comprado { opacity: 0.5; text-decoration: line-through; }
-        .btn-check-compra { background: transparent; border: 2px solid var(--borda); width: 24px; height: 24px; border-radius: 50%; cursor: pointer; margin-right: 10px; display: flex; align-items: center; justify-content: center; color: transparent;}
-        .item-compra.comprado .btn-check-compra { background: var(--primaria); border-color: var(--primaria); color: white; }
-
-        .kanban-board { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; min-height: 60vh; scroll-snap-type: x mandatory; }
-        .kanban-col { background: var(--fundo-coluna); border-radius: 12px; width: 85vw; max-width: 340px; min-width: 300px; padding: 15px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--borda); scroll-snap-align: center; }
-        .kanban-col h3 { margin: 0 0 10px 0; font-size: 14px; font-weight: 700; padding-bottom: 10px; border-bottom: 2px solid var(--borda); text-transform: uppercase; color: var(--texto-principal); display: flex; justify-content: space-between; align-items: center; }
-        .badge-qtd { background: var(--borda); color: var(--texto-secundario); padding: 2px 8px; border-radius: 12px; font-size: 12px; }
-
-        .pedido-card { background: var(--fundo-card); padding: 15px; border-radius: 10px; box-shadow: var(--sombra); border: 1px solid var(--borda); border-left: 5px solid var(--laranja); transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
-        .pedido-card.prioridade { border: 2px solid var(--vermelho); animation: pulseBorder 2s infinite; }
-        @keyframes pulseBorder { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-
-        .card-topo { cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 5px; }
-        .id-pedido { font-size: 18px; font-weight: 900; color: var(--texto-secundario); margin-right: 8px; }
-        
-        .bairro-tag { display: inline-block; background: var(--tag-bairro-bg); color: var(--tag-bairro-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
-        .retirada-tag { display: inline-block; background: var(--tag-retirada-bg); color: var(--tag-retirada-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
-        .prioridade-tag { display: inline-block; background: var(--tag-prioridade-bg); color: var(--tag-prioridade-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
-        .horario-tag { display: inline-block; background: var(--tag-horario-bg); color: var(--tag-horario-text); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
-
-        .card-topo h4 { margin: 0; font-size: 16px; font-weight: 700; color: var(--texto-principal); }
-        .card-detalhes { overflow: hidden; transition: max-height 0.3s ease; }
-        .pedido-card.minimizado .card-detalhes { display: none; }
-        .icone-toggle { color: var(--texto-secundario); font-size: 12px; transition: 0.3s; padding-top: 5px; }
-        .pedido-card.minimizado .icone-toggle { transform: rotate(-90deg); }
-
-        .badges-pagamento { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;}
-        .badge-pago { background: rgba(34, 197, 94, 0.15); color: #166534; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid rgba(34, 197, 94, 0.3); }
-        .badge-pendente { background: rgba(239, 68, 68, 0.15); color: #991b1b; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .obs-destaque { background: #fef3c7; color: #b45309; padding: 10px; border-radius: 8px; font-size: 13px; margin: 10px 0; border-left: 4px solid var(--laranja); font-weight: 500; }
-
-        .lista-montagem { background: var(--lista-bg); padding: 12px; border-radius: 8px; margin: 10px 0; font-size: 13px; line-height: 1.6; color: var(--lista-text); border: 1px solid var(--borda-foco); }
-        .item-resumo { border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px; margin-bottom: 8px; }
-        .item-resumo:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .titulo-item { font-weight: 800; text-transform: uppercase; margin-bottom: 4px; display: block; color: var(--primaria-hover); }
-
-        .grid-botoes-contato { display: flex; gap: 8px; margin-top: 10px; }
-        .btn-link { flex: 1; display: flex; justify-content: center; align-items: center; gap: 5px; text-decoration: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; transition: 0.2s; border: 1px solid transparent; }
-        .btn-mapa { background: rgba(59, 130, 246, 0.1); color: var(--azul); border-color: rgba(59, 130, 246, 0.2); }
-        .btn-whats { background: rgba(37, 211, 102, 0.1); color: var(--verde-whats); border-color: rgba(37, 211, 102, 0.2); }
-
-        .acoes-card { display: flex; gap: 8px; padding-top: 5px; margin-top: 5px; border-top: 1px solid var(--borda); }
-        .btn-mover { background: transparent; border: 1px solid var(--primaria); color: var(--primaria); padding: 12px; border-radius: 8px; cursor: pointer; flex: 1; font-size: 14px; font-weight: 600; transition: 0.2s; }
-        .btn-mover:hover { background: var(--primaria); color: white; }
-        .btn-voltar { background: transparent; border: 1px solid var(--texto-secundario); color: var(--texto-secundario); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; width: 45px; margin-right: 0px; }
-        .btn-voltar:hover { background: #e5e7eb; color: var(--texto-principal); }
-        .btn-editar { background: transparent; border: 1px solid var(--borda); color: var(--azul); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; width: 45px;}
-        .btn-editar:hover { background: #eff6ff; border-color: var(--azul); }
-        .btn-remover { background: transparent; border: 1px solid var(--borda); color: var(--texto-secundario); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; width: 45px;}
-
-        /* Menu Inferior */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--fundo-card); border-top: 1px solid var(--borda); display: flex; justify-content: space-around; padding: 8px 10px; z-index: 1000; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); transition: 0.3s;}
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; padding: 8px; border-radius: 10px; color: var(--texto-secundario); cursor: pointer; transition: 0.2s; }
-        .nav-item span:first-child { font-size: 20px; }
-        .nav-item span:last-child { font-size: 12px; font-weight: 600; }
-        .nav-item.ativo { color: var(--primaria); background: var(--lista-bg); }
-
+        /* PC RESPONSIVO */
         @media (min-width: 1024px) {
-            body { padding-bottom: 0; }
             .bottom-nav { display: none; }
-            .container-master { flex-direction: row; align-items: flex-start; }
-            .view-section { display: block !important; } 
-            #view-lancamento { flex: 0 0 350px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
-            #view-financeiro, #view-compras { display: none; } 
-            #view-entregas { flex: 1; overflow-hidden; }
-            .view-section.ativa-pc { display: block !important; position: absolute; z-index: 2000; background: white; top: 80px; left: 50%; transform: translateX(-50%); width: 600px; height: auto; box-shadow: 0 0 20px rgba(0,0,0,0.2); border-radius: 12px; }
-            
-            .btn-add, .btn-finalizar, .btn-cancelar { width: auto; }
+            .container { display: grid; grid-template-columns: 380px 1fr; gap: 30px; align-items: start; }
+            .view-section { display: block !important; opacity: 1; transform: none; }
+            #view-lancamento { position: sticky; top: 100px; max-height: 85vh; overflow-y: auto; }
+            #view-config, #view-financeiro, #view-compras { grid-column: 2; display: none !important; }
+            .view-section.ativa-pc { display: block !important; }
+            .kanban-col { min-width: 300px; }
         }
-        
-        #view-lancamento::-webkit-scrollbar { width: 6px; }
-        #view-lancamento::-webkit-scrollbar-thumb { background: var(--borda); border-radius: 10px; }
+
+        /* CUSTOMIZAÇÃO DE CORES */
+        .color-picker { display: flex; gap: 10px; margin-top: 10px; }
+        .color-option { width: 40px; height: 40px; border-radius: 50%; border: 3px solid white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s; }
+        .color-option:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🥗 Ísa no Copo</h1>
-        <div class="controles-header">
-            <div class="status-nuvem"><span></span> Online</div>
-            <button class="btn-acao" onclick="toggleTema()" id="btn-tema">🌙</button>
-            <button class="btn-acao btn-limpar" onclick="zerarPainel()">🗑️ Finalizar Dia</button>
-        </div>
-    </header>
+<header>
+    <div class="logo-area">
+        <h1 id="nome-loja-header">🥗 Ísa no Copo</h1>
+        <div class="status-badge"><div class="status-dot"></div> ONLINE</div>
+    </div>
+    <div style="display: flex; gap: 10px;">
+        <button class="btn btn-outline" style="padding: 8px 12px;" onclick="mudarAba('view-config', 'tab-config')">⚙️</button>
+    </div>
+</header>
 
-    <div class="container-master">
-        
-        <div id="view-lancamento" class="view-section ativa">
-            <div class="pdv-container">
-                <div id="aviso-edicao" class="aviso-edicao">✏️ MODO DE EDIÇÃO ATIVO</div>
-                <h3 class="pdv-titulo">📋 Cliente e Entrega</h3>
+<div class="container">
+
+    <div id="view-lancamento" class="view-section ativa">
+        <div class="card-box">
+            <div id="aviso-edicao" style="display:none; background:var(--azul-bg); color:var(--azul); padding:10px; border-radius:8px; margin-bottom:15px; font-weight:700; text-align:center;">✏️ EDITANDO PEDIDO</div>
+            
+            <div class="card-header"><h3 class="card-title">📝 Novo Pedido</h3></div>
+
+            <div class="toggle-switch">
+                <div class="toggle-btn active" id="btn-entrega" onclick="setTipo('entrega')">🛵 Entrega</div>
+                <div class="toggle-btn" id="btn-retirada" onclick="setTipo('retirada')">🏃 Retirada</div>
+            </div>
+
+            <div class="input-group">
+                <label>Cliente</label>
+                <input type="text" class="form-control" id="nome" placeholder="Nome do cliente">
+            </div>
+            <div class="input-group">
+                <label>WhatsApp</label>
+                <input type="tel" class="form-control" id="telefone" placeholder="(00) 00000-0000">
+            </div>
+
+            <div id="area-endereco">
+                <div class="input-group"><label>Bairro</label><input type="text" class="form-control" id="bairro" placeholder="Bairro"></div>
+                <div class="input-group"><label>Endereço</label><input type="text" class="form-control" id="endereco" placeholder="Rua e Número"></div>
+            </div>
+
+            <hr style="border:0; border-top:1px solid var(--borda); margin: 20px 0;">
+
+            <div class="input-group">
+                <label>Tamanho</label>
+                <select class="form-control" id="tamanho">
+                    <option value="Copo 550ml">Copo 550ml (R$ 17,00)</option>
+                    <option value="Copo 750ml">Copo 750ml (R$ 22,00)</option>
+                </select>
+            </div>
+
+            <details open style="margin-bottom: 15px;">
+                <summary style="font-weight: 700; cursor: pointer; margin-bottom: 10px;">🥗 Ingredientes (Clique para abrir)</summary>
                 
-                <div class="tipo-entrega-switch">
-                    <button class="btn-switch ativo" id="btn-entrega" onclick="setTipoEntrega('entrega')">🛵 Entrega</button>
-                    <button class="btn-switch" id="btn-retirada" onclick="setTipoEntrega('retirada')">🏃 Retirada</button>
+                <label style="font-size: 11px; font-weight: 800; color: var(--primaria); display: block; margin: 10px 0;">1. BASE (MÁX 2)</label>
+                <div class="grid-ingredientes">
+                    <label class="check-btn"><input type="checkbox" class="chk-base" value="Macarrão"><span>Macarrão</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-base" value="Quinoa"><span>Quinoa</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-base" value="Milho"><span>Milho</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-base" value="Ervilhas"><span>Ervilhas</span></label>
                 </div>
 
-                <div class="dados-cliente">
-                    <div class="input-group">
-                        <label>Nome do Cliente</label>
-                        <input type="text" id="nome" placeholder="Ex: João" autocomplete="off">
-                    </div>
-                    <div class="input-group">
-                        <label>WhatsApp</label>
-                        <input type="tel" id="telefone" placeholder="(00) 00000-0000" maxlength="15">
-                    </div>
-                    
-                    <div class="input-group grupo-endereco">
-                        <label>Bairro</label>
-                        <input type="text" id="bairro" placeholder="Ex: Centro" autocomplete="off">
-                    </div>
-                    <div class="input-group grupo-endereco" style="flex: 2;">
-                        <label>Endereço e Número</label>
-                        <input type="text" id="endereco" placeholder="Rua das Flores, 123" autocomplete="off">
-                    </div>
+                <label style="font-size: 11px; font-weight: 800; color: var(--primaria); display: block; margin: 10px 0;">2. PROTEÍNA</label>
+                <div class="grid-ingredientes">
+                    <label class="check-btn"><input type="checkbox" class="chk-prot" value="Frango"><span>Frango</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-prot" value="Atum"><span>Atum</span></label>
                 </div>
 
-                <hr style="border: 0; border-top: 1px solid var(--borda); margin: 20px 0;">
-
-                <h3 class="pdv-titulo">🥗 Montar Item</h3>
-                <div class="dados-cliente">
-                    <div class="input-group">
-                        <label>Tamanho do Copo</label>
-                        <select id="tamanho">
-                            <option value="Copo 550ml">Copo 550ml (R$ 17,00)</option>
-                            <option value="Copo 750ml">Copo 750ml (R$ 22,00)</option>
-                        </select>
-                    </div>
+                <label style="font-size: 11px; font-weight: 800; color: var(--primaria); display: block; margin: 10px 0;">3. CROCÂNCIA</label>
+                <div class="grid-ingredientes">
+                    <label class="check-btn"><input type="checkbox" class="chk-croc" value="Tomate"><span>Tomate</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-croc" value="Cenoura"><span>Cenoura</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-croc" value="Pepino"><span>Pepino</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-croc" value="Beterraba"><span>Beterraba</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-croc" value="Palmito"><span>Palmito</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-croc" value="Cogumelos"><span>Cogumelos (+R$4)</span></label>
                 </div>
 
-                <div class="cardapio-grid">
-                    <div class="categoria-menu">
-                        <h4>1. Base (Máx 2)</h4>
-                        <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Macarrão Gelado"><span>Macarrão</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Quinoa Real"><span>Quinoa</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Milho Doce"><span>Milho</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Ervilhas"><span>Ervilhas</span></label>
-                        </div>
-                    </div>
-                    <div class="categoria-menu">
-                        <h4>2. Proteína</h4>
-                        <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-prot" value="Frango Desfiado"><span>Frango</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-prot" value="Atum"><span>Atum</span></label>
-                        </div>
-                    </div>
-                    <div class="categoria-menu">
-                        <h4>3. Crocância</h4>
-                        <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Tomate Cereja"><span>Tomate</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cenoura Ralada"><span>Cenoura</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Pepino"><span>Pepino</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Beterraba"><span>Beterraba</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Palmito"><span>Palmito</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cogumelos"><span>Cogumelos (+R$4)</span></label>
-                        </div>
-                    </div>
-                    <div class="categoria-menu">
-                        <h4>4. Folhas</h4>
-                        <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Mix de Alface"><span>Alface</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Rúcula"><span>Rúcula</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Repolho"><span>Repolho</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Acelga"><span>Acelga</span></label>
-                        </div>
-                    </div>
-                    <div class="categoria-menu">
-                        <h4>5. Toques & Molhos</h4>
-                        <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Linhaça"><span>Linhaça</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Gergelim"><span>Gergelim</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Chia"><span>Chia</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Nozes"><span>Nozes (+R$4)</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Castanha"><span>Castanha (+R$4)</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Mostarda e Mel"><span>Mostarda/Mel</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Rosé"><span>Rosé</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Iogurte"><span>Iogurte</span></label>
-                        </div>
-                    </div>
+                <label style="font-size: 11px; font-weight: 800; color: var(--primaria); display: block; margin: 10px 0;">4. FOLHAS</label>
+                <div class="grid-ingredientes">
+                    <label class="check-btn"><input type="checkbox" class="chk-folha" value="Alface"><span>Alface</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-folha" value="Rúcula"><span>Rúcula</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-folha" value="Repolho"><span>Repolho</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-folha" value="Acelga"><span>Acelga</span></label>
                 </div>
 
-                <div class="rodape-pdv">
-                    <button class="btn-add-item" onclick="adicionarItemCesta()">🛒 Adicionar Copo ao Pedido</button>
-                    
-                    <div id="carrinho-area" class="carrinho-area" style="display: none;">
-                        <div class="carrinho-titulo">
-                            <span>Itens no Pedido:</span>
-                            <span id="contador-carrinho">0</span>
-                        </div>
-                        <div id="lista-carrinho"></div>
-                    </div>
-
-                    <div class="dados-cliente" style="margin-top: 15px;">
-                        <div class="input-group">
-                            <label>Pagamento</label>
-                            <select id="pagamento">
-                                <option value="Pendente">⚠️ Cobrar na Entrega</option>
-                                <option value="Pago">✅ Já Pago</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Agendar Horário</label>
-                            <input type="time" id="horarioEntrega">
-                        </div>
-                    </div>
-                    
-                    <div class="dados-cliente">
-                        <div class="input-group" style="flex: 2;">
-                            <label>Obs. do Pedido</label>
-                            <input type="text" id="observacao" placeholder="Ex: Troco p/ 50..." autocomplete="off">
-                        </div>
-                        <div class="input-group" style="flex: 0 0 auto; display: flex; align-items: flex-end;">
-                            <div class="checkbox-btn-wrapper">
-                                <input type="checkbox" id="prioridade">
-                                <label for="prioridade">🔥 URGENTE</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 10px; flex-direction: column;">
-                        <button class="btn-resumo-zap" onclick="enviarResumoZap()">💬 Enviar Resumo p/ Conferência</button>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn-cancelar" id="btn-cancelar-edicao" onclick="cancelarEdicao()">❌ Cancelar</button>
-                            <button class="btn-finalizar" id="btn-finalizar" onclick="enviarPedidoCompleto()">✅ Finalizar Pedido</button>
-                        </div>
-                    </div>
+                <label style="font-size: 11px; font-weight: 800; color: var(--primaria); display: block; margin: 10px 0;">5. MOLHOS E TOQUES</label>
+                <div class="grid-ingredientes">
+                    <label class="check-btn"><input type="checkbox" class="chk-molho" value="Mostarda/Mel"><span>Mostarda/Mel</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-molho" value="Rosé"><span>Rosé</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-molho" value="Iogurte"><span>Iogurte</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-toque" value="Nozes"><span>Nozes (+R$4)</span></label>
+                    <label class="check-btn"><input type="checkbox" class="chk-toque" value="Castanha"><span>Castanha (+R$4)</span></label>
                 </div>
+            </details>
+
+            <button class="btn btn-outline" style="width: 100%; margin-bottom: 15px;" onclick="addCarrinho()">🛒 Adicionar Copo ao Pedido</button>
+
+            <div id="carrinho-display" style="display:none; background: var(--bg-input); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                <h4 style="margin:0 0 10px 0; font-size:13px; color:var(--texto-titulo);">Itens no Pedido: <span id="cart-count">0</span></h4>
+                <div id="cart-list"></div>
+            </div>
+
+            <div class="input-group">
+                <label>Pagamento</label>
+                <select class="form-control" id="pagamento">
+                    <option value="Pendente">⚠️ Cobrar na Entrega</option>
+                    <option value="Pago">✅ Já Pago (PIX)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Observação / Troco</label>
+                <input type="text" class="form-control" id="obs" placeholder="Ex: Troco para 50...">
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                <label class="check-btn" style="flex:1">
+                    <input type="checkbox" id="prioridade">
+                    <span style="color: var(--vermelho); border-color: var(--vermelho);">🔥 URGENTE</span>
+                </label>
+                <input type="time" class="form-control" id="horario" style="flex:1">
+            </div>
+
+            <button class="btn btn-whatsapp" style="width: 100%; margin-bottom: 10px;" onclick="enviarResumo()">💬 Enviar Resumo p/ Cliente</button>
+            
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-danger" id="btn-cancelar" style="display: none; flex: 1;" onclick="cancelarEdicao()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-finalizar" style="flex: 1;" onclick="finalizarPedido()">✅ Lançar Pedido</button>
             </div>
         </div>
-
-        <div id="view-entregas" class="view-section">
-            <div class="kanban-board">
-                <div class="kanban-col" id="col-novos"><h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3></div>
-                <div class="kanban-col" id="col-preparo"><h3>🟡 Montando <span class="badge-qtd" id="qtd-preparo">0</span></h3></div>
-                <div class="kanban-col" id="col-rota"><h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3></div>
-                <div class="kanban-col" id="col-entregue"><h3>🟢 Entregues <span class="badge-qtd" id="qtd-entregue">0</span></h3></div>
-            </div>
-        </div>
-
-        <div id="view-financeiro" class="view-section">
-            <div class="pdv-container">
-                <h3 class="pdv-titulo">💰 Fechamento de Caixa</h3>
-                <div class="card-resumo-dia">
-                    <h2 id="titulo-dia-atual">HOJE (---)</h2>
-                    <div class="valor-total" id="total-dia-hoje">R$ 0,00</div>
-                    <div class="detalhes-dia">
-                        <span id="qtd-pedidos-hoje">0 Pedidos</span>
-                        <span>•</span>
-                        <span id="qtd-itens-hoje">0 Copos</span>
-                    </div>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table class="tabela-historico">
-                        <thead>
-                            <tr><th>Data</th><th>Pedidos</th><th>Total</th></tr>
-                        </thead>
-                        <tbody id="tabela-historico-body"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-compras" class="view-section">
-            <div class="pdv-container lista-compras-container">
-                <h3 class="pdv-titulo">🛒 Compras</h3>
-                <div class="add-item-row">
-                    <input type="text" id="novo-item-compra" placeholder="Ex: Comprar Morangos...">
-                    <button class="btn-add-shop" onclick="adicionarItemCompra()">+</button>
-                </div>
-                <div id="lista-itens-compras"></div>
-            </div>
-        </div>
-
     </div>
 
-    <nav class="bottom-nav">
-        <button class="nav-item ativa" id="tab-lancamento" onclick="mudarAba('view-lancamento', 'tab-lancamento')">
-            <span>📝</span>
-            <span>Novo</span>
-        </button>
-        <button class="nav-item" id="tab-entregas" onclick="mudarAba('view-entregas', 'tab-entregas')">
-            <span>🛵</span>
-            <span>Entregas</span>
-        </button>
-        <button class="nav-item" id="tab-financeiro" onclick="mudarAba('view-financeiro', 'tab-financeiro')">
-            <span>💰</span>
-            <span>Caixa</span>
-        </button>
-        <button class="nav-item" id="tab-compras" onclick="mudarAba('view-compras', 'tab-compras')">
-            <span>🛒</span>
-            <span>Lista</span>
-        </button>
-    </nav>
+    <div id="view-entregas" class="view-section">
+        <div class="kanban-wrapper">
+            <div class="kanban-col" id="col-novos">
+                <div class="col-header">🔴 Fila <span class="badge-count" id="count-novos">0</span></div>
+                <div id="list-novos"></div>
+            </div>
+            <div class="kanban-col" id="col-preparo">
+                <div class="col-header">🟡 Montando <span class="badge-count" id="count-preparo">0</span></div>
+                <div id="list-preparo"></div>
+            </div>
+            <div class="kanban-col" id="col-rota">
+                <div class="col-header">🔵 Rota <span class="badge-count" id="count-rota">0</span></div>
+                <div id="list-rota"></div>
+            </div>
+            <div class="kanban-col" id="col-entregue">
+                <div class="col-header">🟢 Entregues <span class="badge-count" id="count-entregue">0</span></div>
+                <div id="list-entregue"></div>
+            </div>
+        </div>
+    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue, push, set, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCL5banCYijxDHRGxQcDZOmnUnHaS_8Omg",
-            authDomain: "isa-no-copo-pdv.firebaseapp.com",
-            databaseURL: "https://isa-no-copo-pdv-default-rtdb.firebaseio.com",
-            projectId: "isa-no-copo-pdv",
-            storageBucket: "isa-no-copo-pdv.firebasestorage.app",
-            messagingSenderId: "386835506265",
-            appId: "1:386835506265:web:154cafa56da36ca14afd48"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        let estadoCartoes = {}; 
-        let contadorComanda = 1;
-        let tipoEntregaAtual = 'entrega';
-        let cestaDePedidos = [];
-        let pedidoEmEdicaoId = null;
-        let pedidosCache = {}; 
-
-        // FIREBASE: Compras
-        onValue(ref(db, 'compras'), (snapshot) => {
-            const listaDiv = document.getElementById('lista-itens-compras');
-            listaDiv.innerHTML = '';
-            const itens = snapshot.val();
-            if(itens) {
-                Object.entries(itens).forEach(([key, item]) => {
-                    const classeComprado = item.comprado ? 'comprado' : '';
-                    const checkIcon = item.comprado ? '✔️' : '';
-                    const html = `
-                        <div class="item-compra ${classeComprado}">
-                            <div style="display:flex; align-items:center; flex:1;">
-                                <button class="btn-check-compra" onclick="toggleCompra('${key}', ${item.comprado})">${checkIcon}</button>
-                                <span>${item.nome}</span>
-                            </div>
-                            <button class="btn-del-compra" style="border:none; color:red; cursor:pointer;" onclick="deletarCompra('${key}')">✕</button>
-                        </div>`;
-                    listaDiv.innerHTML += html;
-                });
-            } else { listaDiv.innerHTML = '<p style="text-align:center; color:#999;">Lista vazia!</p>'; }
-        });
-
-        // CALCULO DE PREÇO (Item individual)
-        function calcularValorItem(item) {
-            let total = 0;
-            if(item.tamanho.includes('750')) total += 22.00; else total += 17.00;
-            if(item.toque) {
-                if(item.toque.includes('Nozes')) total += 4.00;
-                if(item.toque.includes('Castanha')) total += 4.00;
-            }
-            if(item.croc && item.croc.includes('Cogumelos')) total += 4.00;
-            return total;
-        }
-
-        function calcularValorTotalPedido(itens, tipoEntrega) {
-            let total = 0;
-            if(tipoEntrega === 'entrega') total += 4.00;
-            if(itens && Array.isArray(itens)) {
-                itens.forEach(item => total += calcularValorItem(item));
-            }
-            return total;
-        }
-
-        // FIREBASE: Pedidos e Financeiro
-        onValue(ref(db, 'contador'), (snapshot) => { contadorComanda = snapshot.val() || 1; });
-
-        onValue(ref(db, 'pedidos'), (snapshot) => {
-            pedidosCache = snapshot.val() || {}; 
-            
-            // --- ATUALIZAÇÃO DO KANBAN ---
-            let qtd = { 'col-novos': 0, 'col-preparo': 0, 'col-rota': 0, 'col-entregue': 0 };
-            document.getElementById('col-novos').innerHTML = `<h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3>`;
-            document.getElementById('col-preparo').innerHTML = `<h3>🟡 Montando <span class="badge-qtd" id="qtd-preparo">0</span></h3>`;
-            document.getElementById('col-rota').innerHTML = `<h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3>`;
-            document.getElementById('col-entregue').innerHTML = `<h3>🟢 Entregues <span class="badge-qtd" id="qtd-entregue">0</span></h3>`;
-
-            const historico = {};
-            const hojeStr = new Date().toLocaleDateString('pt-BR');
-
-            if (pedidosCache) {
-                Object.entries(pedidosCache).forEach(([chaveBanco, ped]) => {
-                    qtd[ped.status]++; 
-                    renderizarCartao(chaveBanco, ped);
-
-                    // FINANCEIRO
-                    const dataPedido = ped.timestamp ? new Date(ped.timestamp).toLocaleDateString('pt-BR') : hojeStr;
-                    if(!historico[dataPedido]) {
-                        historico[dataPedido] = { total: 0, qtdPedidos: 0, qtdItens: 0 };
-                    }
-                    
-                    // Normaliza lista de itens
-                    const listaItens = (ped.itens && Array.isArray(ped.itens)) ? ped.itens : [
-                        { tamanho: ped.tamanho, base: ped.base, prot: ped.prot, croc: ped.croc, folha: ped.folha, toque: ped.toque, molho: ped.molho }
-                    ];
-
-                    const valorPed = calcularValorTotalPedido(listaItens, ped.tipoEntrega);
-                    const numItens = listaItens.length;
-
-                    historico[dataPedido].total += valorPed;
-                    historico[dataPedido].qtdPedidos += 1;
-                    historico[dataPedido].qtdItens += numItens;
-                });
-            }
-            Object.keys(qtd).forEach(k => document.getElementById(k.replace('col','qtd')).innerText = qtd[k]);
-
-            // --- RENDERIZA FINANCEIRO ---
-            const dadosHoje = historico[hojeStr] || { total: 0, qtdPedidos: 0, qtdItens: 0 };
-            document.getElementById('titulo-dia-atual').innerText = `HOJE (${hojeStr})`;
-            document.getElementById('total-dia-hoje').innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(dadosHoje.total);
-            document.getElementById('qtd-pedidos-hoje').innerText = `${dadosHoje.qtdPedidos} Pedidos`;
-            document.getElementById('qtd-itens-hoje').innerText = `${dadosHoje.qtdItens} Copos`;
-
-            const tabelaBody = document.getElementById('tabela-historico-body');
-            tabelaBody.innerHTML = '';
-            
-            Object.keys(historico).sort((a,b) => {
-                const da = a.split('/').reverse().join('');
-                const db = b.split('/').reverse().join('');
-                return db.localeCompare(da);
-            }).forEach(data => {
-                if(data === hojeStr) return; 
-                const d = historico[data];
-                const linha = `<tr><td>${data}</td><td>${d.qtdPedidos} ped <small>(${d.qtdItens} copos)</small></td><td class="valor-linha">${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(d.total)}</td></tr>`;
-                tabelaBody.innerHTML += linha;
-            });
-        });
-
-        // FUNÇÃO RENDERIZAR CARTÃO
-        function renderizarCartao(chaveBanco, ped) {
-            let linhaEndereco = '', linkMapaHTML = '', tagLocal = '';
-            if (ped.tipoEntrega === 'retirada') {
-                tagLocal = `<span class="retirada-tag">🏃 RETIRADA</span>`;
-                linhaEndereco = `<p style="color:var(--azul); font-weight:bold;">Cliente retira no balcão</p>`;
-            } else {
-                tagLocal = `<span class="bairro-tag">📍 ${ped.bairro}</span>`;
-                linhaEndereco = `<p><strong>End:</strong> ${ped.endereco}</p>`;
-                const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
-                linkMapaHTML = `<a href="https://www.google.com/maps/search/?api=1&query=${enderecoBusca}" target="_blank" class="btn-link btn-mapa">🗺️ Maps</a>`;
-            }
-
-            let tagsExtras = '';
-            let classePrioridade = '';
-            if(ped.prioridade) { tagsExtras += `<span class="prioridade-tag">🔥 URGENTE</span> `; classePrioridade = 'prioridade'; }
-            if(ped.horarioEntrega) { tagsExtras += `<span class="horario-tag">⏰ ${ped.horarioEntrega}</span> `; }
-
-            let btnWhatsHTML = '';
-            if(ped.telefone && ped.telefone.length >= 14) {
-                const numLimpo = ped.telefone.replace(/\D/g, '');
-                let textoMsg = `Olá ${ped.nome}! Seu pedido está pronto!`;
-                const linkWhats = `https://wa.me/55${numLimpo}?text=${encodeURIComponent(textoMsg)}`;
-                const displayWhats = (ped.status === 'col-rota') ? 'flex' : 'none';
-                btnWhatsHTML = `<a href="${linkWhats}" target="_blank" class="btn-link btn-whats" style="display: ${displayWhats};">💬 Avisar</a>`;
-            }
-
-            let btnMoverHTML = '', btnVoltarHTML = '', corBorda = '', minimizarPadrao = false;
-
-            if(ped.status === 'col-novos') {
-                btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-preparo')">Avançar Etapa ➔</button>`;
-                corBorda = 'var(--laranja)';
-            } else if (ped.status === 'col-preparo') {
-                btnVoltarHTML = `<button class="btn-voltar" onclick="moverPedido('${chaveBanco}', 'col-novos')" title="Voltar">⬅️</button>`;
-                const textoBotao = ped.tipoEntrega === 'retirada' ? 'Pronto p/ Retirada ➔' : 'Saiu p/ Entrega ➔';
-                btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-rota')">${textoBotao}</button>`;
-                corBorda = 'var(--laranja)';
-                minimizarPadrao = true;
-            } else if (ped.status === 'col-rota') {
-                btnVoltarHTML = `<button class="btn-voltar" onclick="moverPedido('${chaveBanco}', 'col-preparo')" title="Voltar">⬅️</button>`;
-                btnMoverHTML = `<button class="btn-mover" style="background: var(--primaria); color: white;" onclick="moverPedido('${chaveBanco}', 'col-entregue')">Finalizar ✔️</button>`;
-                corBorda = 'var(--azul)';
-                minimizarPadrao = false; 
-            } else if (ped.status === 'col-entregue') {
-                btnVoltarHTML = `<button class="btn-voltar" onclick="moverPedido('${chaveBanco}', 'col-rota')" title="Voltar">⬅️</button>`;
-                corBorda = 'var(--primaria)';
-                minimizarPadrao = true;
-            }
-
-            let classeMinimizado = minimizarPadrao ? 'minimizado' : '';
-            if (estadoCartoes[chaveBanco] === 'aberto') classeMinimizado = '';
-            if (estadoCartoes[chaveBanco] === 'fechado') classeMinimizado = 'minimizado';
-            let opacidade = (ped.status === 'col-entregue') ? '0.5' : '1';
-
-            // Normaliza lista para calculo e display
-            const listaItens = (ped.itens && Array.isArray(ped.itens)) ? ped.itens : [
-                { tamanho: ped.tamanho, base: ped.base, prot: ped.prot, croc: ped.croc, folha: ped.folha, toque: ped.toque, molho: ped.molho }
-            ];
-
-            const valorTotal = calcularValorTotalPedido(listaItens, ped.tipoEntrega);
-            const badgePagamentoHTML = ped.pagamento === 'Pago' ? `<span class="badge-pago">✅ Pago (R$ ${valorTotal})</span>` : `<span class="badge-pendente">⚠️ R$ ${valorTotal}</span>`;
-            const obsHTML = ped.observacao ? `<div class="obs-destaque">📌 ${ped.observacao}</div>` : '';
-
-            let itensHTML = '';
-            listaItens.forEach((item, index) => {
-                itensHTML += `<div class="item-resumo"><span class="titulo-item">Item ${index+1}: ${item.tamanho}</span><span>${item.base} | ${item.prot} | ${item.croc}</span><span>${item.folha} | ${item.molho} | ${item.toque}</span></div>`;
-            });
-
-            const displayAcoes = 'flex'; 
-
-            const cardHTML = `
-                <div class="pedido-card ${classeMinimizado} ${classePrioridade}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
-                    <div class="card-topo" onclick="toggleMinimizar('${chaveBanco}')">
-                        <div style="display: flex; align-items: center;">
-                            <span class="id-pedido">#${ped.numero}</span>
-                            <div>
-                                ${tagLocal} ${tagsExtras}
-                                <h4>${ped.nome} (${listaItens.length} Itens)</h4>
-                            </div>
-                        </div>
-                        <span class="icone-toggle">▼</span>
-                    </div>
-                    
-                    <div class="card-detalhes">
-                        <div class="badges-pagamento">${badgePagamentoHTML}</div>
-                        ${ped.telefone ? `<p><strong>Tel:</strong> ${ped.telefone}</p>` : ''}
-                        ${obsHTML}
-                        <div class="lista-montagem">${itensHTML}</div>
-                        ${linhaEndereco}
-                        <div class="grid-botoes-contato">${linkMapaHTML}${btnWhatsHTML}</div>
-                    </div>
-
-                    <div class="acoes-card" style="display: ${displayAcoes}">
-                        ${btnVoltarHTML}
-                        ${btnMoverHTML}
-                        <button class="btn-editar" onclick="editarPedido('${chaveBanco}')" title="Editar">✏️</button>
-                        <button class="btn-remover" onclick="removerPedido('${chaveBanco}')">🗑️</button>
-                    </div>
-                    ${ped.status === 'col-entregue' ? `<button class="btn-remover" style="margin-top:10px; width: 100%;" onclick="removerPedido('${chaveBanco}')">🗑️ Limpar do Quadro</button>` : ''}
-                </div>
-            `;
-            document.getElementById(ped.status).innerHTML += cardHTML;
-        }
-
-        // --- FUNÇÕES DE CARRINHO ---
-        window.adicionarItemCesta = function() {
-            const tamanho = document.getElementById('tamanho').value;
-            const pegar = (cls) => { const m = Array.from(document.querySelectorAll('.'+cls+':checked')); return m.length===0?'Nenhum':m.map(c=>c.value).join(', '); };
-            
-            const item = {
-                tamanho: tamanho,
-                base: pegar('chk-base'), prot: pegar('chk-prot'), croc: pegar('chk-croc'),
-                folha: pegar('chk-folha'), toque: pegar('chk-toque'), molho: pegar('chk-molho')
-            };
-
-            cestaDePedidos.push(item);
-            atualizarVisualCarrinho();
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => { if(!cb.id.includes('prioridade')) cb.checked = false; });
-            document.getElementById('tamanho').value = 'Copo 550ml';
-            
-            const btn = document.querySelector('.btn-add-item');
-            const txt = btn.innerHTML;
-            btn.innerHTML = "Item Adicionado!";
-            setTimeout(() => btn.innerHTML = txt, 1000);
-        };
-
-        function atualizarVisualCarrinho() {
-            const area = document.getElementById('carrinho-area');
-            const lista = document.getElementById('lista-carrinho');
-            const btn = document.getElementById('btn-finalizar');
-            const contador = document.getElementById('contador-carrinho');
-            
-            lista.innerHTML = '';
-            contador.innerText = cestaDePedidos.length;
-
-            if(cestaDePedidos.length > 0) {
-                area.style.display = 'block';
-                btn.classList.add('ativo');
-                
-                if(pedidoEmEdicaoId) {
-                     btn.innerHTML = `💾 Salvar Alterações (${cestaDePedidos.length} Itens)`;
-                     btn.classList.add('btn-salvar-edicao');
-                } else {
-                     btn.innerHTML = `✅ Finalizar Pedido (${cestaDePedidos.length} Itens)`;
-                     btn.classList.remove('btn-salvar-edicao');
-                }
-                
-                cestaDePedidos.forEach((item, idx) => {
-                    const valorItem = calcularValorItem(item);
-                    lista.innerHTML += `
-                        <div class="item-carrinho">
-                            <span><strong>${idx+1}.</strong> ${item.tamanho} (R$ ${valorItem})</span>
-                            <button class="btn-rm-item" onclick="removerItemCesta(${idx})">✕</button>
-                        </div>
-                    `;
-                });
-            } else {
-                area.style.display = 'none';
-                btn.classList.remove('ativo');
-            }
-        }
-
-        window.removerItemCesta = function(index) {
-            cestaDePedidos.splice(index, 1);
-            atualizarVisualCarrinho();
-        };
-
-        // --- ENVIAR RESUMO WHATSAPP ---
-        window.enviarResumoZap = function() {
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const bairro = document.getElementById('bairro').value;
-            const endereco = document.getElementById('endereco').value;
-            const pagamento = document.getElementById('pagamento').value;
-            const obs = document.getElementById('observacao').value;
-
-            if(!nome) return alert("Preencha o nome do cliente!");
-            if(cestaDePedidos.length === 0) return alert("Adicione itens ao carrinho primeiro!");
-            if(!telefone || telefone.length < 14) return alert("Preencha o WhatsApp do cliente para enviar!");
-
-            let msg = `*🧾 CONFERÊNCIA - ÍSA NO COPO*\n`;
-            msg += `------------------------------\n`;
-            msg += `*Cliente:* ${nome}\n\n`;
-            
-            cestaDePedidos.forEach((item, idx) => {
-                msg += `*Item ${idx+1}:* ${item.tamanho}\n`;
-                msg += `Base: ${item.base}\n`;
-                msg += `Prot: ${item.prot}\n`;
-                msg += `Croc: ${item.croc}\n`;
-                msg += `Folhas: ${item.folha}\n`;
-                msg += `Toque: ${item.toque}\n`;
-                msg += `Molho: ${item.molho}\n`;
-                msg += `------------------------------\n`;
-            });
-
-            const total = calcularValorTotalPedido(cestaDePedidos, tipoEntregaAtual);
-            
-            msg += `*Tipo:* ${tipoEntregaAtual === 'entrega' ? '🛵 Entrega' : '🏃 Retirada'}\n`;
-            if(tipoEntregaAtual === 'entrega') msg += `*End:* ${endereco}, ${bairro}\n`;
-            if(obs) msg += `*Obs:* ${obs}\n`;
-            msg += `*Pagamento:* ${pagamento}\n\n`;
-            msg += `*TOTAL A PAGAR: R$ ${total},00*\n\n`;
-            msg += `Confere se está tudo certinho?`;
-
-            const numLimpo = telefone.replace(/\D/g, '');
-            window.open(`https://wa.me/55${numLimpo}?text=${encodeURIComponent(msg)}`, '_blank');
-        };
-
-        // --- FUNÇÃO PRINCIPAL: ENVIAR/ATUALIZAR ---
-        window.enviarPedidoCompleto = function() {
-            const nome = document.getElementById('nome').value;
-            const telefone = document.getElementById('telefone').value;
-            const bairro = document.getElementById('bairro').value;
-            const endereco = document.getElementById('endereco').value;
-            const pagamento = document.getElementById('pagamento').value;
-            const observacao = document.getElementById('observacao').value;
-            const prioridade = document.getElementById('prioridade').checked;
-            const horarioEntrega = document.getElementById('horarioEntrega').value;
-
-            if(!nome) { alert("Nome obrigatório!"); return; }
-            if(tipoEntregaAtual === 'entrega' && (!bairro || !endereco)) { alert("Endereço obrigatório!"); return; }
-            if(cestaDePedidos.length === 0) { alert("Adicione pelo menos um copo!"); return; }
-
-            const dadosPedido = {
-                nome, telefone, bairro, endereco, pagamento, observacao, prioridade, horarioEntrega,
-                tipoEntrega: tipoEntregaAtual,
-                itens: cestaDePedidos,
-                status: 'col-novos', 
-                timestamp: Date.now()
-            };
-
-            if (pedidoEmEdicaoId) {
-                dadosPedido.numero = pedidosCache[pedidoEmEdicaoId].numero;
-                dadosPedido.status = pedidosCache[pedidoEmEdicaoId].status; 
-                update(ref(db, 'pedidos/' + pedidoEmEdicaoId), dadosPedido);
-                alert("Pedido atualizado com sucesso!");
-                cancelarEdicao(); 
-            } else {
-                dadosPedido.numero = contadorComanda;
-                push(ref(db, 'pedidos'), dadosPedido);
-                set(ref(db, 'contador'), contadorComanda + 1);
-                limparFormularioCompleto();
-            }
-        };
-
-        // --- LÓGICA DE EDIÇÃO ---
-        window.editarPedido = function(id) {
-            const ped = pedidosCache[id];
-            if(!ped) return;
-
-            pedidoEmEdicaoId = id; 
-
-            document.getElementById('nome').value = ped.nome;
-            document.getElementById('telefone').value = ped.telefone || '';
-            document.getElementById('observacao').value = ped.observacao || '';
-            document.getElementById('pagamento').value = ped.pagamento || 'Pendente';
-            document.getElementById('prioridade').checked = ped.prioridade || false;
-            document.getElementById('horarioEntrega').value = ped.horarioEntrega || '';
-            
-            setTipoEntrega(ped.tipoEntrega || 'entrega');
-            if(ped.tipoEntrega !== 'retirada') {
-                document.getElementById('bairro').value = ped.bairro;
-                document.getElementById('endereco').value = ped.endereco;
-            }
-
-            if(ped.itens && Array.isArray(ped.itens)) {
-                cestaDePedidos = [...ped.itens]; 
-            } else {
-                cestaDePedidos = [{
-                    tamanho: ped.tamanho, base: ped.base, prot: ped.prot, croc: ped.croc,
-                    folha: ped.folha, toque: ped.toque, molho: ped.molho
-                }];
-            }
-            atualizarVisualCarrinho();
-
-            document.getElementById('aviso-edicao').classList.add('ativo');
-            document.getElementById('btn-cancelar-edicao').style.display = 'block';
-            window.mudarAba('view-lancamento', 'tab-lancamento'); 
-            window.scrollTo(0,0);
-        };
-
-        window.cancelarEdicao = function() {
-            pedidoEmEdicaoId = null;
-            document.getElementById('aviso-edicao').classList.remove('ativo');
-            document.getElementById('btn-cancelar-edicao').style.display = 'none';
-            limparFormularioCompleto();
-            atualizarVisualCarrinho(); 
-        };
-
-        function limparFormularioCompleto() {
-            document.getElementById('nome').value = ''; 
-            document.getElementById('telefone').value = '';
-            document.getElementById('observacao').value = '';
-            document.getElementById('prioridade').checked = false;
-            document.getElementById('horarioEntrega').value = '';
-
-            if(tipoEntregaAtual === 'entrega') { document.getElementById('bairro').value = ''; document.getElementById('endereco').value = ''; }
-            cestaDePedidos = [];
-            atualizarVisualCarrinho();
-        }
-
-        // --- FUNÇÕES GERAIS ---
-        window.adicionarItemCompra = function() {
-            const input = document.getElementById('novo-item-compra');
-            if(!input.value) return;
-            push(ref(db, 'compras'), { nome: input.value, comprado: false });
-            input.value = ''; input.focus();
-        };
-        window.toggleCompra = (k, v) => update(ref(db, 'compras/' + k), { comprado: !v });
-        window.deletarCompra = (k) => remove(ref(db, 'compras/' + k));
-
-        window.setTipoEntrega = function(tipo) {
-            tipoEntregaAtual = tipo;
-            const camposEnd = document.querySelectorAll('.grupo-endereco');
-            if(tipo === 'retirada') {
-                document.getElementById('btn-retirada').classList.add('ativo');
-                document.getElementById('btn-entrega').classList.remove('ativo');
-                camposEnd.forEach(el => el.style.display = 'none');
-                document.getElementById('bairro').value = 'Balcão'; document.getElementById('endereco').value = 'Retirada'; 
-            } else {
-                document.getElementById('btn-entrega').classList.add('ativo');
-                document.getElementById('btn-retirada').classList.remove('ativo');
-                camposEnd.forEach(el => el.style.display = 'flex');
-                if(!pedidoEmEdicaoId) { 
-                    document.getElementById('bairro').value = ''; document.getElementById('endereco').value = '';
-                }
-            }
-        };
-
-        window.moverPedido = (id, s) => { update(ref(db, 'pedidos/'+id), {status:s}); if(s==='col-rota') delete estadoCartoes[id]; };
-        window.removerPedido = (id) => { if(confirm("Excluir este pedido?")) remove(ref(db, 'pedidos/'+id)); };
+    <div id="view-financeiro" class="view-section ativa-pc">
+        <div class="card-box" style="background: var(--gradiente); color: white; text-align: center;">
+            <h2 style="font-size: 14px; opacity: 0.9; margin: 0;">CAIXA HOJE</h2>
+            <div style="font-size: 42px; font-weight: 800; margin: 10px 0;" id="valor-hoje">R$ 0,00</div>
+            <div style="display: flex; justify-content: center; gap: 15px; font-size: 13px;">
+                <span id="qtd-hoje">0 Pedidos</span> • <span id="itens-hoje">0 Itens</span>
+            </div>
+        </div>
         
-        window.zerarPainel = () => { 
-            const senha = prompt("🔒 Digite a senha para FINALIZAR O DIA (Apaga todos os pedidos):");
-            if(senha === '140520') {
-                set(ref(db, 'pedidos'), null); 
-                set(ref(db, 'contador'), 1);
-                alert("Dia finalizado com sucesso!");
-            } else if (senha !== null) {
-                alert("⛔ Senha incorreta!");
+        <div class="card-box">
+            <h3 class="card-title">Histórico Recente</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                <thead style="text-align: left; font-size: 12px; color: var(--texto-suave);">
+                    <tr><th style="padding-bottom:10px;">DATA</th><th>PEDIDOS</th><th>TOTAL</th></tr>
+                </thead>
+                <tbody id="lista-historico" style="font-size: 14px;"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="view-compras" class="view-section ativa-pc">
+        <div class="card-box">
+            <div class="card-header"><h3 class="card-title">🛒 Lista de Compras</h3></div>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <input type="text" class="form-control" id="novo-compra" placeholder="Item faltando...">
+                <button class="btn btn-primary" style="width: auto;" onclick="addCompra()">+</button>
+            </div>
+            <div id="lista-compras"></div>
+        </div>
+    </div>
+
+    <div id="view-config" class="view-section">
+        <div class="card-box">
+            <div class="card-header"><h3 class="card-title">⚙️ Ajustes do App</h3></div>
+            
+            <div class="input-group">
+                <label>Nome da Loja</label>
+                <input type="text" class="form-control" id="cfg-nome-loja" value="Ísa no Copo" oninput="salvarConfig()">
+            </div>
+
+            <div class="input-group">
+                <label>Cor do Tema</label>
+                <div class="color-picker">
+                    <div class="color-option" style="background: #10b981;" onclick="setTheme(150)"></div> <div class="color-option" style="background: #ec4899;" onclick="setTheme(330)"></div> <div class="color-option" style="background: #8b5cf6;" onclick="setTheme(260)"></div> <div class="color-option" style="background: #3b82f6;" onclick="setTheme(210)"></div> <div class="color-option" style="background: #f97316;" onclick="setTheme(25)"></div>  </div>
+            </div>
+
+            <div class="input-group">
+                <label>Modo Escuro</label>
+                <button class="btn btn-outline" style="width: 100%; justify-content: space-between;" onclick="toggleDark()">
+                    <span>Alternar Claro/Escuro</span> <span>🌓</span>
+                </button>
+            </div>
+
+            <hr style="border:0; border-top:1px solid var(--borda); margin: 20px 0;">
+            
+            <button class="btn btn-danger" style="width: 100%;" onclick="zerarPainel()">🗑️ LIMPAR DADOS DO DIA (Requer Senha)</button>
+        </div>
+    </div>
+
+</div>
+
+<nav class="bottom-nav">
+    <button class="nav-btn active" id="tab-lancamento" onclick="mudarAba('view-lancamento', 'tab-lancamento')">📝<span>Novo</span></button>
+    <button class="nav-btn" id="tab-entregas" onclick="mudarAba('view-entregas', 'tab-entregas')">🛵<span>Entregas</span></button>
+    <button class="nav-btn" id="tab-financeiro" onclick="mudarAba('view-financeiro', 'tab-financeiro')">💰<span>Caixa</span></button>
+    <button class="nav-btn" id="tab-compras" onclick="mudarAba('view-compras', 'tab-compras')">🛒<span>Lista</span></button>
+</nav>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, push, set, update, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCL5banCYijxDHRGxQcDZOmnUnHaS_8Omg",
+        authDomain: "isa-no-copo-pdv.firebaseapp.com",
+        databaseURL: "https://isa-no-copo-pdv-default-rtdb.firebaseio.com",
+        projectId: "isa-no-copo-pdv",
+        storageBucket: "isa-no-copo-pdv.firebasestorage.app",
+        messagingSenderId: "386835506265",
+        appId: "1:386835506265:web:154cafa56da36ca14afd48"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // ESTADO LOCAL
+    let carrinho = [];
+    let editandoId = null;
+    let dadosCache = {};
+    let contador = 1;
+    let tipoEntrega = 'entrega';
+
+    // --- SETUP VISUAL ---
+    window.setTheme = (hue) => {
+        document.documentElement.style.setProperty('--hue', hue);
+        localStorage.setItem('isaHue', hue);
+    };
+    const savedHue = localStorage.getItem('isaHue');
+    if(savedHue) window.setTheme(savedHue);
+
+    window.toggleDark = () => {
+        const body = document.body;
+        if(body.getAttribute('data-theme') === 'dark') {
+            body.removeAttribute('data-theme'); localStorage.setItem('isaDark', 'light');
+        } else {
+            body.setAttribute('data-theme', 'dark'); localStorage.setItem('isaDark', 'dark');
+        }
+    };
+    if(localStorage.getItem('isaDark') === 'dark') document.body.setAttribute('data-theme', 'dark');
+
+    window.mudarAba = (viewId, tabId) => {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('ativa'));
+        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+        // Se for PC, algumas abas não somem
+        if(window.innerWidth < 1024) {
+            document.getElementById(viewId).classList.add('ativa');
+        } else {
+            // Lógica PC: Se clicar em financeiro ou compras, abre o modal ou rola
+            document.getElementById(viewId).classList.add('ativa'); // Simplificado
+        }
+        if(tabId) document.getElementById(tabId).classList.add('active');
+    };
+
+    window.setTipo = (tipo) => {
+        tipoEntrega = tipo;
+        document.getElementById('btn-entrega').className = tipo === 'entrega' ? 'toggle-btn active' : 'toggle-btn';
+        document.getElementById('btn-retirada').className = tipo === 'retirada' ? 'toggle-btn active' : 'toggle-btn';
+        document.getElementById('area-endereco').style.display = tipo === 'entrega' ? 'block' : 'none';
+        if(tipo === 'retirada') { document.getElementById('bairro').value = 'Balcão'; document.getElementById('endereco').value = 'Retirada'; }
+        else { if(!editandoId) { document.getElementById('bairro').value = ''; document.getElementById('endereco').value = ''; } }
+    };
+
+    window.salvarConfig = () => {
+        const nome = document.getElementById('cfg-nome-loja').value;
+        document.getElementById('nome-loja-header').innerText = "🥗 " + nome;
+        localStorage.setItem('isaNomeLoja', nome);
+    };
+    const savedName = localStorage.getItem('isaNomeLoja');
+    if(savedName) { document.getElementById('cfg-nome-loja').value = savedName; salvarConfig(); }
+
+
+    // --- LÓGICA DE PEDIDOS ---
+    
+    // Ler Contador
+    onValue(ref(db, 'contador'), (snap) => contador = snap.val() || 1);
+
+    // Ler Pedidos e Renderizar Tudo
+    onValue(ref(db, 'pedidos'), (snapshot) => {
+        dadosCache = snapshot.val() || {};
+        renderizarKanban();
+        renderizarFinanceiro();
+    });
+
+    // Ler Compras
+    onValue(ref(db, 'compras'), (snap) => {
+        const lista = document.getElementById('lista-compras');
+        lista.innerHTML = '';
+        const itens = snap.val();
+        if(itens) {
+            Object.entries(itens).forEach(([k, v]) => {
+                lista.innerHTML += `
+                    <div class="card-box" style="padding:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; opacity: ${v.comprado?0.5:1}">
+                        <div onclick="toggleCompra('${k}', ${v.comprado})" style="cursor:pointer; display:flex; gap:10px; align-items:center;">
+                            <div style="width:20px; height:20px; border:2px solid var(--borda); border-radius:50%; background:${v.comprado?'var(--primaria)':'transparent'}"></div>
+                            <span style="text-decoration:${v.comprado?'line-through':'none'}">${v.nome}</span>
+                        </div>
+                        <button onclick="delCompra('${k}')" style="background:none; border:none; color:var(--vermelho);">✕</button>
+                    </div>`;
+            });
+        }
+    });
+
+    // --- FUNÇÕES DE RENDERIZAÇÃO ---
+    function renderizarKanban() {
+        const cols = { 'novos': [], 'preparo': [], 'rota': [], 'entregue': [] };
+        
+        Object.entries(dadosCache).forEach(([key, ped]) => {
+            const statusKey = ped.status.replace('col-', '');
+            if(cols[statusKey]) cols[statusKey].push({ key, ...ped });
+        });
+
+        Object.keys(cols).forEach(status => {
+            const container = document.getElementById(`list-${status}`);
+            const counter = document.getElementById(`count-${status}`);
+            container.innerHTML = '';
+            counter.innerText = cols[status].length;
+
+            cols[status].forEach(ped => {
+                const total = calcTotal(ped);
+                const isPendente = ped.pagamento !== 'Pago';
+                const tagPag = isPendente ? `<span class="tag tag-pendente">⚠️ R$ ${total}</span>` : `<span class="tag tag-pago">✅ Pago</span>`;
+                const tagLocal = ped.tipo === 'retirada' ? `<span class="tag tag-retirada">🏃 Retira</span>` : `<span class="tag tag-local">📍 ${ped.bairro}</span>`;
+                const tagPrioridade = ped.prioridade ? `<span class="tag" style="background:var(--vermelho); color:white;">🔥 URG</span>` : '';
+                
+                let btns = '';
+                if(status === 'novos') btns = `<button class="btn btn-outline" onclick="mover('${ped.key}', 'col-preparo')">Iniciar ➔</button>`;
+                if(status === 'preparo') btns = `<button class="btn btn-outline" onclick="mover('${ped.key}', 'col-novos')">⬅️</button><button class="btn btn-primary" onclick="mover('${ped.key}', 'col-rota')">${ped.tipo==='retirada'?'Pronto 🏃':'Saiu 🛵'}</button>`;
+                if(status === 'rota') btns = `<button class="btn btn-outline" onclick="mover('${ped.key}', 'col-preparo')">⬅️</button><button class="btn btn-primary" onclick="mover('${ped.key}', 'col-entregue')">Finalizar ✔️</button>`;
+                if(status === 'entregue') btns = `<button class="btn btn-outline" onclick="mover('${ped.key}', 'col-rota')">Voltar</button><button class="btn btn-danger" onclick="delPedido('${ped.key}')">Limpar</button>`;
+
+                const whatsBtn = (ped.tel && status === 'rota') ? `<button class="btn btn-whatsapp" style="padding:8px;" onclick="avisar('${ped.tel}', '${ped.nome}')">💬</button>` : '';
+
+                // Renderização dos Itens
+                let itensHtml = '';
+                ped.itens.forEach((it, i) => {
+                    itensHtml += `<div style="font-size:12px; margin-top:5px; border-bottom:1px dashed var(--borda); padding-bottom:5px;">
+                        <strong>${i+1}. ${it.tamanho}</strong><br>
+                        <span style="color:var(--texto-suave)">${it.base} | ${it.prot} | ${it.molho}</span>
+                    </div>`;
+                });
+
+                const html = `
+                <div class="order-card status-${status} ${ped.prioridade?'priority':''}" id="card-${ped.key}">
+                    <div class="order-header" onclick="toggleDetails('${ped.key}')">
+                        <div>
+                            <div class="order-id">#${ped.numero}</div>
+                            <h4 class="order-name">${ped.nome}</h4>
+                        </div>
+                        <div style="text-align:right">
+                            <div class="tags-row">${tagPrioridade}${tagLocal}</div>
+                            <div class="tags-row">${tagPag}</div>
+                        </div>
+                    </div>
+                    <div class="order-details">
+                        ${ped.obs ? `<div style="background:var(--laranja-bg); color:var(--laranja); padding:8px; border-radius:8px; font-size:12px; margin-bottom:10px;">📌 ${ped.obs}</div>` : ''}
+                        ${itensHtml}
+                        <div style="font-size:12px; margin:10px 0;"><strong>End:</strong> ${ped.endereco}</div>
+                        <div style="display:flex; gap:10px; margin-top:15px;">
+                            ${btns}
+                            ${whatsBtn}
+                            <button class="btn btn-outline" style="padding:8px;" onclick="editar('${ped.key}')">✏️</button>
+                        </div>
+                    </div>
+                </div>`;
+                container.innerHTML += html;
+            });
+        });
+    }
+
+    function renderizarFinanceiro() {
+        const historico = {};
+        const hoje = new Date().toLocaleDateString('pt-BR');
+        
+        Object.values(dadosCache).forEach(ped => {
+            const data = ped.data || hoje;
+            if(!historico[data]) historico[data] = { total: 0, qtd: 0, itens: 0 };
+            historico[data].total += calcTotal(ped);
+            historico[data].qtd++;
+            historico[data].itens += ped.itens.length;
+        });
+
+        const dadosHoje = historico[hoje] || { total: 0, qtd: 0, itens: 0 };
+        document.getElementById('valor-hoje').innerText = `R$ ${dadosHoje.total},00`;
+        document.getElementById('qtd-hoje').innerText = `${dadosHoje.qtd} Pedidos`;
+        document.getElementById('itens-hoje').innerText = `${dadosHoje.itens} Itens`;
+
+        const lista = document.getElementById('lista-historico');
+        lista.innerHTML = '';
+        Object.keys(historico).sort((a,b) => b.localeCompare(a)).forEach(dt => {
+            if(dt !== hoje) {
+                lista.innerHTML += `<tr><td style="padding:10px 0;">${dt}</td><td>${historico[dt].qtd}</td><td style="font-weight:700">R$ ${historico[dt].total}</td></tr>`;
             }
-        };
-
-        window.toggleMinimizar = (id) => { 
-            const el = document.getElementById(id); el.classList.toggle('minimizado'); 
-            estadoCartoes[id] = el.classList.contains('minimizado') ? 'fechado' : 'aberto'; 
-        };
-        window.mudarAba = (v, t) => {
-            document.querySelectorAll('.view-section').forEach(e => e.classList.remove('ativa'));
-            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('ativa'));
-            document.getElementById(v).classList.add('ativa'); document.getElementById(t).classList.add('ativa');
-        };
-
-        document.getElementById('telefone').addEventListener('input', function (e) {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         });
-        document.querySelectorAll('.chk-base').forEach(cb => {
-            cb.addEventListener('change', function() { if(document.querySelectorAll('.chk-base:checked').length > 2) { this.checked = false; alert("Máx 2 bases!"); } });
-        });
-        window.toggleTema = () => {
-            const b = document.body;
-            if(b.getAttribute('data-theme')==='dark') { b.removeAttribute('data-theme'); localStorage.setItem('isaTema', 'light'); }
-            else { b.setAttribute('data-theme', 'dark'); localStorage.setItem('isaTema', 'dark'); }
-        };
-        if(localStorage.getItem('isaTema') === 'dark') document.body.setAttribute('data-theme', 'dark');
+    }
 
-    </script>
+    // --- FUNÇÕES DE CÁLCULO ---
+    function calcTotal(ped) {
+        let total = ped.tipo === 'entrega' ? 4 : 0;
+        ped.itens.forEach(it => {
+            total += it.tamanho.includes('750') ? 22 : 17;
+            if(it.extras) {
+                if(it.extras.includes('Nozes')) total += 4;
+                if(it.extras.includes('Castanha')) total += 4;
+                if(it.extras.includes('Cogumelos')) total += 4;
+            }
+        });
+        return total;
+    }
+
+    // --- OPERAÇÕES DO USUÁRIO ---
+    window.addCarrinho = () => {
+        const tam = document.getElementById('tamanho').value;
+        const get = (cls) => Array.from(document.querySelectorAll('.'+cls+':checked')).map(x=>x.value).join(', ');
+        const getRaw = (cls) => Array.from(document.querySelectorAll('.'+cls+':checked')).map(x=>x.value).join(' '); // Para busca de extras
+        
+        // Verifica extras pagos
+        const todosIngredientes = getRaw('chk-croc') + ' ' + getRaw('chk-toque');
+        
+        carrinho.push({
+            tamanho: tam,
+            base: get('chk-base'), prot: get('chk-prot'), molho: get('chk-molho'),
+            extras: todosIngredientes // Para calcular preço
+        });
+
+        // Reset visual
+        document.querySelectorAll('input[type="checkbox"]').forEach(c => { if(c.id !== 'prioridade') c.checked = false; });
+        document.getElementById('carrinho-display').style.display = 'block';
+        document.getElementById('cart-count').innerText = carrinho.length;
+        document.getElementById('cart-list').innerHTML = carrinho.map((c,i) => `<div style="font-size:12px; margin-top:5px;">${i+1}. ${c.tamanho} (${c.prot})</div>`).join('');
+    };
+
+    window.finalizarPedido = () => {
+        const nome = document.getElementById('nome').value;
+        if(!nome || carrinho.length === 0) return alert('Preencha nome e adicione itens!');
+        
+        const payload = {
+            nome, 
+            tel: document.getElementById('telefone').value,
+            bairro: document.getElementById('bairro').value,
+            endereco: document.getElementById('endereco').value,
+            pagamento: document.getElementById('pagamento').value,
+            obs: document.getElementById('obs').value,
+            prioridade: document.getElementById('prioridade').checked,
+            horario: document.getElementById('horario').value,
+            tipo: tipoEntrega,
+            itens: carrinho,
+            status: 'col-novos',
+            numero: editandoId ? dadosCache[editandoId].numero : contador,
+            data: new Date().toLocaleDateString('pt-BR'),
+            timestamp: Date.now()
+        };
+
+        if(editandoId) {
+            update(ref(db, 'pedidos/'+editandoId), payload);
+            window.cancelarEdicao();
+        } else {
+            push(ref(db, 'pedidos'), payload);
+            set(ref(db, 'contador'), contador + 1);
+            limparForm();
+        }
+        alert('✅ Sucesso!');
+    };
+
+    window.editar = (key) => {
+        const ped = dadosCache[key];
+        editandoId = key;
+        
+        document.getElementById('nome').value = ped.nome;
+        document.getElementById('telefone').value = ped.tel;
+        document.getElementById('obs').value = ped.obs;
+        document.getElementById('pagamento').value = ped.pagamento;
+        document.getElementById('prioridade').checked = ped.prioridade;
+        document.getElementById('horario').value = ped.horario;
+        window.setTipo(ped.tipo);
+        if(ped.tipo === 'entrega') {
+            document.getElementById('bairro').value = ped.bairro;
+            document.getElementById('endereco').value = ped.endereco;
+        }
+        
+        carrinho = ped.itens;
+        document.getElementById('carrinho-display').style.display = 'block';
+        document.getElementById('cart-count').innerText = carrinho.length;
+        document.getElementById('cart-list').innerHTML = carrinho.map((c,i) => `<div style="font-size:12px; margin-top:5px;">${i+1}. ${c.tamanho} (${c.prot})</div>`).join('');
+
+        document.getElementById('aviso-edicao').style.display = 'block';
+        document.getElementById('btn-cancelar').style.display = 'block';
+        document.getElementById('btn-finalizar').innerText = '💾 Salvar Alterações';
+        window.mudarAba('view-lancamento', 'tab-lancamento');
+        window.scrollTo(0,0);
+    };
+
+    window.cancelarEdicao = () => {
+        editandoId = null;
+        limparForm();
+        document.getElementById('aviso-edicao').style.display = 'none';
+        document.getElementById('btn-cancelar').style.display = 'none';
+        document.getElementById('btn-finalizar').innerText = '✅ Lançar Pedido';
+    };
+
+    function limparForm() {
+        document.getElementById('nome').value = '';
+        document.getElementById('telefone').value = '';
+        document.getElementById('obs').value = '';
+        document.getElementById('horario').value = '';
+        document.getElementById('prioridade').checked = false;
+        carrinho = [];
+        document.getElementById('carrinho-display').style.display = 'none';
+        if(tipoEntrega==='entrega') { document.getElementById('bairro').value=''; document.getElementById('endereco').value=''; }
+    }
+
+    // --- FUNÇÕES DE AÇÃO ---
+    window.mover = (k,s) => update(ref(db, 'pedidos/'+k), {status:s});
+    window.delPedido = (k) => { if(confirm('Excluir?')) remove(ref(db, 'pedidos/'+k)); };
+    window.toggleDetails = (id) => document.getElementById('card-'+id).classList.toggle('open');
+    window.avisar = (tel, nome) => {
+        const num = tel.replace(/\D/g, '');
+        window.open(`https://wa.me/55${num}?text=${encodeURIComponent(`Olá ${nome}, seu pedido saiu para entrega! 🛵`)}`, '_blank');
+    };
+
+    // --- ENVIAR RESUMO (WHATSAPP) ---
+    window.enviarResumo = () => {
+        if(!carrinho.length) return alert('Carrinho vazio!');
+        const nome = document.getElementById('nome').value;
+        const tel = document.getElementById('telefone').value.replace(/\D/g, '');
+        if(!tel) return alert('Telefone obrigatório!');
+
+        let msg = `*🧾 CONFERÊNCIA - ÍSA NO COPO*\n\n*Cliente:* ${nome}\n`;
+        carrinho.forEach((it, i) => {
+            msg += `\n*Item ${i+1}:* ${it.tamanho}\nBase: ${it.base}\nProt: ${it.prot}\nMolho: ${it.molho}\n`;
+        });
+        
+        let total = 0;
+        const end = document.getElementById('endereco').value;
+        if(tipoEntrega==='entrega') total += 4;
+        carrinho.forEach(it => {
+            total += it.tamanho.includes('750') ? 22 : 17;
+            if(it.extras.includes('Nozes') || it.extras.includes('Castanha') || it.extras.includes('Cogumelos')) total += 4; // Simplificado para resumo
+        });
+
+        msg += `\n*Tipo:* ${tipoEntrega==='entrega'?'Entrega':'Retirada'}\n*End:* ${end}\n*Total:* R$ ${total},00\n\nConfere se está tudo certo?`;
+        window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`, '_blank');
+    };
+
+    // --- LIMPEZA SEGURA ---
+    window.zerarPainel = () => {
+        const senha = prompt("🔒 Senha de Segurança:");
+        if(senha === '140520') {
+            set(ref(db, 'pedidos'), null);
+            set(ref(db, 'contador'), 1);
+            alert('Dia finalizado com sucesso!');
+        } else if(senha !== null) {
+            alert('⛔ Senha incorreta');
+        }
+    };
+
+    // --- COMPRAS ---
+    window.addCompra = () => {
+        const val = document.getElementById('novo-compra').value;
+        if(val) { push(ref(db, 'compras'), { nome: val, comprado: false }); document.getElementById('novo-compra').value=''; }
+    };
+    window.toggleCompra = (k, v) => update(ref(db, 'compras/'+k), { comprado: !v });
+    window.delCompra = (k) => remove(ref(db, 'compras/'+k));
+
+    // MÁSCARA TEL
+    document.getElementById('telefone').addEventListener('input', function (e) {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+    
+    // Checkbox Limit
+    document.querySelectorAll('.chk-base').forEach(c => c.addEventListener('change', function() {
+        if(document.querySelectorAll('.chk-base:checked').length > 2) { this.checked = false; alert('Máximo 2 bases!'); }
+    }));
+
+</script>
 </body>
 </html>
