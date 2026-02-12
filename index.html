@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDV Ísa no Copo - Financeiro Completo</title>
+    <title>PDV Ísa no Copo - Seguro e Conectado</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -141,6 +141,10 @@
         .btn-finalizar.ativo { opacity: 1; pointer-events: all; }
         .btn-finalizar:hover { background: var(--primaria-hover); transform: translateY(-2px); }
         
+        /* Botão WhatsApp Resumo */
+        .btn-resumo-zap { background: rgba(37, 211, 102, 0.1); color: var(--verde-whats); border: 1px solid rgba(37, 211, 102, 0.3); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-resumo-zap:hover { background: var(--verde-whats); color: white; }
+
         .btn-salvar-edicao { background: var(--azul); }
         .btn-salvar-edicao:hover { background: #2563eb; }
         .btn-cancelar { background: var(--vermelho-fundo); color: var(--vermelho); border: 1px solid var(--vermelho); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: none; width: 100%; }
@@ -214,10 +218,7 @@
             .container-master { flex-direction: row; align-items: flex-start; }
             .view-section { display: block !important; } 
             #view-lancamento { flex: 0 0 350px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
-            /* Esconde compras e financeiro no layout padrão de 2 colunas do PC, mas permite acessar via menu se precisar 
-               ou podemos criar uma coluna extra. Vamos manter simples: se não for mobile, exibe as 2 principais e as outras ficam acessíveis? 
-               Melhor: Vamos colocar o Financeiro abaixo do lançamento no PC */
-            #view-financeiro, #view-compras { display: none; } /* No PC foca na operação */
+            #view-financeiro, #view-compras { display: none; } 
             #view-entregas { flex: 1; overflow-hidden; }
             .view-section.ativa-pc { display: block !important; position: absolute; z-index: 2000; background: white; top: 80px; left: 50%; transform: translateX(-50%); width: 600px; height: auto; box-shadow: 0 0 20px rgba(0,0,0,0.2); border-radius: 12px; }
             
@@ -374,9 +375,12 @@
                         </div>
                     </div>
 
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn-cancelar" id="btn-cancelar-edicao" onclick="cancelarEdicao()">❌ Cancelar</button>
-                        <button class="btn-finalizar" id="btn-finalizar" onclick="enviarPedidoCompleto()">✅ Finalizar Pedido</button>
+                    <div style="display: flex; gap: 10px; flex-direction: column;">
+                        <button class="btn-resumo-zap" onclick="enviarResumoZap()">💬 Enviar Resumo p/ Conferência</button>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-cancelar" id="btn-cancelar-edicao" onclick="cancelarEdicao()">❌ Cancelar</button>
+                            <button class="btn-finalizar" id="btn-finalizar" onclick="enviarPedidoCompleto()">✅ Finalizar Pedido</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -394,7 +398,6 @@
         <div id="view-financeiro" class="view-section">
             <div class="pdv-container">
                 <h3 class="pdv-titulo">💰 Fechamento de Caixa</h3>
-                
                 <div class="card-resumo-dia">
                     <h2 id="titulo-dia-atual">HOJE (---)</h2>
                     <div class="valor-total" id="total-dia-hoje">R$ 0,00</div>
@@ -404,18 +407,12 @@
                         <span id="qtd-itens-hoje">0 Copos</span>
                     </div>
                 </div>
-
                 <div style="overflow-x: auto;">
                     <table class="tabela-historico">
                         <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Pedidos</th>
-                                <th>Total</th>
-                            </tr>
+                            <tr><th>Data</th><th>Pedidos</th><th>Total</th></tr>
                         </thead>
-                        <tbody id="tabela-historico-body">
-                            </tbody>
+                        <tbody id="tabela-historico-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -499,35 +496,23 @@
             } else { listaDiv.innerHTML = '<p style="text-align:center; color:#999;">Lista vazia!</p>'; }
         });
 
-        // FUNÇÃO DE CÁLCULO DE VALOR DO PEDIDO
-        function calcularValorPedido(ped) {
+        // CALCULO DE PREÇO (Item individual)
+        function calcularValorItem(item) {
             let total = 0;
-            
-            // Taxa de entrega
-            if(ped.tipoEntrega === 'entrega') total += 4.00;
+            if(item.tamanho.includes('750')) total += 22.00; else total += 17.00;
+            if(item.toque) {
+                if(item.toque.includes('Nozes')) total += 4.00;
+                if(item.toque.includes('Castanha')) total += 4.00;
+            }
+            if(item.croc && item.croc.includes('Cogumelos')) total += 4.00;
+            return total;
+        }
 
-            // Itens
-            if(ped.itens && Array.isArray(ped.itens)) {
-                ped.itens.forEach(item => {
-                    // Preço do Copo
-                    if(item.tamanho.includes('750')) total += 22.00;
-                    else total += 17.00; // 550ml ou padrão
-
-                    // Adicionais Pagos (R$ 4,00 cada)
-                    if(item.toque) {
-                        if(item.toque.includes('Nozes')) total += 4.00;
-                        if(item.toque.includes('Castanha')) total += 4.00;
-                    }
-                    if(item.croc && item.croc.includes('Cogumelos')) total += 4.00;
-                });
-            } else {
-                // Compatibilidade legado (1 item único)
-                if(ped.tamanho.includes('750')) total += 22.00; else total += 17.00;
-                if(ped.toque) {
-                    if(ped.toque.includes('Nozes')) total += 4.00;
-                    if(ped.toque.includes('Castanha')) total += 4.00;
-                }
-                if(ped.croc && ped.croc.includes('Cogumelos')) total += 4.00;
+        function calcularValorTotalPedido(itens, tipoEntrega) {
+            let total = 0;
+            if(tipoEntrega === 'entrega') total += 4.00;
+            if(itens && Array.isArray(itens)) {
+                itens.forEach(item => total += calcularValorItem(item));
             }
             return total;
         }
@@ -545,13 +530,11 @@
             document.getElementById('col-rota').innerHTML = `<h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3>`;
             document.getElementById('col-entregue').innerHTML = `<h3>🟢 Entregues <span class="badge-qtd" id="qtd-entregue">0</span></h3>`;
 
-            // --- CÁLCULO FINANCEIRO ---
             const historico = {};
-            const hojeStr = new Date().toLocaleDateString('pt-BR'); // Dia/Mês/Ano
+            const hojeStr = new Date().toLocaleDateString('pt-BR');
 
             if (pedidosCache) {
                 Object.entries(pedidosCache).forEach(([chaveBanco, ped]) => {
-                    // KANBAN
                     qtd[ped.status]++; 
                     renderizarCartao(chaveBanco, ped);
 
@@ -561,8 +544,13 @@
                         historico[dataPedido] = { total: 0, qtdPedidos: 0, qtdItens: 0 };
                     }
                     
-                    const valorPed = calcularValorPedido(ped);
-                    const numItens = ped.itens ? ped.itens.length : 1;
+                    // Normaliza lista de itens
+                    const listaItens = (ped.itens && Array.isArray(ped.itens)) ? ped.itens : [
+                        { tamanho: ped.tamanho, base: ped.base, prot: ped.prot, croc: ped.croc, folha: ped.folha, toque: ped.toque, molho: ped.molho }
+                    ];
+
+                    const valorPed = calcularValorTotalPedido(listaItens, ped.tipoEntrega);
+                    const numItens = listaItens.length;
 
                     historico[dataPedido].total += valorPed;
                     historico[dataPedido].qtdPedidos += 1;
@@ -581,26 +569,19 @@
             const tabelaBody = document.getElementById('tabela-historico-body');
             tabelaBody.innerHTML = '';
             
-            // Ordena datas (mais recentes primeiro)
             Object.keys(historico).sort((a,b) => {
                 const da = a.split('/').reverse().join('');
                 const db = b.split('/').reverse().join('');
                 return db.localeCompare(da);
             }).forEach(data => {
-                if(data === hojeStr) return; // Não repete hoje na lista, já tá no card destaque
+                if(data === hojeStr) return; 
                 const d = historico[data];
-                const linha = `
-                    <tr>
-                        <td>${data}</td>
-                        <td>${d.qtdPedidos} ped <small>(${d.qtdItens} copos)</small></td>
-                        <td class="valor-linha">${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(d.total)}</td>
-                    </tr>
-                `;
+                const linha = `<tr><td>${data}</td><td>${d.qtdPedidos} ped <small>(${d.qtdItens} copos)</small></td><td class="valor-linha">${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(d.total)}</td></tr>`;
                 tabelaBody.innerHTML += linha;
             });
         });
 
-        // FUNÇÃO AUXILIAR DE RENDERIZAR CARTÃO (Para limpar o código principal)
+        // FUNÇÃO RENDERIZAR CARTÃO
         function renderizarCartao(chaveBanco, ped) {
             let linhaEndereco = '', linkMapaHTML = '', tagLocal = '';
             if (ped.tipoEntrega === 'retirada') {
@@ -654,20 +635,21 @@
             if (estadoCartoes[chaveBanco] === 'fechado') classeMinimizado = 'minimizado';
             let opacidade = (ped.status === 'col-entregue') ? '0.5' : '1';
 
-            const valorPedido = calcularValorPedido(ped);
-            const badgePagamentoHTML = ped.pagamento === 'Pago' ? `<span class="badge-pago">✅ Pago (R$ ${valorPedido})</span>` : `<span class="badge-pendente">⚠️ R$ ${valorPedido}</span>`;
+            // Normaliza lista para calculo e display
+            const listaItens = (ped.itens && Array.isArray(ped.itens)) ? ped.itens : [
+                { tamanho: ped.tamanho, base: ped.base, prot: ped.prot, croc: ped.croc, folha: ped.folha, toque: ped.toque, molho: ped.molho }
+            ];
+
+            const valorTotal = calcularValorTotalPedido(listaItens, ped.tipoEntrega);
+            const badgePagamentoHTML = ped.pagamento === 'Pago' ? `<span class="badge-pago">✅ Pago (R$ ${valorTotal})</span>` : `<span class="badge-pendente">⚠️ R$ ${valorTotal}</span>`;
             const obsHTML = ped.observacao ? `<div class="obs-destaque">📌 ${ped.observacao}</div>` : '';
 
             let itensHTML = '';
-            if(ped.itens && Array.isArray(ped.itens)) {
-                ped.itens.forEach((item, index) => {
-                    itensHTML += `<div class="item-resumo"><span class="titulo-item">Item ${index+1}: ${item.tamanho}</span><span>${item.base} | ${item.prot} | ${item.croc}</span><span>${item.folha} | ${item.molho} | ${item.toque}</span></div>`;
-                });
-            } else {
-                itensHTML = `<div class="item-resumo"><span class="titulo-item">${ped.tamanho}</span><span>${ped.base}, ${ped.prot}, ${ped.croc}, ${ped.folha}, ${ped.toque}, ${ped.molho}</span></div>`;
-            }
+            listaItens.forEach((item, index) => {
+                itensHTML += `<div class="item-resumo"><span class="titulo-item">Item ${index+1}: ${item.tamanho}</span><span>${item.base} | ${item.prot} | ${item.croc}</span><span>${item.folha} | ${item.molho} | ${item.toque}</span></div>`;
+            });
 
-            const displayAcoes = (ped.status === 'col-entregue') ? 'flex' : 'flex'; 
+            const displayAcoes = 'flex'; 
 
             const cardHTML = `
                 <div class="pedido-card ${classeMinimizado} ${classePrioridade}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
@@ -676,7 +658,7 @@
                             <span class="id-pedido">#${ped.numero}</span>
                             <div>
                                 ${tagLocal} ${tagsExtras}
-                                <h4>${ped.nome} (${ped.itens ? ped.itens.length : 1} Itens)</h4>
+                                <h4>${ped.nome} (${listaItens.length} Itens)</h4>
                             </div>
                         </div>
                         <span class="icone-toggle">▼</span>
@@ -747,9 +729,10 @@
                 }
                 
                 cestaDePedidos.forEach((item, idx) => {
+                    const valorItem = calcularValorItem(item);
                     lista.innerHTML += `
                         <div class="item-carrinho">
-                            <span><strong>${idx+1}.</strong> ${item.tamanho} - ${item.prot}</span>
+                            <span><strong>${idx+1}.</strong> ${item.tamanho} (R$ ${valorItem})</span>
                             <button class="btn-rm-item" onclick="removerItemCesta(${idx})">✕</button>
                         </div>
                     `;
@@ -763,6 +746,47 @@
         window.removerItemCesta = function(index) {
             cestaDePedidos.splice(index, 1);
             atualizarVisualCarrinho();
+        };
+
+        // --- ENVIAR RESUMO WHATSAPP ---
+        window.enviarResumoZap = function() {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const bairro = document.getElementById('bairro').value;
+            const endereco = document.getElementById('endereco').value;
+            const pagamento = document.getElementById('pagamento').value;
+            const obs = document.getElementById('observacao').value;
+
+            if(!nome) return alert("Preencha o nome do cliente!");
+            if(cestaDePedidos.length === 0) return alert("Adicione itens ao carrinho primeiro!");
+            if(!telefone || telefone.length < 14) return alert("Preencha o WhatsApp do cliente para enviar!");
+
+            let msg = `*🧾 CONFERÊNCIA - ÍSA NO COPO*\n`;
+            msg += `------------------------------\n`;
+            msg += `*Cliente:* ${nome}\n\n`;
+            
+            cestaDePedidos.forEach((item, idx) => {
+                msg += `*Item ${idx+1}:* ${item.tamanho}\n`;
+                msg += `Base: ${item.base}\n`;
+                msg += `Prot: ${item.prot}\n`;
+                msg += `Croc: ${item.croc}\n`;
+                msg += `Folhas: ${item.folha}\n`;
+                msg += `Toque: ${item.toque}\n`;
+                msg += `Molho: ${item.molho}\n`;
+                msg += `------------------------------\n`;
+            });
+
+            const total = calcularValorTotalPedido(cestaDePedidos, tipoEntregaAtual);
+            
+            msg += `*Tipo:* ${tipoEntregaAtual === 'entrega' ? '🛵 Entrega' : '🏃 Retirada'}\n`;
+            if(tipoEntregaAtual === 'entrega') msg += `*End:* ${endereco}, ${bairro}\n`;
+            if(obs) msg += `*Obs:* ${obs}\n`;
+            msg += `*Pagamento:* ${pagamento}\n\n`;
+            msg += `*TOTAL A PAGAR: R$ ${total},00*\n\n`;
+            msg += `Confere se está tudo certinho?`;
+
+            const numLimpo = telefone.replace(/\D/g, '');
+            window.open(`https://wa.me/55${numLimpo}?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
         // --- FUNÇÃO PRINCIPAL: ENVIAR/ATUALIZAR ---
@@ -791,8 +815,6 @@
             if (pedidoEmEdicaoId) {
                 dadosPedido.numero = pedidosCache[pedidoEmEdicaoId].numero;
                 dadosPedido.status = pedidosCache[pedidoEmEdicaoId].status; 
-                // Mantém o timestamp original se quiser que a data do histórico não mude, ou atualiza
-                // Aqui estamos atualizando para cair no dia de hoje se editar
                 update(ref(db, 'pedidos/' + pedidoEmEdicaoId), dadosPedido);
                 alert("Pedido atualizado com sucesso!");
                 cancelarEdicao(); 
@@ -836,8 +858,6 @@
 
             document.getElementById('aviso-edicao').classList.add('ativo');
             document.getElementById('btn-cancelar-edicao').style.display = 'block';
-            
-            // Se estiver no PC, exibe o form flutuante se necessário, mas aqui só mudamos a aba no mobile
             window.mudarAba('view-lancamento', 'tab-lancamento'); 
             window.scrollTo(0,0);
         };
@@ -891,8 +911,19 @@
         };
 
         window.moverPedido = (id, s) => { update(ref(db, 'pedidos/'+id), {status:s}); if(s==='col-rota') delete estadoCartoes[id]; };
-        window.removerPedido = (id) => { if(confirm("Excluir?")) remove(ref(db, 'pedidos/'+id)); };
-        window.zerarPainel = () => { if(confirm("Limpar pedidos?")) { set(ref(db, 'pedidos'), null); set(ref(db, 'contador'), 1); }};
+        window.removerPedido = (id) => { if(confirm("Excluir este pedido?")) remove(ref(db, 'pedidos/'+id)); };
+        
+        window.zerarPainel = () => { 
+            const senha = prompt("🔒 Digite a senha para FINALIZAR O DIA (Apaga todos os pedidos):");
+            if(senha === '140520') {
+                set(ref(db, 'pedidos'), null); 
+                set(ref(db, 'contador'), 1);
+                alert("Dia finalizado com sucesso!");
+            } else if (senha !== null) {
+                alert("⛔ Senha incorreta!");
+            }
+        };
+
         window.toggleMinimizar = (id) => { 
             const el = document.getElementById(id); el.classList.toggle('minimizado'); 
             estadoCartoes[id] = el.classList.contains('minimizado') ? 'fechado' : 'aberto'; 
