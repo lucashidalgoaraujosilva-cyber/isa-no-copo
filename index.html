@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDV Ísa no Copo - Prioridade & Agendamento</title>
+    <title>PDV Ísa no Copo - Financeiro Completo</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -80,11 +80,22 @@
         .view-section.ativa { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Estilos Financeiro */
+        .card-resumo-dia { background: linear-gradient(135deg, var(--primaria), #059669); color: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); margin-bottom: 20px; text-align: center; }
+        .card-resumo-dia h2 { margin: 0; font-size: 14px; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .valor-total { font-size: 36px; font-weight: 800; margin: 10px 0; }
+        .detalhes-dia { display: flex; justify-content: center; gap: 20px; font-size: 13px; opacity: 0.9; }
+        
+        .tabela-historico { width: 100%; border-collapse: collapse; background: var(--fundo-card); border-radius: 12px; overflow: hidden; box-shadow: var(--sombra); border: 1px solid var(--borda); }
+        .tabela-historico th, .tabela-historico td { padding: 15px; text-align: left; border-bottom: 1px solid var(--borda); font-size: 14px; }
+        .tabela-historico th { background: var(--fundo-coluna); color: var(--texto-secundario); font-weight: 600; text-transform: uppercase; font-size: 12px; }
+        .tabela-historico tr:last-child td { border-bottom: none; }
+        .valor-linha { font-weight: 700; color: var(--primaria); }
+
         /* Formulário */
         .pdv-container { background: var(--fundo-card); padding: 20px; border-radius: 12px; box-shadow: var(--sombra); border: 1px solid var(--borda); margin-bottom: 20px;}
         .pdv-titulo { font-size: 15px; color: var(--texto-principal); margin-top: 0; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; font-weight: 700; display: flex; justify-content: space-between;}
         
-        /* Aviso de Modo de Edição */
         .aviso-edicao { display: none; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; font-weight: 600; text-align: center; }
         .aviso-edicao.ativo { display: block; }
 
@@ -98,7 +109,6 @@
         .dados-cliente input, .dados-cliente select { padding: 14px 15px; border: 1px solid var(--borda); border-radius: 8px; font-size: 15px; background-color: var(--fundo-input); color: var(--texto-principal); transition: 0.2s; }
         .dados-cliente input:focus, .dados-cliente select:focus { outline: none; border-color: var(--primaria); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
 
-        /* Botão de Checkbox Personalizado (Prioridade) */
         .checkbox-btn-wrapper input { display: none; }
         .checkbox-btn-wrapper label {
             display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -106,9 +116,7 @@
             border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; transition: 0.2s;
             background: var(--vermelho-fundo); height: 100%; box-sizing: border-box;
         }
-        .checkbox-btn-wrapper input:checked + label {
-            background: var(--vermelho); color: white; box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
-        }
+        .checkbox-btn-wrapper input:checked + label { background: var(--vermelho); color: white; box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4); }
 
         .cardapio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .categoria-menu { background: var(--fundo-body); border: 1px solid var(--borda); border-radius: 10px; padding: 15px; }
@@ -120,7 +128,6 @@
         .chip-label span { display: inline-block; padding: 12px 14px; border-radius: 20px; border: 1px solid var(--borda); font-size: 14px; background: var(--fundo-card); color: var(--texto-secundario); font-weight: 500; transition: 0.2s; }
         .chip-label input:checked + span { background: var(--primaria); color: white; border-color: var(--primaria); box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3); }
 
-        /* Área do Carrinho */
         .carrinho-area { background: var(--lista-bg); border: 1px solid var(--primaria); border-radius: 10px; padding: 15px; margin-top: 20px; }
         .carrinho-titulo { font-size: 14px; font-weight: 700; color: var(--lista-text); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
         .item-carrinho { background: white; padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--borda); }
@@ -138,7 +145,6 @@
         .btn-salvar-edicao:hover { background: #2563eb; }
         .btn-cancelar { background: var(--vermelho-fundo); color: var(--vermelho); border: 1px solid var(--vermelho); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: none; width: 100%; }
 
-        /* Lista de Compras */
         .lista-compras-container { max-width: 600px; margin: auto; }
         .add-item-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .add-item-row input { flex: 1; padding: 12px; border: 1px solid var(--borda); border-radius: 8px; background: var(--fundo-input); color: var(--texto-principal); }
@@ -148,13 +154,11 @@
         .btn-check-compra { background: transparent; border: 2px solid var(--borda); width: 24px; height: 24px; border-radius: 50%; cursor: pointer; margin-right: 10px; display: flex; align-items: center; justify-content: center; color: transparent;}
         .item-compra.comprado .btn-check-compra { background: var(--primaria); border-color: var(--primaria); color: white; }
 
-        /* Kanban */
         .kanban-board { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px; min-height: 60vh; scroll-snap-type: x mandatory; }
         .kanban-col { background: var(--fundo-coluna); border-radius: 12px; width: 85vw; max-width: 340px; min-width: 300px; padding: 15px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--borda); scroll-snap-align: center; }
         .kanban-col h3 { margin: 0 0 10px 0; font-size: 14px; font-weight: 700; padding-bottom: 10px; border-bottom: 2px solid var(--borda); text-transform: uppercase; color: var(--texto-principal); display: flex; justify-content: space-between; align-items: center; }
         .badge-qtd { background: var(--borda); color: var(--texto-secundario); padding: 2px 8px; border-radius: 12px; font-size: 12px; }
 
-        /* Cartões */
         .pedido-card { background: var(--fundo-card); padding: 15px; border-radius: 10px; box-shadow: var(--sombra); border: 1px solid var(--borda); border-left: 5px solid var(--laranja); transition: 0.3s; display: flex; flex-direction: column; gap: 10px; }
         .pedido-card.prioridade { border: 2px solid var(--vermelho); animation: pulseBorder 2s infinite; }
         @keyframes pulseBorder { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
@@ -191,6 +195,8 @@
         .acoes-card { display: flex; gap: 8px; padding-top: 5px; margin-top: 5px; border-top: 1px solid var(--borda); }
         .btn-mover { background: transparent; border: 1px solid var(--primaria); color: var(--primaria); padding: 12px; border-radius: 8px; cursor: pointer; flex: 1; font-size: 14px; font-weight: 600; transition: 0.2s; }
         .btn-mover:hover { background: var(--primaria); color: white; }
+        .btn-voltar { background: transparent; border: 1px solid var(--texto-secundario); color: var(--texto-secundario); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; width: 45px; margin-right: 0px; }
+        .btn-voltar:hover { background: #e5e7eb; color: var(--texto-principal); }
         .btn-editar { background: transparent; border: 1px solid var(--borda); color: var(--azul); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; width: 45px;}
         .btn-editar:hover { background: #eff6ff; border-color: var(--azul); }
         .btn-remover { background: transparent; border: 1px solid var(--borda); color: var(--texto-secundario); padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; width: 45px;}
@@ -207,9 +213,14 @@
             .bottom-nav { display: none; }
             .container-master { flex-direction: row; align-items: flex-start; }
             .view-section { display: block !important; } 
-            #view-compras { display: block; flex: 0 0 300px; border-left: 1px solid var(--borda); padding-left: 20px;}
-            #view-lancamento { flex: 0 0 380px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
+            #view-lancamento { flex: 0 0 350px; position: sticky; top: 90px; height: calc(100vh - 120px); overflow-y: auto; }
+            /* Esconde compras e financeiro no layout padrão de 2 colunas do PC, mas permite acessar via menu se precisar 
+               ou podemos criar uma coluna extra. Vamos manter simples: se não for mobile, exibe as 2 principais e as outras ficam acessíveis? 
+               Melhor: Vamos colocar o Financeiro abaixo do lançamento no PC */
+            #view-financeiro, #view-compras { display: none; } /* No PC foca na operação */
             #view-entregas { flex: 1; overflow-hidden; }
+            .view-section.ativa-pc { display: block !important; position: absolute; z-index: 2000; background: white; top: 80px; left: 50%; transform: translateX(-50%); width: 600px; height: auto; box-shadow: 0 0 20px rgba(0,0,0,0.2); border-radius: 12px; }
+            
             .btn-add, .btn-finalizar, .btn-cancelar { width: auto; }
         }
         
@@ -231,7 +242,6 @@
     <div class="container-master">
         
         <div id="view-lancamento" class="view-section ativa">
-            
             <div class="pdv-container">
                 <div id="aviso-edicao" class="aviso-edicao">✏️ MODO DE EDIÇÃO ATIVO</div>
                 <h3 class="pdv-titulo">📋 Cliente e Entrega</h3>
@@ -264,13 +274,12 @@
                 <hr style="border: 0; border-top: 1px solid var(--borda); margin: 20px 0;">
 
                 <h3 class="pdv-titulo">🥗 Montar Item</h3>
-                
                 <div class="dados-cliente">
                     <div class="input-group">
                         <label>Tamanho do Copo</label>
                         <select id="tamanho">
-                            <option value="Copo 550ml">Copo 550ml</option>
-                            <option value="Copo 750ml">Copo 750ml</option>
+                            <option value="Copo 550ml">Copo 550ml (R$ 17,00)</option>
+                            <option value="Copo 750ml">Copo 750ml (R$ 22,00)</option>
                         </select>
                     </div>
                 </div>
@@ -279,34 +288,34 @@
                     <div class="categoria-menu">
                         <h4>1. Base (Máx 2)</h4>
                         <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Macarrão Gelado"><span>Macarrão (Fusilli)</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Quinoa Real"><span>Quinoa Real</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Milho Doce"><span>Milho Doce</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Macarrão Gelado"><span>Macarrão</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Quinoa Real"><span>Quinoa</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-base" value="Milho Doce"><span>Milho</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-base" value="Ervilhas"><span>Ervilhas</span></label>
                         </div>
                     </div>
                     <div class="categoria-menu">
                         <h4>2. Proteína</h4>
                         <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-prot" value="Frango Desfiado"><span>Frango Desfiado</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-prot" value="Frango Desfiado"><span>Frango</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-prot" value="Atum"><span>Atum</span></label>
                         </div>
                     </div>
                     <div class="categoria-menu">
                         <h4>3. Crocância</h4>
                         <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Tomate Cereja"><span>Tomate Cereja</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cenoura Ralada"><span>Cenoura Ralada</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Tomate Cereja"><span>Tomate</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cenoura Ralada"><span>Cenoura</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-croc" value="Pepino"><span>Pepino</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-croc" value="Beterraba"><span>Beterraba</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-croc" value="Palmito"><span>Palmito</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cogumelos"><span>Cogumelos</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-croc" value="Cogumelos"><span>Cogumelos (+R$4)</span></label>
                         </div>
                     </div>
                     <div class="categoria-menu">
                         <h4>4. Folhas</h4>
                         <div class="chips-container">
-                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Mix de Alface"><span>Mix de Alface</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-folha" value="Mix de Alface"><span>Alface</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-folha" value="Rúcula"><span>Rúcula</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-folha" value="Repolho"><span>Repolho</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-folha" value="Acelga"><span>Acelga</span></label>
@@ -317,8 +326,10 @@
                         <div class="chips-container">
                             <label class="chip-label"><input type="checkbox" class="chk-toque" value="Linhaça"><span>Linhaça</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-toque" value="Gergelim"><span>Gergelim</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Nozes"><span>Nozes</span></label>
-                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Mostarda e Mel"><span>Mostarda e Mel</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Chia"><span>Chia</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Nozes"><span>Nozes (+R$4)</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-toque" value="Castanha"><span>Castanha (+R$4)</span></label>
+                            <label class="chip-label"><input type="checkbox" class="chk-molho" value="Mostarda e Mel"><span>Mostarda/Mel</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-molho" value="Rosé"><span>Rosé</span></label>
                             <label class="chip-label"><input type="checkbox" class="chk-molho" value="Iogurte"><span>Iogurte</span></label>
                         </div>
@@ -345,7 +356,7 @@
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>Agendar Horário (Opcional)</label>
+                            <label>Agendar Horário</label>
                             <input type="time" id="horarioEntrega">
                         </div>
                     </div>
@@ -364,7 +375,7 @@
                     </div>
 
                     <div style="display: flex; gap: 10px;">
-                        <button class="btn-cancelar" id="btn-cancelar-edicao" onclick="cancelarEdicao()">❌ Cancelar Edição</button>
+                        <button class="btn-cancelar" id="btn-cancelar-edicao" onclick="cancelarEdicao()">❌ Cancelar</button>
                         <button class="btn-finalizar" id="btn-finalizar" onclick="enviarPedidoCompleto()">✅ Finalizar Pedido</button>
                     </div>
                 </div>
@@ -377,6 +388,36 @@
                 <div class="kanban-col" id="col-preparo"><h3>🟡 Montando <span class="badge-qtd" id="qtd-preparo">0</span></h3></div>
                 <div class="kanban-col" id="col-rota"><h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3></div>
                 <div class="kanban-col" id="col-entregue"><h3>🟢 Entregues <span class="badge-qtd" id="qtd-entregue">0</span></h3></div>
+            </div>
+        </div>
+
+        <div id="view-financeiro" class="view-section">
+            <div class="pdv-container">
+                <h3 class="pdv-titulo">💰 Fechamento de Caixa</h3>
+                
+                <div class="card-resumo-dia">
+                    <h2 id="titulo-dia-atual">HOJE (---)</h2>
+                    <div class="valor-total" id="total-dia-hoje">R$ 0,00</div>
+                    <div class="detalhes-dia">
+                        <span id="qtd-pedidos-hoje">0 Pedidos</span>
+                        <span>•</span>
+                        <span id="qtd-itens-hoje">0 Copos</span>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="tabela-historico">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Pedidos</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-historico-body">
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -402,9 +443,13 @@
             <span>🛵</span>
             <span>Entregas</span>
         </button>
+        <button class="nav-item" id="tab-financeiro" onclick="mudarAba('view-financeiro', 'tab-financeiro')">
+            <span>💰</span>
+            <span>Caixa</span>
+        </button>
         <button class="nav-item" id="tab-compras" onclick="mudarAba('view-compras', 'tab-compras')">
             <span>🛒</span>
-            <span>Compras</span>
+            <span>Lista</span>
         </button>
     </nav>
 
@@ -454,134 +499,209 @@
             } else { listaDiv.innerHTML = '<p style="text-align:center; color:#999;">Lista vazia!</p>'; }
         });
 
-        // FIREBASE: Pedidos
+        // FUNÇÃO DE CÁLCULO DE VALOR DO PEDIDO
+        function calcularValorPedido(ped) {
+            let total = 0;
+            
+            // Taxa de entrega
+            if(ped.tipoEntrega === 'entrega') total += 4.00;
+
+            // Itens
+            if(ped.itens && Array.isArray(ped.itens)) {
+                ped.itens.forEach(item => {
+                    // Preço do Copo
+                    if(item.tamanho.includes('750')) total += 22.00;
+                    else total += 17.00; // 550ml ou padrão
+
+                    // Adicionais Pagos (R$ 4,00 cada)
+                    if(item.toque) {
+                        if(item.toque.includes('Nozes')) total += 4.00;
+                        if(item.toque.includes('Castanha')) total += 4.00;
+                    }
+                    if(item.croc && item.croc.includes('Cogumelos')) total += 4.00;
+                });
+            } else {
+                // Compatibilidade legado (1 item único)
+                if(ped.tamanho.includes('750')) total += 22.00; else total += 17.00;
+                if(ped.toque) {
+                    if(ped.toque.includes('Nozes')) total += 4.00;
+                    if(ped.toque.includes('Castanha')) total += 4.00;
+                }
+                if(ped.croc && ped.croc.includes('Cogumelos')) total += 4.00;
+            }
+            return total;
+        }
+
+        // FIREBASE: Pedidos e Financeiro
         onValue(ref(db, 'contador'), (snapshot) => { contadorComanda = snapshot.val() || 1; });
 
         onValue(ref(db, 'pedidos'), (snapshot) => {
             pedidosCache = snapshot.val() || {}; 
             
+            // --- ATUALIZAÇÃO DO KANBAN ---
             let qtd = { 'col-novos': 0, 'col-preparo': 0, 'col-rota': 0, 'col-entregue': 0 };
             document.getElementById('col-novos').innerHTML = `<h3>🔴 Fila <span class="badge-qtd" id="qtd-novos">0</span></h3>`;
             document.getElementById('col-preparo').innerHTML = `<h3>🟡 Montando <span class="badge-qtd" id="qtd-preparo">0</span></h3>`;
             document.getElementById('col-rota').innerHTML = `<h3>🔵 Rota <span class="badge-qtd" id="qtd-rota">0</span></h3>`;
             document.getElementById('col-entregue').innerHTML = `<h3>🟢 Entregues <span class="badge-qtd" id="qtd-entregue">0</span></h3>`;
 
-            if (!pedidosCache) return;
+            // --- CÁLCULO FINANCEIRO ---
+            const historico = {};
+            const hojeStr = new Date().toLocaleDateString('pt-BR'); // Dia/Mês/Ano
 
-            Object.entries(pedidosCache).forEach(([chaveBanco, ped]) => {
-                qtd[ped.status]++; 
+            if (pedidosCache) {
+                Object.entries(pedidosCache).forEach(([chaveBanco, ped]) => {
+                    // KANBAN
+                    qtd[ped.status]++; 
+                    renderizarCartao(chaveBanco, ped);
 
-                let linhaEndereco = '', linkMapaHTML = '', tagLocal = '';
-                if (ped.tipoEntrega === 'retirada') {
-                    tagLocal = `<span class="retirada-tag">🏃 RETIRADA</span>`;
-                    linhaEndereco = `<p style="color:var(--azul); font-weight:bold;">Cliente retira no balcão</p>`;
-                } else {
-                    tagLocal = `<span class="bairro-tag">📍 ${ped.bairro}</span>`;
-                    linhaEndereco = `<p><strong>End:</strong> ${ped.endereco}</p>`;
-                    const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
-                    linkMapaHTML = `<a href="https://www.google.com/maps/search/?api=1&query=${enderecoBusca}" target="_blank" class="btn-link btn-mapa">🗺️ Maps</a>`;
-                }
+                    // FINANCEIRO
+                    const dataPedido = ped.timestamp ? new Date(ped.timestamp).toLocaleDateString('pt-BR') : hojeStr;
+                    if(!historico[dataPedido]) {
+                        historico[dataPedido] = { total: 0, qtdPedidos: 0, qtdItens: 0 };
+                    }
+                    
+                    const valorPed = calcularValorPedido(ped);
+                    const numItens = ped.itens ? ped.itens.length : 1;
 
-                // Tag de Prioridade e Horário
-                let tagsExtras = '';
-                let classePrioridade = '';
-                if(ped.prioridade) {
-                    tagsExtras += `<span class="prioridade-tag">🔥 URGENTE</span> `;
-                    classePrioridade = 'prioridade';
-                }
-                if(ped.horarioEntrega) {
-                    tagsExtras += `<span class="horario-tag">⏰ ${ped.horarioEntrega}</span> `;
-                }
-
-                let btnWhatsHTML = '';
-                if(ped.telefone && ped.telefone.length >= 14) {
-                    const numLimpo = ped.telefone.replace(/\D/g, '');
-                    let textoMsg = `Olá ${ped.nome}! Seu pedido está pronto!`;
-                    const linkWhats = `https://wa.me/55${numLimpo}?text=${encodeURIComponent(textoMsg)}`;
-                    const displayWhats = (ped.status === 'col-rota') ? 'flex' : 'none';
-                    btnWhatsHTML = `<a href="${linkWhats}" target="_blank" class="btn-link btn-whats" style="display: ${displayWhats};">💬 Avisar</a>`;
-                }
-
-                let btnMoverHTML = '';
-                let corBorda = '';
-                let minimizarPadrao = false;
-
-                if(ped.status === 'col-novos') {
-                    btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-preparo')">Avançar Etapa ➔</button>`;
-                    corBorda = 'var(--laranja)';
-                } else if (ped.status === 'col-preparo') {
-                    const textoBotao = ped.tipoEntrega === 'retirada' ? 'Pronto p/ Retirada ➔' : 'Saiu p/ Entrega ➔';
-                    btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-rota')">${textoBotao}</button>`;
-                    corBorda = 'var(--laranja)';
-                    minimizarPadrao = true;
-                } else if (ped.status === 'col-rota') {
-                    btnMoverHTML = `<button class="btn-mover" style="background: var(--primaria); color: white;" onclick="moverPedido('${chaveBanco}', 'col-entregue')">Finalizar ✔️</button>`;
-                    corBorda = 'var(--azul)';
-                    minimizarPadrao = false; 
-                } else if (ped.status === 'col-entregue') {
-                    corBorda = 'var(--primaria)';
-                    minimizarPadrao = true;
-                }
-
-                let classeMinimizado = minimizarPadrao ? 'minimizado' : '';
-                if (estadoCartoes[chaveBanco] === 'aberto') classeMinimizado = '';
-                if (estadoCartoes[chaveBanco] === 'fechado') classeMinimizado = 'minimizado';
-                let opacidade = (ped.status === 'col-entregue') ? '0.5' : '1';
-
-                const badgePagamentoHTML = ped.pagamento === 'Pago' ? `<span class="badge-pago">✅ Pago</span>` : `<span class="badge-pendente">⚠️ A Cobrar</span>`;
-                const obsHTML = ped.observacao ? `<div class="obs-destaque">📌 ${ped.observacao}</div>` : '';
-
-                let itensHTML = '';
-                if(ped.itens && Array.isArray(ped.itens)) {
-                    ped.itens.forEach((item, index) => {
-                        itensHTML += `
-                            <div class="item-resumo">
-                                <span class="titulo-item">Item ${index+1}: ${item.tamanho}</span>
-                                <span><strong>Base:</strong> ${item.base}</span>
-                                <span><strong>Prot:</strong> ${item.prot} | <strong>Croc:</strong> ${item.croc}</span>
-                                <span><strong>Folhas:</strong> ${item.folha} | <strong>Molho:</strong> ${item.molho}</span>
-                                <span><strong>Toque:</strong> ${item.toque}</span>
-                            </div>
-                        `;
-                    });
-                } else {
-                    itensHTML = `<div class="item-resumo"><span class="titulo-item">${ped.tamanho}</span><span>${ped.base}, ${ped.prot}, ${ped.croc}, ${ped.folha}, ${ped.toque}, ${ped.molho}</span></div>`;
-                }
-
-                const cardHTML = `
-                    <div class="pedido-card ${classeMinimizado} ${classePrioridade}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
-                        <div class="card-topo" onclick="toggleMinimizar('${chaveBanco}')">
-                            <div style="display: flex; align-items: center;">
-                                <span class="id-pedido">#${ped.numero}</span>
-                                <div>
-                                    ${tagLocal} ${tagsExtras}
-                                    <h4>${ped.nome} (${ped.itens ? ped.itens.length : 1} Itens)</h4>
-                                </div>
-                            </div>
-                            <span class="icone-toggle">▼</span>
-                        </div>
-                        
-                        <div class="card-detalhes">
-                            <div class="badges-pagamento">${badgePagamentoHTML}</div>
-                            ${ped.telefone ? `<p><strong>Tel:</strong> ${ped.telefone}</p>` : ''}
-                            ${obsHTML}
-                            <div class="lista-montagem">${itensHTML}</div>
-                            ${linhaEndereco}
-                            <div class="grid-botoes-contato">${linkMapaHTML}${btnWhatsHTML}</div>
-                        </div>
-
-                        <div class="acoes-card" style="display: ${ped.status === 'col-entregue' ? 'none' : 'flex'}">
-                            ${btnMoverHTML}
-                            <button class="btn-editar" onclick="editarPedido('${chaveBanco}')" title="Editar">✏️</button>
-                            <button class="btn-remover" onclick="removerPedido('${chaveBanco}')">🗑️</button>
-                        </div>
-                        ${ped.status === 'col-entregue' ? `<button class="btn-remover" style="margin-top:10px; width: 100%;" onclick="removerPedido('${chaveBanco}')">🗑️ Limpar</button>` : ''}
-                    </div>
-                `;
-                document.getElementById(ped.status).innerHTML += cardHTML;
-            });
+                    historico[dataPedido].total += valorPed;
+                    historico[dataPedido].qtdPedidos += 1;
+                    historico[dataPedido].qtdItens += numItens;
+                });
+            }
             Object.keys(qtd).forEach(k => document.getElementById(k.replace('col','qtd')).innerText = qtd[k]);
+
+            // --- RENDERIZA FINANCEIRO ---
+            const dadosHoje = historico[hojeStr] || { total: 0, qtdPedidos: 0, qtdItens: 0 };
+            document.getElementById('titulo-dia-atual').innerText = `HOJE (${hojeStr})`;
+            document.getElementById('total-dia-hoje').innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(dadosHoje.total);
+            document.getElementById('qtd-pedidos-hoje').innerText = `${dadosHoje.qtdPedidos} Pedidos`;
+            document.getElementById('qtd-itens-hoje').innerText = `${dadosHoje.qtdItens} Copos`;
+
+            const tabelaBody = document.getElementById('tabela-historico-body');
+            tabelaBody.innerHTML = '';
+            
+            // Ordena datas (mais recentes primeiro)
+            Object.keys(historico).sort((a,b) => {
+                const da = a.split('/').reverse().join('');
+                const db = b.split('/').reverse().join('');
+                return db.localeCompare(da);
+            }).forEach(data => {
+                if(data === hojeStr) return; // Não repete hoje na lista, já tá no card destaque
+                const d = historico[data];
+                const linha = `
+                    <tr>
+                        <td>${data}</td>
+                        <td>${d.qtdPedidos} ped <small>(${d.qtdItens} copos)</small></td>
+                        <td class="valor-linha">${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(d.total)}</td>
+                    </tr>
+                `;
+                tabelaBody.innerHTML += linha;
+            });
         });
+
+        // FUNÇÃO AUXILIAR DE RENDERIZAR CARTÃO (Para limpar o código principal)
+        function renderizarCartao(chaveBanco, ped) {
+            let linhaEndereco = '', linkMapaHTML = '', tagLocal = '';
+            if (ped.tipoEntrega === 'retirada') {
+                tagLocal = `<span class="retirada-tag">🏃 RETIRADA</span>`;
+                linhaEndereco = `<p style="color:var(--azul); font-weight:bold;">Cliente retira no balcão</p>`;
+            } else {
+                tagLocal = `<span class="bairro-tag">📍 ${ped.bairro}</span>`;
+                linhaEndereco = `<p><strong>End:</strong> ${ped.endereco}</p>`;
+                const enderecoBusca = encodeURIComponent(`${ped.endereco}, ${ped.bairro}, Tupi Paulista - SP`);
+                linkMapaHTML = `<a href="https://www.google.com/maps/search/?api=1&query=${enderecoBusca}" target="_blank" class="btn-link btn-mapa">🗺️ Maps</a>`;
+            }
+
+            let tagsExtras = '';
+            let classePrioridade = '';
+            if(ped.prioridade) { tagsExtras += `<span class="prioridade-tag">🔥 URGENTE</span> `; classePrioridade = 'prioridade'; }
+            if(ped.horarioEntrega) { tagsExtras += `<span class="horario-tag">⏰ ${ped.horarioEntrega}</span> `; }
+
+            let btnWhatsHTML = '';
+            if(ped.telefone && ped.telefone.length >= 14) {
+                const numLimpo = ped.telefone.replace(/\D/g, '');
+                let textoMsg = `Olá ${ped.nome}! Seu pedido está pronto!`;
+                const linkWhats = `https://wa.me/55${numLimpo}?text=${encodeURIComponent(textoMsg)}`;
+                const displayWhats = (ped.status === 'col-rota') ? 'flex' : 'none';
+                btnWhatsHTML = `<a href="${linkWhats}" target="_blank" class="btn-link btn-whats" style="display: ${displayWhats};">💬 Avisar</a>`;
+            }
+
+            let btnMoverHTML = '', btnVoltarHTML = '', corBorda = '', minimizarPadrao = false;
+
+            if(ped.status === 'col-novos') {
+                btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-preparo')">Avançar Etapa ➔</button>`;
+                corBorda = 'var(--laranja)';
+            } else if (ped.status === 'col-preparo') {
+                btnVoltarHTML = `<button class="btn-voltar" onclick="moverPedido('${chaveBanco}', 'col-novos')" title="Voltar">⬅️</button>`;
+                const textoBotao = ped.tipoEntrega === 'retirada' ? 'Pronto p/ Retirada ➔' : 'Saiu p/ Entrega ➔';
+                btnMoverHTML = `<button class="btn-mover" onclick="moverPedido('${chaveBanco}', 'col-rota')">${textoBotao}</button>`;
+                corBorda = 'var(--laranja)';
+                minimizarPadrao = true;
+            } else if (ped.status === 'col-rota') {
+                btnVoltarHTML = `<button class="btn-voltar" onclick="moverPedido('${chaveBanco}', 'col-preparo')" title="Voltar">⬅️</button>`;
+                btnMoverHTML = `<button class="btn-mover" style="background: var(--primaria); color: white;" onclick="moverPedido('${chaveBanco}', 'col-entregue')">Finalizar ✔️</button>`;
+                corBorda = 'var(--azul)';
+                minimizarPadrao = false; 
+            } else if (ped.status === 'col-entregue') {
+                btnVoltarHTML = `<button class="btn-voltar" onclick="moverPedido('${chaveBanco}', 'col-rota')" title="Voltar">⬅️</button>`;
+                corBorda = 'var(--primaria)';
+                minimizarPadrao = true;
+            }
+
+            let classeMinimizado = minimizarPadrao ? 'minimizado' : '';
+            if (estadoCartoes[chaveBanco] === 'aberto') classeMinimizado = '';
+            if (estadoCartoes[chaveBanco] === 'fechado') classeMinimizado = 'minimizado';
+            let opacidade = (ped.status === 'col-entregue') ? '0.5' : '1';
+
+            const valorPedido = calcularValorPedido(ped);
+            const badgePagamentoHTML = ped.pagamento === 'Pago' ? `<span class="badge-pago">✅ Pago (R$ ${valorPedido})</span>` : `<span class="badge-pendente">⚠️ R$ ${valorPedido}</span>`;
+            const obsHTML = ped.observacao ? `<div class="obs-destaque">📌 ${ped.observacao}</div>` : '';
+
+            let itensHTML = '';
+            if(ped.itens && Array.isArray(ped.itens)) {
+                ped.itens.forEach((item, index) => {
+                    itensHTML += `<div class="item-resumo"><span class="titulo-item">Item ${index+1}: ${item.tamanho}</span><span>${item.base} | ${item.prot} | ${item.croc}</span><span>${item.folha} | ${item.molho} | ${item.toque}</span></div>`;
+                });
+            } else {
+                itensHTML = `<div class="item-resumo"><span class="titulo-item">${ped.tamanho}</span><span>${ped.base}, ${ped.prot}, ${ped.croc}, ${ped.folha}, ${ped.toque}, ${ped.molho}</span></div>`;
+            }
+
+            const displayAcoes = (ped.status === 'col-entregue') ? 'flex' : 'flex'; 
+
+            const cardHTML = `
+                <div class="pedido-card ${classeMinimizado} ${classePrioridade}" id="${chaveBanco}" style="border-left-color: ${corBorda}; opacity: ${opacidade};">
+                    <div class="card-topo" onclick="toggleMinimizar('${chaveBanco}')">
+                        <div style="display: flex; align-items: center;">
+                            <span class="id-pedido">#${ped.numero}</span>
+                            <div>
+                                ${tagLocal} ${tagsExtras}
+                                <h4>${ped.nome} (${ped.itens ? ped.itens.length : 1} Itens)</h4>
+                            </div>
+                        </div>
+                        <span class="icone-toggle">▼</span>
+                    </div>
+                    
+                    <div class="card-detalhes">
+                        <div class="badges-pagamento">${badgePagamentoHTML}</div>
+                        ${ped.telefone ? `<p><strong>Tel:</strong> ${ped.telefone}</p>` : ''}
+                        ${obsHTML}
+                        <div class="lista-montagem">${itensHTML}</div>
+                        ${linhaEndereco}
+                        <div class="grid-botoes-contato">${linkMapaHTML}${btnWhatsHTML}</div>
+                    </div>
+
+                    <div class="acoes-card" style="display: ${displayAcoes}">
+                        ${btnVoltarHTML}
+                        ${btnMoverHTML}
+                        <button class="btn-editar" onclick="editarPedido('${chaveBanco}')" title="Editar">✏️</button>
+                        <button class="btn-remover" onclick="removerPedido('${chaveBanco}')">🗑️</button>
+                    </div>
+                    ${ped.status === 'col-entregue' ? `<button class="btn-remover" style="margin-top:10px; width: 100%;" onclick="removerPedido('${chaveBanco}')">🗑️ Limpar do Quadro</button>` : ''}
+                </div>
+            `;
+            document.getElementById(ped.status).innerHTML += cardHTML;
+        }
 
         // --- FUNÇÕES DE CARRINHO ---
         window.adicionarItemCesta = function() {
@@ -671,6 +791,8 @@
             if (pedidoEmEdicaoId) {
                 dadosPedido.numero = pedidosCache[pedidoEmEdicaoId].numero;
                 dadosPedido.status = pedidosCache[pedidoEmEdicaoId].status; 
+                // Mantém o timestamp original se quiser que a data do histórico não mude, ou atualiza
+                // Aqui estamos atualizando para cair no dia de hoje se editar
                 update(ref(db, 'pedidos/' + pedidoEmEdicaoId), dadosPedido);
                 alert("Pedido atualizado com sucesso!");
                 cancelarEdicao(); 
@@ -714,6 +836,8 @@
 
             document.getElementById('aviso-edicao').classList.add('ativo');
             document.getElementById('btn-cancelar-edicao').style.display = 'block';
+            
+            // Se estiver no PC, exibe o form flutuante se necessário, mas aqui só mudamos a aba no mobile
             window.mudarAba('view-lancamento', 'tab-lancamento'); 
             window.scrollTo(0,0);
         };
